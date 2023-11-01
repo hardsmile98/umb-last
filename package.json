@@ -1,0 +1,60 @@
+{
+  "name": "umbrella",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@amcharts/amcharts4": "^4.10.32",
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@hcaptcha/react-hcaptcha": "^1.4.4",
+    "animate.css": "^4.1.1",
+    "axios": "^0.21.1",
+    "bootstrap": "^5.0.1",
+    "emoji-picker-react": "^3.6.5",
+    "md5": "^2.3.0",
+    "moment": "^2.29.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-easy-emoji": "^1.6.1",
+    "react-flags-select": "^2.2.3",
+    "react-input-emoji": "^4.0.9",
+    "react-quill": "^2.0.0",
+    "react-render-html": "^0.6.0",
+    "react-router-dom": "^5.2.0",
+    "react-toastify": "^7.0.4",
+    "react-tooltip": "^5.11.1",
+    "reactstrap": "^8.9.0",
+    "render-html": "^1.2.1",
+    "unique-string": "^3.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts --openssl-legacy-provider start ",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "webpack-cli": "^4.7.2",
+    "react-scripts": "4.0.3"
+  }
+}

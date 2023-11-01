@@ -1,0 +1,353 @@
+import React, { Component } from 'react'
+import { Modal, ModalBody, ModalFooter } from 'reactstrap'
+import moment from 'moment'
+import { toast } from 'react-toastify'
+
+import global from '../../../../../../Global/index'
+
+
+
+class SellerModal extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            loading: false,
+            category: 0,
+            subcategory: 0,
+            product: 0,
+            subproduct: 0,
+            value: "",
+            typeofklad: 0,
+            id: 0,
+            creationDate: null,
+            user: 0,
+            subproducts: [],
+            typeOfKlads: [],
+            subcategories: []
+        }
+        this.handleChange = this.handleChange.bind(this)
+        this.sendData = this.sendData.bind(this)
+    }
+
+    sendData() {
+        this.setState({
+            loading: true
+        })
+        let data = {
+            api: "user",
+            body: {
+                data: {
+                    section: "shop",
+                    type: "shipment",
+                    subtype: "sellers",
+                    shop: this.props.match.params.shopId,
+                    id: this.state.id,
+                    category: this.state.category.toString(),
+                    subcategory: this.state.subcategory.toString(),
+                    product: this.state.product.toString(),
+                    typeofklad: this.state.typeofklad,
+                    subproduct: this.state.subproduct.toString(),
+                    value: this.state.value,
+                    user: this.state.user,
+                    action: "update"
+                },
+                action: "shops"
+            },
+            headers: {
+                'authorization': localStorage.getItem('token')
+            }
+        }
+
+        global.createRequest(data, response => {
+            if (response.status == 200) {
+                if (response.data.success) {
+                    this.setState({
+                        category: 0,
+                        subcategory: 0,
+                        product: 0,
+                        subproduct: 0,
+                        value: "",
+                        id: 0,
+                        user: 0,
+                        typeofklad: 0,
+                        loading: false
+                    })
+                    toast.success(response.data.message)
+                    this.props.toggle()
+                    this.props.getData()
+                }
+                else {
+                    this.setState({
+                        loading: false
+                    })
+                    toast.error(response.data.message)
+                }
+            }
+            else {
+                toast.error("Сервер недоступен")
+            }
+        })
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.seller != nextProps.seller) {
+            this.setState({
+                category: nextProps.seller.category,
+                subcategory: nextProps.seller.subcategory,
+                product: nextProps.seller.product,
+                subproduct: nextProps.seller.subproduct,
+                value: nextProps.seller.value,
+                typeofklad: nextProps.seller.typeofklad,
+                comment: nextProps.seller.comment,
+                status: nextProps.seller.status,
+                id: nextProps.seller.id,
+                creationDate: nextProps.seller.creationDate,
+                user: nextProps.seller.user
+            }, () => {
+                this.props.categories.map(item => {
+                    if (item.id == this.state.category) {
+                        if (item.sub == 1) {
+                            this.setState({
+                                subcategories: item.subcategories
+                            })
+                        }
+                        else {
+                            this.setState({
+                                subcategories: [],
+                                subcategory: 0
+                            })
+                        }
+                    }
+                })
+
+                this.props.products.map(item => {
+                    if (item.id == this.state.product) {
+                        if (item.sub == 1) {
+                            this.setState({
+                                subproducts: item.subproducts
+                            })
+                        }
+                        else {
+                            this.setState({
+                                subproducts: [],
+                                subproduct: 0
+                            })
+                        }
+                    }
+                })
+            })
+        }
+    }
+
+
+    handleChange(e) {
+        const value = e.target[e.target.type === "checkbox" ? "checked" : "value"]
+        const name = e.target.name
+
+        if (name == "category") {
+            this.props.categories.map(item => {
+                if (item.id == value) {
+                    if (item.sub == 1) {
+                        this.setState({
+                            subcategories: item.subcategories,
+                            subcategory: 0
+                        })
+                    }
+                    else {
+                        this.setState({
+                            subcategories: [],
+                            subcategory: 0
+                        })
+                    }
+                    this.setState({
+                        [name]: value
+                    })
+                }
+            })
+        }
+        else if (name == "product") {
+            this.props.products.map(item => {
+                if (item.id == value) {
+                    if (item.sub == 1) {
+                        this.setState({
+                            subproducts: item.subproducts,
+                            subproduct: 0
+                        })
+                    }
+                    else {
+                        this.setState({
+                            subproducts: [],
+                            subproduct: 0
+                        })
+                    }
+                    this.setState({
+                        [name]: value
+                    })
+                }
+            })
+        }
+        else {
+            this.setState({
+                [name]: value
+            })
+        }
+    }
+
+
+    render() {
+        return (
+            <div>
+                <Modal size="lg" isOpen={this.props.modal} toggle={this.props.toggle}>
+                    <div className="modal-header text-center">
+                        <h4 className="modal-title font-m">{global.getLocales('Адрес')} #{this.state.id}</h4>
+                    </div>
+                    <ModalBody>
+                    <div className="row">
+                    <div className="col-lg-12">
+                                            {
+                            this.state.status == 0
+                                ?
+                                <div className="avatar-block font-m no-margin" style={{ margin: "0 !important" }}>
+                                    <span className="text-danger">{global.getLocales('Данный адрес находится в резервации возможно изменение только содержания товара.')}</span>
+                                </div>
+                                :
+                                ''
+                        }
+                    </div>
+                    <div className="col-lg-6">
+                                            <div class={"form-group " + (this.state.status == 0 ? "margin-15" : "")}>
+                            <label class="form-control-label font-m">{global.getLocales('Город')}</label>
+                            <select disabled={this.state.loading || this.state.status == 2} value={this.state.category} onChange={this.handleChange} name="category" class="form-control">
+                                <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                {
+                                    this.props.categories.map(item =>
+                                        <option value={item.id}>{item.name}</option>
+                                    )
+                                }
+                            </select>
+                        </div>
+                        {
+                            this.state.subcategories.length > 0
+                                ?
+                                <div class="form-group">
+                                    <label class="form-control-label font-m">{global.getLocales('Район')}</label>
+                                    <select disabled={this.state.loading || this.state.status == 2} value={this.state.subcategory} onChange={this.handleChange} name="subcategory" class="form-control">
+                                        <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                        {
+                                            this.state.subcategories.map(item =>
+                                                <option value={item.id}>{item.name}</option>
+                                            )
+                                        }
+                                    </select>
+                                </div>
+                                :
+                                ''
+                        }
+                                                                    {
+                            this.props.canView
+                                ?
+                               
+                                <div class="form-group">
+                                    <label class="form-control-label font-m">{global.getLocales('Создатель адреса')}</label>
+                                    <select disabled={this.state.loading} value={this.state.user} onChange={this.handleChange} name="user" class="form-control">
+                                        <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                        {
+                                            this.props.employees.map(item =>
+                                                <option value={item.systemId}>{item.login} {item.notice ? ("(" + item.notice + ")") : ''}</option>
+                                            )
+                                        }
+                                    </select>
+                                </div>
+                            
+                                :
+                                ''
+                        }
+                                                      <div class="form-group">
+                                    <label class="form-control-label font-m">{global.getLocales('Дата создания')}</label>
+                                    <input disabled value={this.state.creationDate ? moment.unix(this.state.creationDate/1000).format("LLL") : global.getLocales('Нет информации')} name="creationDate" class="form-control"/>
+                                </div>
+                    </div>
+                    <div className="col-lg-6">
+                                            <div class="form-group">
+                            <label class="form-control-label font-m">{global.getLocales('Товар')}</label>
+                            <select disabled={this.state.loading || this.state.status == 2} value={this.state.product} onChange={this.handleChange} name="product" class="form-control">
+                                <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                {
+                                    this.props.products.map(item =>
+                                        <option value={item.id}>{item.name}</option>
+                                    )
+                                }
+                            </select>
+                        </div>
+                        {
+                            this.state.subproducts.length > 0
+                                ?
+                                <div class="form-group">
+                                    <label class="form-control-label font-m">{global.getLocales('Фасовка')}</label>
+                                    <select disabled={this.state.loading || this.state.status == 2} value={this.state.subproduct} onChange={this.handleChange} name="subproduct" class="form-control">
+                                        <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                        {
+                                            this.state.subproducts.map(item =>
+                                                <option value={item.id}>{item.name} {item.city ? (" (" + item.city + ")") : ''}</option>
+                                            )
+                                        }
+                                    </select>
+                                </div>
+                                :
+                                ''
+                        }
+                                                        <div class="form-group">
+                                    <label class="form-control-label font-m">{global.getLocales('Тип клада')}</label>
+                                    <select disabled={this.state.loading} value={this.state.typeofklad} onChange={this.handleChange} name="typeofklad" class="form-control">
+                                        {
+                                            this.props.typeOfKlads.map(item =>
+                                                <option value={item.id}>{item.name}</option>
+                                            )
+                                        }
+                                    </select>
+                                </div>
+                         
+                    </div>
+                        <div className="col-lg-12">
+                                              <div class="form-group">
+                            <label class="form-control-label font-m">{global.getLocales('Адрес')}</label>
+                            <textarea placeholder={global.getLocales('Введите содержание')} disabled={this.state.loading} value={this.state.value} onChange={this.handleChange} name="value" class="form-control sellers-textarea" />
+                        </div>
+                        {
+                            !this.props.admin
+                            ?
+                            <div class="form-group">
+                            <label class="form-control-label font-m">{global.getLocales('Комментарий для доработки')}</label>
+                            <textarea placeholder={global.getLocales('Введите содержание')} disabled value={this.state.comment} onChange={this.handleChange} name="value" class="form-control sellers-textarea" />
+                        </div>
+                        :
+                        ''
+                        }
+                        </div>
+                    </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-lg-4">
+                                    <div className="mr-auto">
+                                        <button value="Закрыть" class="btn btn-secondary font-m auth-btn" onClick={this.props.toggle}>{global.getLocales('Закрыть')}</button>
+                                    </div>
+                                </div>
+                                <div className="col-lg-8">
+                                    <button disabled={this.state.loading} onClick={this.sendData} class="btn btn-primary font-m auth-btn">
+                                        {this.state.loading ? <>{global.getLocales('Загрузка...')}</> : <>{global.getLocales('Сохранить')}</>}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </ModalFooter>
+                </Modal>
+            </div>
+        )
+    }
+}
+
+export default SellerModal
+
