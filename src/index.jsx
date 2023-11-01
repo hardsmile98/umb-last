@@ -22,7 +22,12 @@ moment.updateLocale('ru', localization);
 ReactDOM.render(
   <BrowserRouter>
 
-    <ToastContainer autoClose={1500} transition={Zoom} closeButton={false} hideProgressBar />
+    <ToastContainer
+      autoClose={1500}
+      transition={Zoom}
+      closeButton={false}
+      hideProgressBar
+    />
 
     <Switch>
       <Route
