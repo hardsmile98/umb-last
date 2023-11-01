@@ -8,7 +8,7 @@ import global from '../../../../Global'
 import { toast } from 'react-toastify'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faSearchPlus, faTrashAlt, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faSearchPlus, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { NavLink } from 'react-router-dom'
 import ModalOrderInfo from './Modal'
@@ -394,8 +394,8 @@ class AdminDialogue extends Component {
         return (
             <div className='row'>
                 <div className='col-lg-8'>
-                    <div class={"block animate__animated animate__fadeIn chats-block-list " + (this.state.loading ? "blur" : "")}>
-                        <div class="block-body">
+                    <div className={"block animate__animated animate__fadeIn chats-block-list " + (this.state.loading ? "blur" : "")}>
+                        <div className="block-body">
                             <h3 className="font-m">Чат <span className='right font-m pointer' onClick={this.setOk}>Пометить решенным</span></h3>
                             <div className='shop-chat-bottom'>
                                 <div className="messages-block chat" ref={el => {
@@ -418,7 +418,7 @@ class AdminDialogue extends Component {
                                 </div>
                                 <div className={""}>
                                     <div className="form-group">
-                                        <label for="message" className="font-m">Сообщение</label>
+                                        <label htmlFor="message" className="font-m">Сообщение</label>
                                         <textarea name="message" value={this.state.message} onChange={this.handleChange} className="form-control" placeholder={global.getLocales("Введите сообщение")} />
                                     </div>
                                 </div>
@@ -427,7 +427,7 @@ class AdminDialogue extends Component {
                                     </div>
                                     <div className="col-lg-3" />
                                     <div className="col-lg-6">
-                                        <button onClick={this.send} disabled={this.state.loading} class="btn btn-primary right font-m auth-btn">{this.state.loading ? "Загрузка..." : "Отправить сообщение"}</button>
+                                        <button onClick={this.send} disabled={this.state.loading} className="btn btn-primary right font-m auth-btn">{this.state.loading ? "Загрузка..." : "Отправить сообщение"}</button>
                                     </div>
                                 </div>
                             </div>
@@ -435,48 +435,48 @@ class AdminDialogue extends Component {
                     </div>
                 </div>
                 <div className='col-lg-4'>
-                    <div class={"block animate__animated animate__fadeIn chats-block-list " + (this.state.loading ? "blur" : "")}>
-                        <div class="block-body">
+                    <div className={"block animate__animated animate__fadeIn chats-block-list " + (this.state.loading ? "blur" : "")}>
+                        <div className="block-body">
                             <h3 className="font-m">Пользователь</h3>
                             <div className='row'>
                                 <div className='col-lg-12'>
-                                    <div class="form-group">
-                                        <label class="form-control-label font-m">Логин</label>
+                                    <div className="form-group">
+                                        <label className="form-control-label font-m">Логин</label>
                                         <div className='input-group'>
-                                            <input disabled value={this.state.data.chat.user.login} class="form-control" />
+                                            <input disabled value={this.state.data.chat.user.login} className="form-control" />
                                             <NavLink to={"/dashboard/manage/datas/users/" + this.state.data.chat.user.id}><span className='input-group-text'>Перейти в профиль</span></NavLink>
                                         </div>
                                     </div>
                                 </div>
                                 <div className='col-lg-6'>
 
-                                    <div class="form-group">
-                                        <label class="form-control-label font-m">Баланс</label>
+                                    <div className="form-group">
+                                        <label className="form-control-label font-m">Баланс</label>
                                         <div className='input-group'>
-                                            <input disabled value={this.state.data.chat.user.balance.toFixed(8)} class="form-control" />
+                                            <input disabled value={this.state.data.chat.user.balance.toFixed(8)} className="form-control" />
                                             <span className='input-group-text'>BTC</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div className='col-lg-6'>
-                                    <div class="form-group">
-                                        <label class="form-control-label font-m">Комиссия</label>
+                                    <div className="form-group">
+                                        <label className="form-control-label font-m">Комиссия</label>
                                         <div className='input-group'>
-                                            <input disabled value={this.state.data.chat.user.comission} class="form-control" />
+                                            <input disabled value={this.state.data.chat.user.comission} className="form-control" />
                                             <span className='input-group-text'>%</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div className='col-lg-6'>
-                                <div class="form-group">
-                                        <label class="form-control-label font-m">Зарегистрирован</label>
-                                        <input disabled value={moment.unix(this.state.data.chat.user.regdate / 1000).format("LLL")} class="form-control" />
+                                <div className="form-group">
+                                        <label className="form-control-label font-m">Зарегистрирован</label>
+                                        <input disabled value={moment.unix(this.state.data.chat.user.regdate / 1000).format("LLL")} className="form-control" />
                                     </div>
                                 </div>
                                 <div className='col-lg-6'>
-                                <div class="form-group">
-                                        <label class="form-control-label font-m">Заметка</label>
-                                        <input disabled value={this.state.data.chat.user.notice} class="form-control" />
+                                <div className="form-group">
+                                        <label className="form-control-label font-m">Заметка</label>
+                                        <input disabled value={this.state.data.chat.user.notice} className="form-control" />
                                     </div>
                                 </div>
                                 <div className='col-lg-12'>
@@ -496,13 +496,13 @@ class AdminDialogue extends Component {
                                             this.state.data.chat.shops.map(item =>
                                                 <>
                                                     <div className='input-group'>
-                                                        <input disabled value={item.domain} class="form-control" />
+                                                        <input disabled value={item.domain} className="form-control" />
                                                         <NavLink to={"/dashboard/shops/" + item.uniqueId}><span className='input-group-text'><FontAwesomeIcon icon={faSearchPlus} /></span></NavLink>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label class="form-control-label font-m">Поиск заказа</label>
+                                                    <div className="form-group">
+                                                        <label className="form-control-label font-m">Поиск заказа</label>
                                                         <div className='input-group'>
-                                                            <input name="order" onChange={this.handleChange} value={this.state.order} class="form-control" />
+                                                            <input name="order" onChange={this.handleChange} value={this.state.order} className="form-control" />
                                                             <span onClick={() => {this.orderSearch(item.uniqueId)}} className='input-group-text pointer'><FontAwesomeIcon icon={faSearch} /></span>
                                                         </div>
                                                     </div>
