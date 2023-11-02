@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
@@ -24,12 +26,16 @@ class AuthPage extends Component {
   }
 
   render() {
+    const { path } = this.props.match;
+
     return (
       <div className="auth-module">
 
         <ReactFlagsSelect
           className="form-control lang-pick"
-          selected={localStorage.getItem('lang') ? localStorage.getItem('lang').replace('EN', 'GB') : ''}
+          selected={localStorage.getItem('lang')
+            ? localStorage.getItem('lang').replace('EN', 'GB')
+            : ''}
           countries={['RU', 'UA', 'GB', 'ES']}
           customLabels={{
             GB: 'English',
@@ -53,11 +59,11 @@ class AuthPage extends Component {
 
             <div className="col-lg-8">
               <Switch>
-                <Route path={`${this.props.match.path}/authorization`} component={Login} />
-                <Route path={`${this.props.match.path}/registration`} component={Regisration} />
-                <Route path={`${this.props.match.path}/recovery`} component={RecoveryPage} />
-                <Route render={(_props) => (
-                  <Redirect to={{ pathname: `${this.props.match.path}/authorization` }} />
+                <Route path={`${path}/authorization`} component={Login} />
+                <Route path={`${path}/registration`} component={Regisration} />
+                <Route path={`${path}/recovery`} component={RecoveryPage} />
+                <Route render={() => (
+                  <Redirect to={{ pathname: `${path}/authorization` }} />
                 )}
                 />
               </Switch>

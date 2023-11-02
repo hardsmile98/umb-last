@@ -18,14 +18,14 @@ import './assets/styles/index.css';
 
 import moment from 'moment';
 import localization from 'moment/locale/ru';
-import Dashboard from './Panel/Dashboard/index';
-import AuthModule from './Panel/AuthModule';
+
+import Dashboard from './pages/Dashboard';
+import Auth from './pages/Auth';
 
 moment.updateLocale('ru', localization);
 
 ReactDOM.render(
   <BrowserRouter>
-
     <ToastContainer
       autoClose={1500}
       transition={Zoom}
@@ -38,7 +38,7 @@ ReactDOM.render(
         path="/security"
         render={(props) => (localStorage.getItem('token')
           ? <Redirect to="/dashboard" />
-          : <AuthModule {...props} />)}
+          : <Auth {...props} />)}
       />
 
       <Route
