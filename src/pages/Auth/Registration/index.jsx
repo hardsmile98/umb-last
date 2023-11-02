@@ -3,8 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 
-import { captchaKey } from 'constants';
-import { request } from 'utils';
+import { captchaKey } from 'variables';
+import { request, getLocales } from 'utils';
 import logo from 'assets/images/logo.png';
 
 class Regisration extends Component {
@@ -106,25 +106,25 @@ class Regisration extends Component {
     const { state } = this;
 
     if (state.loading.length < 4) {
-      toast.error(global.getLocales('Минимальная длина логина - 4 символа'));
+      toast.error(getLocales('Минимальная длина логина - 4 символа'));
       callback(false);
       return;
     }
 
     if (state.password.length < 6) {
-      toast.error(global.getLocales('Минимальная длина пароля - 6 символов'));
+      toast.error(getLocales('Минимальная длина пароля - 6 символов'));
       callback(false);
       return;
     }
 
     if (state.password !== state.repeatPassword) {
-      toast.error(global.getLocales('Пароли не совпадают'));
+      toast.error(getLocales('Пароли не совпадают'));
       callback(false);
       return;
     }
 
     if (state.secret.length < 3) {
-      toast.error(global.getLocales('Минимальная длина секретной фразы - 3 символа'));
+      toast.error(getLocales('Минимальная длина секретной фразы - 3 символа'));
       callback(false);
       return;
     }
@@ -143,11 +143,11 @@ class Regisration extends Component {
           <br />
 
           <h3 className="font-g">
-            {global.getLocales('РЕГИСТРАЦИЯ')}
+            {getLocales('РЕГИСТРАЦИЯ')}
           </h3>
 
           <p className="font-m">
-            {global.getLocales('Введите данные Вашей будущей учетной записи')}
+            {getLocales('Введите данные Вашей будущей учетной записи')}
           </p>
         </div>
 
@@ -158,7 +158,7 @@ class Regisration extends Component {
                 className="form-control-label font-m"
                 htmlFor="login"
               >
-                {global.getLocales('Логин')}
+                {getLocales('Логин')}
               </label>
               <input
                 id="login"
@@ -167,11 +167,11 @@ class Regisration extends Component {
                 autoComplete="off"
                 name="login"
                 type="text"
-                placeholder={global.getLocales('Введите логин')}
+                placeholder={getLocales('Введите логин')}
                 className="form-control"
               />
               <small>
-                {global.getLocales('Минимальная длина логина - 4 символов')}
+                {getLocales('Минимальная длина логина - 4 символов')}
               </small>
             </div>
 
@@ -180,7 +180,7 @@ class Regisration extends Component {
                 htmlFor="password"
                 className="form-control-label font-m"
               >
-                {global.getLocales('Пароль')}
+                {getLocales('Пароль')}
               </label>
               <input
                 id="password"
@@ -188,12 +188,12 @@ class Regisration extends Component {
                 onChange={this.handleChange}
                 autoComplete="off"
                 name="password"
-                placeholder={global.getLocales('Введите пароль')}
+                placeholder={getLocales('Введите пароль')}
                 type="password"
                 className="form-control"
               />
               <small>
-                {global.getLocales('Минимальная длина пароля - 6 символов')}
+                {getLocales('Минимальная длина пароля - 6 символов')}
               </small>
             </div>
 
@@ -202,7 +202,7 @@ class Regisration extends Component {
                 htmlFor="repeatPassword"
                 className="form-control-label font-m"
               >
-                {global.getLocales('Повторение пароля')}
+                {getLocales('Повторение пароля')}
               </label>
               <input
                 id="repeatPassword"
@@ -210,7 +210,7 @@ class Regisration extends Component {
                 onChange={this.handleChange}
                 autoComplete="off"
                 name="repeatPassword"
-                placeholder={global.getLocales('Введите пароль ещё раз')}
+                placeholder={getLocales('Введите пароль ещё раз')}
                 type="password"
                 className="form-control"
               />
@@ -221,7 +221,7 @@ class Regisration extends Component {
                 htmlFor="secret"
                 className="form-control-label font-m"
               >
-                {global.getLocales('Секретная фраза')}
+                {getLocales('Секретная фраза')}
               </label>
               <input
                 id="secret"
@@ -229,12 +229,12 @@ class Regisration extends Component {
                 onChange={this.handleChange}
                 autoComplete="off"
                 name="secret"
-                placeholder={global.getLocales('Введите секретную фразу')}
+                placeholder={getLocales('Введите секретную фразу')}
                 type="password"
                 className="form-control"
               />
               <small>
-                {global.getLocales('Запомните данную фразу, она является ключевым фактором для восстановления доступа в случае утери остальных данных')}
+                {getLocales('Запомните данную фразу, она является ключевым фактором для восстановления доступа в случае утери остальных данных')}
               </small>
             </div>
 
@@ -256,7 +256,7 @@ class Regisration extends Component {
                   disabled={state.loading}
                   onClick={this.sendData}
                 >
-                  {global.getLocales(state.loading
+                  {getLocales(state.loading
                     ? 'Загрузка...'
                     : 'Зарегистрироваться')}
                 </button>
@@ -268,7 +268,7 @@ class Regisration extends Component {
                     type="button"
                     className="btn btn-secondary right font-g auth-btn"
                   >
-                    {global.getLocales('Авторизация')}
+                    {getLocales('Авторизация')}
                   </button>
                 </NavLink>
               </div>

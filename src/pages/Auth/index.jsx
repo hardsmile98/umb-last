@@ -41,6 +41,7 @@ class AuthPage extends Component {
           onSelect={(code) => {
             const newCode = code.replace('GB', 'EN');
             localStorage.setItem('lang', newCode);
+
             this.forceUpdate();
           }}
         />

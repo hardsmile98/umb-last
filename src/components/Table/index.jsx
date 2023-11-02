@@ -1,3 +1,14 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/jsx-closing-tag-location */
+/* eslint-disable max-len */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { getLocales } from 'utils';
 
@@ -77,9 +88,17 @@ class Table extends React.Component {
     let sortedItems = [];
 
     if (koef) {
-      sortedItems = this.props.items.sort((a, b) => ((a[columnName] < b[columnName]) ? -koef : (a[columnName] > b[columnName]) ? koef : 0));
+      sortedItems = this.props.items
+        .sort((a, b) => ((a[columnName] < b[columnName])
+          ? -koef
+          : (a[columnName] > b[columnName])
+            ? koef
+            : 0));
     } else {
-      sortedItems = this.props.items.sort((a, b) => ((a.id < b.id) ? -1 : (a.id > b.id) ? 1 : 0));
+      sortedItems = this.props.items
+        .sort((a, b) => ((a.id < b.id) ? -1 : (a.id > b.id)
+          ? 1
+          : 0));
     }
   }
 
@@ -116,27 +135,29 @@ class Table extends React.Component {
       {getLocales('Назад')}
     </div>);
 
-    for (let i = 1; i <= Math.ceil(this.props.items.length / this.props.rowsPerPage); i++) {
-      if (i == 1 || i == Math.ceil(this.props.items.length / this.props.rowsPerPage) || (this.state.currentPage >= i && i >= this.state.currentPage - 2) || (this.state.currentPage <= i && i <= this.state.currentPage + 2)) {
-        if (this.state.currentPage - 3 > 1 && i == this.state.currentPage - 2) {
-          renderPageNumbers.push(<div
-            className="btn btn-default item"
-            disabled
-          >
-            ...
-          </div>);
+    for (let i = 1; i <= Math.ceil(this.props.items.length / this.props.rowsPerPage); i += 1) {
+      if (i === 1 || i === Math.ceil(this.props.items.length / this.props.rowsPerPage) || (this.state.currentPage >= i && i >= this.state.currentPage - 2) || (this.state.currentPage <= i && i <= this.state.currentPage + 2)) {
+        if (this.state.currentPage - 3 > 1 && i === this.state.currentPage - 2) {
+          renderPageNumbers.push(
+            <div
+              className="btn btn-default item"
+              disabled
+            >
+              ...
+            </div>,
+          );
         }
 
         renderPageNumbers.push(<div
           key={`page-${i}`}
           id={i}
-          className={`btn btn-default item ${i == this.state.currentPage ? 'active' : ''}`}
+          className={`btn btn-default item ${i === this.state.currentPage ? 'active' : ''}`}
           onClick={() => this.clickPaginationItem(i)}
         >
           {i}
         </div>);
 
-        if (this.state.currentPage + 3 < Math.ceil(this.props.items.length / this.props.rowsPerPage) && i == this.state.currentPage + 2) {
+        if (this.state.currentPage + 3 < Math.ceil(this.props.items.length / this.props.rowsPerPage) && i === this.state.currentPage + 2) {
           renderPageNumbers.push(<div
             className="btn btn-default item"
             disabled
@@ -151,8 +172,7 @@ class Table extends React.Component {
       onClick={() => this.clickPaginationItem(+this.state.currentPage + 1)}
     >
       {getLocales('Вперед')}
-
-                           </div>);
+    </div>);
 
     return renderPageNumbers;
   }
@@ -166,7 +186,7 @@ class Table extends React.Component {
           {'.pagination .item {text-align: center;border-radius: 0 !important;padding: 5px;border: 1px solid #44464f;borderRadius: 3px;marginLeft: 5px;min-width: 35px;height: 35px;textAlign: center;cursor: pointer} .pagination .active {background-color: #44464f;} '}
         </style>
 
-        {this.props.search == false
+        {this.props.search === false
           ? ''
           : (
             <div className="search-wrapper">

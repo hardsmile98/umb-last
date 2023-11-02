@@ -8,7 +8,6 @@ import {
 } from 'react-router-dom';
 import { Zoom, ToastContainer } from 'react-toastify';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'animate.css';
 

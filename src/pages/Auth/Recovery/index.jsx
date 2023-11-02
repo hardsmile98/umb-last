@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { captchaKey } from 'constants';
-import { request } from 'utils';
+import { captchaKey } from 'variables';
+import { request, getLocales } from 'utils';
 import logo from 'assets/images/logo.png';
 
 class Recovery extends Component {
@@ -101,11 +101,11 @@ class Recovery extends Component {
           <br />
 
           <h3 className="font-g">
-            {global.getLocales('Восстановление доступа')}
+            {getLocales('Восстановление доступа')}
           </h3>
 
           <p className="font-m">
-            {global.getLocales('Введите данные Вашей учетной записи для восстановления доступа')}
+            {getLocales('Введите данные Вашей учетной записи для восстановления доступа')}
           </p>
         </div>
 
@@ -116,7 +116,7 @@ class Recovery extends Component {
                 htmlFor="login"
                 className="form-control-label font-m"
               >
-                {global.getLocales('Логин')}
+                {getLocales('Логин')}
               </label>
               <input
                 id="login"
@@ -125,7 +125,7 @@ class Recovery extends Component {
                 onChange={this.handleChange}
                 type="text"
                 disabled={state.step > 0}
-                placeholder={global.getLocales('Введите логин')}
+                placeholder={getLocales('Введите логин')}
                 className="form-control"
               />
             </div>
@@ -137,7 +137,7 @@ class Recovery extends Component {
                     htmlFor="secret"
                     className="form-control-label font-m"
                   >
-                    {global.getLocales('Секретная фраза')}
+                    {getLocales('Секретная фраза')}
                   </label>
                   <input
                     id="secret"
@@ -145,7 +145,7 @@ class Recovery extends Component {
                     value={state.secret}
                     onChange={this.handleChange}
                     type="password"
-                    placeholder={global.getLocales('Введите секретную фразу')}
+                    placeholder={getLocales('Введите секретную фразу')}
                     className="form-control"
                   />
                 </div>
@@ -160,7 +160,7 @@ class Recovery extends Component {
                       htmlFor="password"
                       className="form-control-label font-m"
                     >
-                      {global.getLocales('Новый пароль')}
+                      {getLocales('Новый пароль')}
                     </label>
                     <input
                       id="password"
@@ -168,7 +168,7 @@ class Recovery extends Component {
                       value={state.password}
                       onChange={this.handleChange}
                       type="password"
-                      placeholder={global.getLocales('Введите новый пароль')}
+                      placeholder={getLocales('Введите новый пароль')}
                       className="form-control"
                     />
                   </div>
@@ -178,7 +178,7 @@ class Recovery extends Component {
                       htmlFor="password2"
                       className="form-control-label font-m"
                     >
-                      {global.getLocales('Повторите новый пароль')}
+                      {getLocales('Повторите новый пароль')}
                     </label>
                     <input
                       id="password2"
@@ -186,7 +186,7 @@ class Recovery extends Component {
                       value={state.password2}
                       onChange={this.handleChange}
                       type="password"
-                      placeholder={global.getLocales('Повторите новый пароль')}
+                      placeholder={getLocales('Повторите новый пароль')}
                       className="form-control"
                     />
                   </div>
@@ -213,7 +213,7 @@ class Recovery extends Component {
                   disabled={state.loading}
                   className="btn btn-primary font-g auth-btn"
                 >
-                  {global.getLocales('Далее')}
+                  {getLocales('Далее')}
                 </button>
               </div>
 
@@ -224,7 +224,7 @@ class Recovery extends Component {
                     value="Авторизация"
                     className="btn btn-secondary right font-g auth-btn"
                   >
-                    {global.getLocales('Авторизация')}
+                    {getLocales('Авторизация')}
                   </button>
                 </NavLink>
               </div>

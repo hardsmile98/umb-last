@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { request } from 'utils';
+import { request, getLocales } from 'utils';
 import logo from 'assets/images/logo.png';
 
 class Login extends Component {
@@ -114,14 +114,14 @@ class Login extends Component {
         if (state.code || !state.needCode) {
           callback(true);
         } else {
-          toast.error(global.getLocales('Заполните поле кода подтверждения'));
+          toast.error(getLocales('Заполните поле кода подтверждения'));
         }
       } else {
-        toast.error(global.getLocales('Неверный пароль'));
+        toast.error(getLocales('Неверный пароль'));
         callback(false);
       }
     } else {
-      toast.error(global.getLocales('Заполните поле логина'));
+      toast.error(getLocales('Заполните поле логина'));
       callback(false);
     }
   }
@@ -137,11 +137,11 @@ class Login extends Component {
           <br />
 
           <h3 className="font-g">
-            {global.getLocales('АВТОРИЗАЦИЯ')}
+            {getLocales('АВТОРИЗАЦИЯ')}
           </h3>
 
           <p className="font-m">
-            {global.getLocales('Введите данные Вашей учетной записи')}
+            {getLocales('Введите данные Вашей учетной записи')}
           </p>
         </div>
 
@@ -152,7 +152,7 @@ class Login extends Component {
                 htmlFor="login"
                 className="form-control-label font-m"
               >
-                {global.getLocales('Логин')}
+                {getLocales('Логин')}
               </label>
 
               <input
@@ -162,7 +162,7 @@ class Login extends Component {
                 type="text"
                 name="login"
                 onChange={this.handleChange}
-                placeholder={global.getLocales('Введите логин')}
+                placeholder={getLocales('Введите логин')}
                 className="form-control"
               />
             </div>
@@ -172,7 +172,7 @@ class Login extends Component {
                 htmlFor="password"
                 className="form-control-label font-m"
               >
-                {global.getLocales('Пароль')}
+                {getLocales('Пароль')}
               </label>
               <input
                 id="password"
@@ -180,7 +180,7 @@ class Login extends Component {
                 autoComplete="off"
                 name="password"
                 onChange={this.handleChange}
-                placeholder={global.getLocales('Введите пароль')}
+                placeholder={getLocales('Введите пароль')}
                 type="password"
                 className="form-control"
               />
@@ -193,7 +193,7 @@ class Login extends Component {
                     htmlFor="code"
                     className="form-control-label font-m"
                   >
-                    {global.getLocales('Код подтверждения')}
+                    {getLocales('Код подтверждения')}
                   </label>
                   <input
                     id="code"
@@ -202,7 +202,7 @@ class Login extends Component {
                     type="number"
                     name="code"
                     onChange={this.handleChange}
-                    placeholder={global.getLocales('Введите код подтверждения')}
+                    placeholder={getLocales('Введите код подтверждения')}
                     className="form-control"
                   />
                 </div>
@@ -221,14 +221,14 @@ class Login extends Component {
                   {state.loading
                     ? (
                       <>
-                        {global.getLocales('Загрузка...')}
+                        {getLocales('Загрузка...')}
                       </>
                     )
                     : (
                       <span className="font-g">
                         <FontAwesomeIcon icon={faUser} />
                         {' '}
-                        {global.getLocales('ВОЙТИ')}
+                        {getLocales('ВОЙТИ')}
                       </span>
                     )}
                 </button>
@@ -241,7 +241,7 @@ class Login extends Component {
                     value="Регистрация"
                     className="btn btn-secondary right font-g auth-btn"
                   >
-                    {global.getLocales('Регистрация')}
+                    {getLocales('Регистрация')}
                   </button>
                 </NavLink>
               </div>
@@ -250,7 +250,7 @@ class Login extends Component {
 
               <div className="col-lg-12 text-center recovery">
                 <NavLink className="font-m" to="/security/recovery">
-                  {global.getLocales('Забыли пароль?')}
+                  {getLocales('Забыли пароль?')}
                 </NavLink>
               </div>
             </div>
