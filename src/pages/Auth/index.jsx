@@ -2,19 +2,20 @@ import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
 import ReactFlagsSelect from 'react-flags-select';
-import bg from './background.png';
+import bg from '../../assets/images/background.png';
 
-import Authorization from '../Authorization';
-import Regisration from '../Registration';
-import RecoveryPage from '../Recovery';
+import Login from './Login';
+import Regisration from './Registration';
+import RecoveryPage from './Recovery';
 
-import global from '../Global/index';
+import { getLocalesFile } from '../../utils';
 
-class AuthModule extends Component {
+class AuthPage extends Component {
   componentDidMount() {
-    global.getLocalesFile(() => {
+    getLocalesFile(() => {
       if (!localStorage.getItem('lang')) {
         localStorage.setItem('lang', 'RU');
+
         this.forceUpdate();
       } else {
         this.forceUpdate();
@@ -37,8 +38,8 @@ class AuthModule extends Component {
             ES: 'Español',
           }}
           onSelect={(code) => {
-            const filteredCode = code.replace('GB', 'EN');
-            localStorage.setItem('lang', filteredCode);
+            const newCode = code.replace('GB', 'EN');
+            localStorage.setItem('lang', newCode);
             this.forceUpdate();
           }}
         />
@@ -46,17 +47,13 @@ class AuthModule extends Component {
         <div className="container">
           <div className="row">
 
-            <img
-              className="bg"
-              alt="background"
-              src={bg}
-            />
+            <img className="bg" alt="background" src={bg} />
 
             <div className="col-lg-2" />
 
             <div className="col-lg-8">
               <Switch>
-                <Route path={`${this.props.match.path}/authorization`} component={Authorization} />
+                <Route path={`${this.props.match.path}/authorization`} component={Login} />
                 <Route path={`${this.props.match.path}/registration`} component={Regisration} />
                 <Route path={`${this.props.match.path}/recovery`} component={RecoveryPage} />
                 <Route render={(_props) => (
@@ -66,8 +63,7 @@ class AuthModule extends Component {
               </Switch>
 
               <div className="footer">
-                Umbrella Corp.
-                {' '}
+                {'Umbrella Corp. '}
                 {new Date().getFullYear()}
               </div>
             </div>
@@ -78,4 +74,4 @@ class AuthModule extends Component {
   }
 }
 
-export default AuthModule;
+export default AuthPage;

@@ -1,0 +1,30 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/fontawesome.min.css');
+
+@font-face {
+    font-family: 'EuropeExt';
+    src: url('../fonts/EuropeExt-Bold.woff2') format('woff2'),
+        url('../fonts/EuropeExt-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Muller Narrow';
+    src: url('../fonts/MullerNarrow-Light.woff2') format('woff2'),
+        url('../fonts/MullerNarrow-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "dark-dashboard";
+    src: url("../fonts/dark-dashboard.eot");
+    src: url("../fonts/dark-dashboard.eot?#iefix") format("embedded-opentype"),
+        url("../fonts/dark-dashboard.woff") format("woff"),
+        url("../fonts/dark-dashboard.ttf") format("truetype"),
+        url("../fonts/dark-dashboard.svg#dark-dashboard") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
