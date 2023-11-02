@@ -138,14 +138,12 @@ class Table extends React.Component {
     for (let i = 1; i <= Math.ceil(this.props.items.length / this.props.rowsPerPage); i += 1) {
       if (i === 1 || i === Math.ceil(this.props.items.length / this.props.rowsPerPage) || (this.state.currentPage >= i && i >= this.state.currentPage - 2) || (this.state.currentPage <= i && i <= this.state.currentPage + 2)) {
         if (this.state.currentPage - 3 > 1 && i === this.state.currentPage - 2) {
-          renderPageNumbers.push(
-            <div
-              className="btn btn-default item"
-              disabled
-            >
-              ...
-            </div>,
-          );
+          renderPageNumbers.push(<div
+            className="btn btn-default item"
+            disabled
+          >
+            ...
+          </div>);
         }
 
         renderPageNumbers.push(<div
@@ -238,16 +236,24 @@ class Table extends React.Component {
           <tbody>
             {items.map((item) => (
               <tr key={item.id} data-id={item.id}>
-                {this.props.columns.map((field, index) => ((field.dataIndex === '' || field.key === 'operations')
-                  ? (
-                    <td
-                      key={index}
-                      className={field.itemClassName}
-                    >
-                      {field.render(field.id, item)}
-                    </td>
-                  )
-                  : <td key={index} className={field.itemClassName}>{item[field.dataIndex]}</td>))}
+                {this.props.columns
+                  .map((field, index) => ((field.dataIndex === '' || field.key === 'operations')
+                    ? (
+                      <td
+                        key={index}
+                        className={field.itemClassName}
+                      >
+                        {field.render(field.id, item)}
+                      </td>
+                    )
+                    : (
+                      <td
+                        key={index}
+                        className={field.itemClassName}
+                      >
+                        {item[field.dataIndex]}
+                      </td>
+                    )))}
               </tr>
             ))}
           </tbody>
