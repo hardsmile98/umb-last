@@ -247,104 +247,98 @@ class Dashboard extends Component {
                       </div>
                     </div>
 
-                    {state.menu
-                      ? (
-                        <div className="container-fluid">
-                          <div className="row">
-                            <div className="col-lg-12 course-block">
-                              <NavLink
-                                className="header-link"
-                                to="/dashboard/finance"
-                                activeClassName="active"
-                              >
-                                <li>
+                    {state.menu && (
+                      <div className="container-fluid">
+                        <div className="row">
+                          <div className="col-lg-12 course-block">
+                            <NavLink
+                              className="header-link"
+                              to="/dashboard/finance"
+                              activeClassName="active"
+                            >
+                              <li>
+                                <span>
+                                  <FontAwesomeIcon icon={faWallet} />
+                                  {' '}
+                                  {state.data.user.balance.toFixed(6)}
+                                  {' '}
+                                  BTC
+                                </span>
+                              </li>
+                            </NavLink>
+                          </div>
+
+                          <div className="col-lg-12 course-block">
+                            <NavLink
+                              className="header-link"
+                              to="/dashboard/home"
+                              activeClassName="active"
+                            >
+                              <li>
+                                <span>{getLocales('Главная')}</span>
+                              </li>
+                            </NavLink>
+                          </div>
+
+                          <div className="col-lg-12 course-block">
+                            <NavLink
+                              className="header-link"
+                              to="/dashboard/shops"
+                              activeClassName="active"
+                            >
+                              <li>
+                                <span>{getLocales('Магазины')}</span>
+                              </li>
+                            </NavLink>
+                          </div>
+
+                          <div className="col-lg-12 course-block">
+                            <NavLink
+                              className="header-link"
+                              to="/dashboard/support"
+                              activeClassName="active"
+                            >
+                              <li>
+                                <span>
+                                  {getLocales('Поддержка')}
+                                  {state.data.unreaded > 0 && (
                                   <span>
-                                    <FontAwesomeIcon icon={faWallet} />
-                                    {' '}
-                                    {state.data.user.balance.toFixed(6)}
-                                    {' '}
-                                    BTC
+                                    {state.data.unreaded}
                                   </span>
-                                </li>
-                              </NavLink>
-                            </div>
+                                  )}
+                                </span>
+                              </li>
+                            </NavLink>
+                          </div>
 
-                            <div className="col-lg-12 course-block">
-                              <NavLink
-                                className="header-link"
-                                to="/dashboard/home"
-                                activeClassName="active"
-                              >
-                                <li>
-                                  <span>{getLocales('Главная')}</span>
-                                </li>
-                              </NavLink>
-                            </div>
+                          {state.data.user.type !== 'user' && (
+                          <div className="col-lg-12 course-block">
+                            <NavLink className="header-link" to="/dashboard/manage" activeClassName="active">
+                              <li>
+                                <span>{getLocales('Управление')}</span>
+                              </li>
+                            </NavLink>
+                          </div>
+                          )}
 
-                            <div className="col-lg-12 course-block">
-                              <NavLink
-                                className="header-link"
-                                to="/dashboard/shops"
-                                activeClassName="active"
-                              >
-                                <li>
-                                  <span>{getLocales('Магазины')}</span>
-                                </li>
-                              </NavLink>
-                            </div>
+                          <div className="col-lg-12 course-block">
+                            <NavLink className="header-link" to="/dashboard/profile" activeClassName="active">
+                              <li>
+                                <span>{getLocales('Профиль')}</span>
+                              </li>
+                            </NavLink>
+                          </div>
 
-                            <div className="col-lg-12 course-block">
-                              <NavLink
-                                className="header-link"
-                                to="/dashboard/support"
-                                activeClassName="active"
-                              >
-                                <li>
-                                  <span>
-                                    {getLocales('Поддержка')}
-                                    {state.data.unreaded > 0
-                                      ? (
-                                        <span>
-                                          {state.data.unreaded}
-                                        </span>
-                                      )
-                                      : ''}
-                                  </span>
-                                </li>
-                              </NavLink>
-                            </div>
-
-                            {state.data.user.type !== 'user'
-                              ? (
-                                <div className="col-lg-12 course-block">
-                                  <NavLink className="header-link" to="/dashboard/manage" activeClassName="active">
-                                    <li>
-                                      <span>{getLocales('Управление')}</span>
-                                    </li>
-                                  </NavLink>
-                                </div>
-                              )
-                              : ''}
-
-                            <div className="col-lg-12 course-block">
-                              <NavLink className="header-link" to="/dashboard/profile" activeClassName="active">
-                                <li>
-                                  <span>{getLocales('Профиль')}</span>
-                                </li>
-                              </NavLink>
-                            </div>
-
-                            <div className="col-lg-12 course-block">
-                              <a onClick={this.exit}>
-                                <li>
-                                  <span>{getLocales('Выход')}</span>
-                                </li>
-                              </a>
-                            </div>
+                          <div className="col-lg-12 course-block">
+                            <a onClick={this.exit}>
+                              <li>
+                                <span>{getLocales('Выход')}</span>
+                              </li>
+                            </a>
                           </div>
                         </div>
-                      )
-                      : ''}
+                      </div>
+                    )}
                   </>
                 )
                 : (
@@ -355,39 +349,37 @@ class Dashboard extends Component {
                         to="/dashboard/home"
                         activeClassName="active"
                       >
-                        {state.data.user.type === 'user'
-                          ? (
-                            <a className="navbar-brand">
-                              <div
-                                className="brand-text brand-big visible text-uppercase"
-                              >
-                                <img
-                                  alt="umbrella"
-                                  className="logotype-dash"
-                                  src={localStorage.getItem('theme') === 'dark'
-                                    ? (state.data.user.premium === 1
-                                      ? logoblackpremium
-                                      : logoblack)
-                                    : (state.data.user.premium === 1
-                                      ? logowhitepremium
-                                      : logo)}
-                                />
-                              </div>
+                        {state.data.user.type === 'user' && (
+                          <a className="navbar-brand">
+                            <div
+                              className="brand-text brand-big visible text-uppercase"
+                            >
+                              <img
+                                alt="umbrella"
+                                className="logotype-dash"
+                                src={localStorage.getItem('theme') === 'dark'
+                                  ? (state.data.user.premium === 1
+                                    ? logoblackpremium
+                                    : logoblack)
+                                  : (state.data.user.premium === 1
+                                    ? logowhitepremium
+                                    : logo)}
+                              />
+                            </div>
 
-                              <div className="brand-text brand-sm">
-                                <img
-                                  alt="umbrella"
-                                  className="logotype-dash"
-                                  src={localStorage.getItem('theme') === 'dark'
-                                    ? (state.data.user.premium === 1
-                                      ? logoblackpremium : logoblack)
-                                    : (state.data.user.premium === 1
-                                      ? logowhitepremium : logo)}
-                                />
-                              </div>
-                            </a>
-                          )
-                          : ''}
+                            <div className="brand-text brand-sm">
+                              <img
+                                alt="umbrella"
+                                className="logotype-dash"
+                                src={localStorage.getItem('theme') === 'dark'
+                                  ? (state.data.user.premium === 1
+                                    ? logoblackpremium : logoblack)
+                                  : (state.data.user.premium === 1
+                                    ? logowhitepremium : logo)}
+                              />
+                            </div>
+                          </a>
+                        )}
                       </NavLink>
                     </div>
 
@@ -420,33 +412,30 @@ class Dashboard extends Component {
                             <span className="flex">
                               {getLocales('Поддержка')}
                               {' '}
-                              {state.data.unreaded > 0
-                                ? (
-                                  <span className="unread-icon">
-                                    {state.data.unreaded}
-                                  </span>
-                                )
-                                : ''}
+                              {state.data.unreaded > 0 && (
+                                <span className="unread-icon">
+                                  {state.data.unreaded}
+                                </span>
+                              )}
                             </span>
                           </li>
                         </NavLink>
                       </div>
 
-                      {state.data.user.type !== 'user'
-                        ? (
-                          <div className="course-block">
-                            <NavLink
-                              className="header-link"
-                              to="/dashboard/manage"
-                              activeClassName="active"
-                            >
-                              <li>
-                                <span>{getLocales('Управление')}</span>
-                              </li>
-                            </NavLink>
-                          </div>
-                        )
-                        : ''}
+                      {state.data.user.type !== 'user' && (
+                        <div className="course-block">
+                          <NavLink
+                            className="header-link"
+                            to="/dashboard/manage"
+                            activeClassName="active"
+                          >
+                            <li>
+                              <span>{getLocales('Управление')}</span>
+                            </li>
+                          </NavLink>
+                        </div>
+                      )}
+
                       <div className="menu right">
                         <div className="course-block finance-block">
                           <NavLink
@@ -459,8 +448,7 @@ class Dashboard extends Component {
                               {' '}
                               <span>
                                 {state.data.user.balance.toFixed(6)}
-                                {' '}
-                                BTC
+                                {' BTC'}
                               </span>
                             </li>
                           </NavLink>
