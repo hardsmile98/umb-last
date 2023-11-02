@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 import HCaptcha from '@hcaptcha/react-hcaptcha';
-import global from '../Global/index';
 
-import logo from '../AuthModule/logo.png';
-
-const captchaKey = '951a4e66-a414-4ed4-9dce-3473af0fbd38';
+import { captchaKey } from 'constants';
+import { request } from 'utils';
+import logo from 'assets/images/logo.png';
 
 class Regisration extends Component {
   constructor(props) {
@@ -34,19 +32,22 @@ class Regisration extends Component {
   }
 
   sendData() {
+    const { props, state } = this;
+
     this.setState({
       loading: true,
     });
+
     this.checkData((result) => {
       if (result) {
         const data = {
           api: 'registration',
           body: {
             data: {
-              login: this.state.login,
-              password: this.state.password,
-              secret: this.state.secret,
-              token: this.state.token,
+              login: state.login,
+              password: state.password,
+              secret: state.secret,
+              token: state.token,
               lang: localStorage.getItem('lang'),
             },
             action: 'one',
@@ -56,25 +57,25 @@ class Regisration extends Component {
           },
         };
 
-        global.createRequest(data, (response) => {
+        request(data, (response) => {
           if (response.status === 200) {
             if (response.data.success) {
               toast.success(response.data.message);
 
               data.api = 'authorization';
 
-              global.createRequest(data, (response) => {
-                if (response.status === 200) {
-                  if (response.data.success) {
+              request(data, (res) => {
+                if (res.status === 200) {
+                  if (res.data.success) {
                     this.setState({
                       loading: false,
                     });
 
-                    localStorage.setItem('token', response.data.data.token);
+                    localStorage.setItem('token', res.data.data.token);
 
-                    this.props.history.push('/dashboard');
+                    props.history.push('/dashboard');
                   } else {
-                    toast.error(response.data.message);
+                    toast.error(res.data.message);
                   }
                 }
               });
@@ -102,30 +103,38 @@ class Regisration extends Component {
   }
 
   checkData(callback) {
-    if (this.state.login.length >= 4) {
-      if (this.state.password.length >= 6) {
-        if (this.state.password === this.state.repeatPassword) {
-          if (this.state.secret.length >= 3) {
-            callback(true);
-          } else {
-            toast.error(global.getLocales('Минимальная длина секретной фразы - 3 символа'));
-            callback(false);
-          }
-        } else {
-          toast.error(global.getLocales('Пароли не совпадают'));
-          callback(false);
-        }
-      } else {
-        toast.error(global.getLocales('Минимальная длина пароля - 6 символов'));
-        callback(false);
-      }
-    } else {
+    const { state } = this;
+
+    if (state.loading.length < 4) {
       toast.error(global.getLocales('Минимальная длина логина - 4 символа'));
       callback(false);
+      return;
     }
+
+    if (state.password.length < 6) {
+      toast.error(global.getLocales('Минимальная длина пароля - 6 символов'));
+      callback(false);
+      return;
+    }
+
+    if (state.password !== state.repeatPassword) {
+      toast.error(global.getLocales('Пароли не совпадают'));
+      callback(false);
+      return;
+    }
+
+    if (state.secret.length < 3) {
+      toast.error(global.getLocales('Минимальная длина секретной фразы - 3 символа'));
+      callback(false);
+      return;
+    }
+
+    callback(true);
   }
 
   render() {
+    const { state } = this;
+
     return (
       <>
         <div className="text-center">
@@ -153,7 +162,7 @@ class Regisration extends Component {
               </label>
               <input
                 id="login"
-                disabled={this.state.loading}
+                disabled={state.loading}
                 onChange={this.handleChange}
                 autoComplete="off"
                 name="login"
@@ -175,7 +184,7 @@ class Regisration extends Component {
               </label>
               <input
                 id="password"
-                disabled={this.state.loading}
+                disabled={state.loading}
                 onChange={this.handleChange}
                 autoComplete="off"
                 name="password"
@@ -197,7 +206,7 @@ class Regisration extends Component {
               </label>
               <input
                 id="repeatPassword"
-                disabled={this.state.loading}
+                disabled={state.loading}
                 onChange={this.handleChange}
                 autoComplete="off"
                 name="repeatPassword"
@@ -216,7 +225,7 @@ class Regisration extends Component {
               </label>
               <input
                 id="secret"
-                disabled={this.state.loading}
+                disabled={state.loading}
                 onChange={this.handleChange}
                 autoComplete="off"
                 name="secret"
@@ -244,20 +253,12 @@ class Regisration extends Component {
                 <button
                   type="button"
                   className="btn btn-primary font-g auth-btn"
-                  disabled={this.state.loading}
+                  disabled={state.loading}
                   onClick={this.sendData}
                 >
-                  {this.state.loading
-                    ? (
-                      <>
-                        {global.getLocales('Загрузка...')}
-                      </>
-                    )
-                    : (
-                      <>
-                        {global.getLocales('Зарегистрироваться')}
-                      </>
-                    )}
+                  {global.getLocales(state.loading
+                    ? 'Загрузка...'
+                    : 'Зарегистрироваться')}
                 </button>
               </div>
 

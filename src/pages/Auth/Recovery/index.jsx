@@ -1,16 +1,13 @@
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import React, { Component } from 'react';
-
 import { NavLink } from 'react-router-dom';
-
 import { toast } from 'react-toastify';
-import logo from '../AuthModule/logo.png';
 
-import global from '../Global/index';
+import { captchaKey } from 'constants';
+import { request } from 'utils';
+import logo from 'assets/images/logo.png';
 
-const captchaKey = '951a4e66-a414-4ed4-9dce-3473af0fbd38';
-
-class RecoveryPage extends Component {
+class Recovery extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +24,9 @@ class RecoveryPage extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -36,13 +35,15 @@ class RecoveryPage extends Component {
   }
 
   nextStep() {
-    if (this.state.step == 0) {
+    const { state, props } = this;
+
+    if (state.step === 0) {
       this.setState({
-        step: this.state.step + 1,
+        step: state.step + 1,
       });
-    } else if (this.state.step == 1) {
+    } else if (state.step === 1) {
       this.setState({
-        step: this.state.step + 1,
+        step: state.step + 1,
       });
     } else {
       this.setState({
@@ -53,10 +54,10 @@ class RecoveryPage extends Component {
         api: 'registration',
         body: {
           data: {
-            login: this.state.login,
-            password: this.state.password,
-            secret: this.state.secret,
-            token: this.state.token,
+            login: state.login,
+            password: state.password,
+            secret: state.secret,
+            token: state.token,
           },
           action: 'recovery',
         },
@@ -65,12 +66,12 @@ class RecoveryPage extends Component {
         },
       };
 
-      global.createRequest(data, (response) => {
+      request(data, (response) => {
         if (response.status === 200) {
           if (response.data.success) {
             toast.success(response.data.message);
 
-            this.props.history.push('/security/authorization');
+            props.history.push('/security/authorization');
           } else {
             this.setState({
               loading: false,
@@ -90,6 +91,8 @@ class RecoveryPage extends Component {
   }
 
   render() {
+    const { state } = this;
+
     return (
       <>
         <div className="text-center">
@@ -118,16 +121,16 @@ class RecoveryPage extends Component {
               <input
                 id="login"
                 name="login"
-                value={this.state.login}
+                value={state.login}
                 onChange={this.handleChange}
                 type="text"
-                disabled={this.state.step > 0}
+                disabled={state.step > 0}
                 placeholder={global.getLocales('Введите логин')}
                 className="form-control"
               />
             </div>
 
-            {this.state.step > 0
+            {state.step > 0
               ? (
                 <div className="form-group">
                   <label
@@ -139,7 +142,7 @@ class RecoveryPage extends Component {
                   <input
                     id="secret"
                     name="secret"
-                    value={this.state.secret}
+                    value={state.secret}
                     onChange={this.handleChange}
                     type="password"
                     placeholder={global.getLocales('Введите секретную фразу')}
@@ -148,7 +151,8 @@ class RecoveryPage extends Component {
                 </div>
               )
               : ''}
-            {this.state.step > 1
+
+            {state.step > 1
               ? (
                 <>
                   <div className="form-group">
@@ -161,7 +165,7 @@ class RecoveryPage extends Component {
                     <input
                       id="password"
                       name="password"
-                      value={this.state.password}
+                      value={state.password}
                       onChange={this.handleChange}
                       type="password"
                       placeholder={global.getLocales('Введите новый пароль')}
@@ -179,7 +183,7 @@ class RecoveryPage extends Component {
                     <input
                       id="password2"
                       name="password2"
-                      value={this.state.password2}
+                      value={state.password2}
                       onChange={this.handleChange}
                       type="password"
                       placeholder={global.getLocales('Повторите новый пароль')}
@@ -199,12 +203,14 @@ class RecoveryPage extends Component {
                 </>
               )
               : ''}
+
             <div className="row">
               <div className="col-lg-6">
                 <button
                   type="button"
                   onClick={this.nextStep}
                   value="Войти"
+                  disabled={state.loading}
                   className="btn btn-primary font-g auth-btn"
                 >
                   {global.getLocales('Далее')}
@@ -230,4 +236,4 @@ class RecoveryPage extends Component {
   }
 }
 
-export default RecoveryPage;
+export default Recovery;

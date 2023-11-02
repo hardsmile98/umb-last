@@ -19,8 +19,16 @@ module.exports = {
   plugins: [
     'react',
   ],
+  settings: {
+    'import/resolver': {
+      node: {
+        paths: ['src'],
+      },
+    },
+  },
   rules: {
     'react/jsx-props-no-spreading': 'off',
     'import/prefer-default-export': 'off',
+    'react/prop-types': 'off',
   },
 };

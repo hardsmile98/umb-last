@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { faUser } from '@fortawesome/free-solid-svg-icons/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
-
 import { toast } from 'react-toastify';
-import global from '../Global/index';
 
-import logo from '../AuthModule/logo.png';
+import { request } from 'utils';
+import logo from 'assets/images/logo.png';
 
-class Authorization extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,6 +34,8 @@ class Authorization extends Component {
   }
 
   sendData() {
+    const { state, props } = this;
+
     this.setState({
       loading: true,
     });
@@ -45,18 +46,18 @@ class Authorization extends Component {
           api: 'authorization',
           body: {
             data: {
-              login: this.state.login,
-              password: this.state.password,
-              code: this.state.code,
+              login: state.login,
+              password: state.password,
+              code: state.code,
             },
-            action: this.state.action,
+            action: state.action,
           },
-          headers: this.state.needCode
+          headers: state.needCode
             ? { authorization: localStorage.getItem('token') }
             : '',
         };
 
-        global.createRequest(data, (response) => {
+        request(data, (response) => {
           if (response.status === 200) {
             if (response.data.success) {
               toast.success(response.data.message);
@@ -80,7 +81,7 @@ class Authorization extends Component {
                   this.forceUpdate();
                 }
 
-                this.props.history.push('/dashboard');
+                props.history.push('/dashboard');
               }
             } else {
               this.setState({
@@ -106,9 +107,11 @@ class Authorization extends Component {
   }
 
   checkData(callback) {
-    if (this.state.login.length > 3) {
-      if (this.state.password.length > 5) {
-        if (this.state.code || !this.state.needCode) {
+    const { state } = this;
+
+    if (state.login.length > 3) {
+      if (state.password.length > 5) {
+        if (state.code || !state.needCode) {
           callback(true);
         } else {
           toast.error(global.getLocales('Заполните поле кода подтверждения'));
@@ -124,6 +127,8 @@ class Authorization extends Component {
   }
 
   render() {
+    const { state } = this;
+
     return (
       <>
         <div className="text-center">
@@ -153,7 +158,7 @@ class Authorization extends Component {
               <input
                 autoComplete="off"
                 id="login"
-                disabled={this.state.loading || this.state.needCode}
+                disabled={state.loading || state.needCode}
                 type="text"
                 name="login"
                 onChange={this.handleChange}
@@ -171,7 +176,7 @@ class Authorization extends Component {
               </label>
               <input
                 id="password"
-                disabled={this.state.loading || this.state.needCode}
+                disabled={state.loading || state.needCode}
                 autoComplete="off"
                 name="password"
                 onChange={this.handleChange}
@@ -181,7 +186,7 @@ class Authorization extends Component {
               />
             </div>
 
-            {this.state.needCode
+            {state.needCode
               ? (
                 <div className="form-group">
                   <label
@@ -193,7 +198,7 @@ class Authorization extends Component {
                   <input
                     id="code"
                     autoComplete="off"
-                    disabled={this.state.loading}
+                    disabled={state.loading}
                     type="number"
                     name="code"
                     onChange={this.handleChange}
@@ -211,9 +216,9 @@ class Authorization extends Component {
                   value="Войти"
                   className="btn btn-primary font-g auth-btn"
                   onClick={this.sendData}
-                  disabled={this.state.loading}
+                  disabled={state.loading}
                 >
-                  {this.state.loading
+                  {state.loading
                     ? (
                       <>
                         {global.getLocales('Загрузка...')}
@@ -256,4 +261,4 @@ class Authorization extends Component {
   }
 }
 
-export default Authorization;
+export default Login;

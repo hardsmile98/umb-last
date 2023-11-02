@@ -1,16 +1,12 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
-
 import ReactFlagsSelect from 'react-flags-select';
-import bg from '../../assets/images/background.png';
 
+import { getLocalesFile } from 'utils';
+import bg from 'assets/images/background.png';
 import Login from './Login';
 import Regisration from './Registration';
 import RecoveryPage from './Recovery';
-
-import { getLocalesFile } from '../../utils';
 
 class AuthPage extends Component {
   componentDidMount() {
@@ -26,11 +22,10 @@ class AuthPage extends Component {
   }
 
   render() {
-    const { path } = this.props.match;
+    const { props } = this;
 
     return (
       <div className="auth-module">
-
         <ReactFlagsSelect
           className="form-control lang-pick"
           selected={localStorage.getItem('lang')
@@ -59,11 +54,11 @@ class AuthPage extends Component {
 
             <div className="col-lg-8">
               <Switch>
-                <Route path={`${path}/authorization`} component={Login} />
-                <Route path={`${path}/registration`} component={Regisration} />
-                <Route path={`${path}/recovery`} component={RecoveryPage} />
+                <Route path={`${props.match.path}/authorization`} component={Login} />
+                <Route path={`${props.match.path}/registration`} component={Regisration} />
+                <Route path={`${props.match.path}/recovery`} component={RecoveryPage} />
                 <Route render={() => (
-                  <Redirect to={{ pathname: `${path}/authorization` }} />
+                  <Redirect to={{ pathname: `${props.match.path}/authorization` }} />
                 )}
                 />
               </Switch>
