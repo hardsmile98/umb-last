@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { NavLink, Route, Redirect, Switch } from 'react-router-dom'
-import Bonuses from '../Settings/Bonuses'
-import Promocodes from '../Settings/Promocodes'
+import Bonuses from './Bonuses'
+import Promocodes from './Promocodes'
 
 import global from '../../../../Global/index'
 
