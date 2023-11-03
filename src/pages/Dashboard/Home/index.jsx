@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable array-callback-return */
 /* eslint-disable react/no-danger */
 /* eslint-disable camelcase */
 import moment from 'moment';
@@ -53,6 +55,7 @@ class HomePage extends Component {
     this.setState({
       loading: true,
     });
+
     const data = {
       api: 'user',
       body: {
@@ -70,11 +73,13 @@ class HomePage extends Component {
       if (response.status === 200) {
         if (response.data.success) {
           response.data.data.news = response.data.data.news.reverse();
+
           this.setState({
             data: response.data.data,
             loading: false,
           }, () => {
             this.prepareData();
+
             this.prepareDataForDays(() => {
               this.prepateChart();
             });
@@ -102,16 +107,9 @@ class HomePage extends Component {
 
         newData.map((data) => {
           if (+data.date === +new Date(+item.created).setHours(0, 0, 0, 0)) {
-            const newValue = data.value + item.sum;
+            data.value += +item.sum;
             check = true;
-
-            return {
-              ...data,
-              value: newValue,
-            };
           }
-
-          return data;
         });
 
         if (!check) {
@@ -242,8 +240,7 @@ class HomePage extends Component {
             <h2>
               <span>
                 {state.today.toFixed(8)}
-                {' '}
-                BTC
+                {' BTC'}
               </span>
             </h2>
           </div>
@@ -258,8 +255,7 @@ class HomePage extends Component {
             <h2>
               <span>
                 {state.threedays.toFixed(8)}
-                {' '}
-                BTC
+                {' BTC'}
               </span>
             </h2>
           </div>
@@ -274,8 +270,7 @@ class HomePage extends Component {
             <h2>
               <span>
                 {state.monthSum.toFixed(8)}
-                {' '}
-                BTC
+                {' BTC'}
               </span>
             </h2>
           </div>
@@ -290,8 +285,7 @@ class HomePage extends Component {
             <h2>
               <span>
                 {state.allSum.toFixed(8)}
-                {' '}
-                BTC
+                {' BTC'}
               </span>
             </h2>
           </div>

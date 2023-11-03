@@ -136,7 +136,9 @@ class Table extends React.Component {
     </div>);
 
     for (let i = 1; i <= Math.ceil(this.props.items.length / this.props.rowsPerPage); i += 1) {
-      if (i === 1 || i === Math.ceil(this.props.items.length / this.props.rowsPerPage) || (this.state.currentPage >= i && i >= this.state.currentPage - 2) || (this.state.currentPage <= i && i <= this.state.currentPage + 2)) {
+      if (i === 1 || i === Math.ceil(this.props.items.length / this.props.rowsPerPage)
+        || (this.state.currentPage >= i && i >= this.state.currentPage - 2)
+        || (this.state.currentPage <= i && i <= this.state.currentPage + 2)) {
         if (this.state.currentPage - 3 > 1 && i === this.state.currentPage - 2) {
           renderPageNumbers.push(<div
             className="btn btn-default item"
@@ -165,6 +167,7 @@ class Table extends React.Component {
         }
       }
     }
+
     renderPageNumbers.push(<div
       className="btn btn-default item"
       onClick={() => this.clickPaginationItem(+this.state.currentPage + 1)}
