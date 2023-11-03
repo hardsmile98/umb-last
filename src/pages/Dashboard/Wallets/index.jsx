@@ -1,9 +1,62 @@
 import React from 'react';
+import {
+  NavLink, Route, Redirect, Switch,
+} from 'react-router-dom';
+import CryptoWallets from './Cryptowallets';
 
-function Wallets() {
+function index() {
   return (
-    <div>Wallets</div>
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-lg-9">
+          <Switch>
+            <Route exact path={`${this.props.match.path}/cryptowallets`} component={CryptoWallets} />
+
+            <Route render={() => <Redirect to="/dashboard/wallets/cryptowallets" />} />
+          </Switch>
+
+        </div>
+
+        <div className="col-lg-3">
+          <div className="xtabs xtabs_left animate__animated animate__fadeIn">
+            <div className="xtabs__body font-m">
+              <NavLink
+                to={`${this.props.match.path}/cryptowallets`}
+                activeClassName="active"
+                className="xtabs__item"
+              >
+                Криптокошельки
+              </NavLink>
+
+              <NavLink
+                to={`${this.props.match.path}/qiwi`}
+                activeClassName="active"
+                className="xtabs__item"
+              >
+                Qiwi
+              </NavLink>
+
+              <NavLink
+                to={`${this.props.match.path}/globalmoney`}
+                activeClassName="active"
+                className="xtabs__item"
+              >
+                GlobalMoney
+              </NavLink>
+
+              <NavLink
+                to={`${this.props.match.path}/kunaio`}
+                activeClassName="active"
+                className="xtabs__item"
+              >
+                Kuna.IO
+              </NavLink>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
-export default Wallets;
+export default index;

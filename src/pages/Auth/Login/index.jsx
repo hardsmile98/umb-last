@@ -186,28 +186,26 @@ class Login extends Component {
               />
             </div>
 
-            {state.needCode
-              ? (
-                <div className="form-group">
-                  <label
-                    htmlFor="code"
-                    className="form-control-label font-m"
-                  >
-                    {getLocales('Код подтверждения')}
-                  </label>
-                  <input
-                    id="code"
-                    autoComplete="off"
-                    disabled={state.loading}
-                    type="number"
-                    name="code"
-                    onChange={this.handleChange}
-                    placeholder={getLocales('Введите код подтверждения')}
-                    className="form-control"
-                  />
-                </div>
-              )
-              : ''}
+            {state.needCode && (
+              <div className="form-group">
+                <label
+                  htmlFor="code"
+                  className="form-control-label font-m"
+                >
+                  {getLocales('Код подтверждения')}
+                </label>
+                <input
+                  id="code"
+                  autoComplete="off"
+                  disabled={state.loading}
+                  type="number"
+                  name="code"
+                  onChange={this.handleChange}
+                  placeholder={getLocales('Введите код подтверждения')}
+                  className="form-control"
+                />
+              </div>
+            )}
 
             <div className="row">
               <div className="col-lg-6">
