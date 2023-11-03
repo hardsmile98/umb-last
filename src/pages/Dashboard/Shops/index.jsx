@@ -37,8 +37,6 @@ class Shops extends Component {
   }
 
   getData() {
-    const { state } = this;
-
     this.setState({
       loading: true,
     });
@@ -63,7 +61,7 @@ class Shops extends Component {
             data: response.data.data,
             loading: false,
           }, () => {
-            if (state.data.shops.length <= 0) {
+            if (response.data?.data?.shops?.length === 0) {
               this.toggleNot();
             }
           });
@@ -71,6 +69,7 @@ class Shops extends Component {
           this.setState({
             loading: false,
           });
+
           toast.error(response.data.message);
         }
       } else {
@@ -154,9 +153,7 @@ class Shops extends Component {
                 <h4 className="font-m">
                   {getLocales('Ваши магазины')}
                 </h4>
-
                 <br />
-
                 <div className="row">
                   {state.data.shops.map((item, i) => (
                     <Link to={`${props.match.url}/${item.uniqueId}`}>

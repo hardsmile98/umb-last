@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   NavLink,
   Route,
@@ -10,53 +10,60 @@ import Answers from './Answers';
 import Terms from './Terms';
 import Guide from './Guide';
 
-function Faq() {
-  const { props } = this;
+class Faq extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-  return (
-    <div className="row">
-      <div className="col-lg-3">
-        <div className="xtabs xtabs_left animate__animated animate__fadeIn">
-          <div className="xtabs__body font-m">
-            <NavLink
-              to={`${props.match.path}/answers`}
-              activeClassName="active"
-              className="xtabs__item"
-            >
-              {getLocales('Вопрос-Ответ')}
-            </NavLink>
+  render() {
+    const { props } = this;
 
-            <NavLink
-              to={`${props.match.path}/guide`}
-              activeClassName="active"
-              className="xtabs__item"
-            >
-              {getLocales('Полное руководство')}
-            </NavLink>
+    return (
+      <div className="row">
+        <div className="col-lg-3">
+          <div className="xtabs xtabs_left animate__animated animate__fadeIn">
+            <div className="xtabs__body font-m">
+              <NavLink
+                to={`${props.match.path}/answers`}
+                activeClassName="active"
+                className="xtabs__item"
+              >
+                {getLocales('Вопрос-Ответ')}
+              </NavLink>
 
-            <NavLink
-              to={`${props.match.path}/terms`}
-              activeClassName="active"
-              className="xtabs__item"
-            >
-              {getLocales('Пользовательское соглашение')}
-            </NavLink>
+              <NavLink
+                to={`${props.match.path}/guide`}
+                activeClassName="active"
+                className="xtabs__item"
+              >
+                {getLocales('Полное руководство')}
+              </NavLink>
 
+              <NavLink
+                to={`${props.match.path}/terms`}
+                activeClassName="active"
+                className="xtabs__item"
+              >
+                {getLocales('Пользовательское соглашение')}
+              </NavLink>
+
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="col-lg-9">
-        <Switch>
-          <Route path={`${props.match.path}/answers`} component={Answers} />
-          <Route path={`${props.match.path}/guide`} component={Guide} />
-          <Route path={`${props.match.path}/terms`} component={Terms} />
+        <div className="col-lg-9">
+          <Switch>
+            <Route path={`${props.match.path}/answers`} component={Answers} />
+            <Route path={`${props.match.path}/guide`} component={Guide} />
+            <Route path={`${props.match.path}/terms`} component={Terms} />
 
-          <Route render={() => <Redirect to={`${props.match.path}/answers`} />} />
-        </Switch>
+            <Route render={() => <Redirect to={`${props.match.path}/answers`} />} />
+          </Switch>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default Faq;
