@@ -2,7 +2,6 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 import { captchaKey } from 'variables';
 import { request, getLocales } from 'utils';
 import logo from 'assets/images/logo.png';

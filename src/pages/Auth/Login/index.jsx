@@ -3,7 +3,6 @@ import { faUser } from '@fortawesome/free-solid-svg-icons/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
 import { request, getLocales } from 'utils';
 import logo from 'assets/images/logo.png';
 

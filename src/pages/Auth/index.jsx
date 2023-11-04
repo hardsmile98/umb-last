@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import ReactFlagsSelect from 'react-flags-select';
-
 import { getLocalesFile } from 'utils';
 import bg from 'assets/images/background.png';
 import Login from './Login';

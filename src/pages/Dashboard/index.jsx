@@ -8,7 +8,6 @@ import {
   faWallet, faMoon, faSun, faBars,
 } from '@fortawesome/free-solid-svg-icons/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import {
   NavLink, Route, Redirect, Switch,
 } from 'react-router-dom';
