@@ -45,7 +45,7 @@ class WebsiteSettings extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -89,7 +89,7 @@ class WebsiteSettings extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.getData()
@@ -113,15 +113,15 @@ class WebsiteSettings extends Component {
                 <div class="block-body">
                     <div className="row">
                         <div className="col-lg-12">
-                            <h3 className="font-m">{global.getLocales('Настройки')}</h3>
+                            <h3 className="font-m">{getLocales('Настройки')}</h3>
                             <div className='avatar-block notice font-m text-center margin-15'>
-                                        {global.getLocales('Для изображений')} <b>{global.getLocales('необходимо')}</b> {global.getLocales('указывать прямую ссылку, прямая ссылка')} <b>{global.getLocales('всегда')}</b> {global.getLocales('оканчивается на формат изображения (png, jpg, jpeg и т.д.).')}
+                                        {getLocales('Для изображений')} <b>{getLocales('необходимо')}</b> {getLocales('указывать прямую ссылку, прямая ссылка')} <b>{getLocales('всегда')}</b> {getLocales('оканчивается на формат изображения (png, jpg, jpeg и т.д.).')}
                                     </div>
                             <div className='row matgin-15'>
                             {Object.keys(this.state.data.available).map((keyName, i) => (
                                 <div className='col-lg-6'>
                                     <div class="form-group">
-                                        <label class="form-control-label font-m">{global.getLocales(this.state.data.available[keyName].title)}</label>
+                                        <label class="form-control-label font-m">{getLocales(this.state.data.available[keyName].title)}</label>
                                         {
                                             this.state.data.available[keyName].type == "select"
                                             ?
@@ -129,16 +129,16 @@ class WebsiteSettings extends Component {
                                             <select onChange={this.sendData} value={this.state.data.settings[keyName] ? this.state.data.settings[keyName] : this.state.data.available[keyName].default} name={this.state.data.available[keyName].name} class="form-control">
                                             {
                                                 this.state.data.available[keyName].values.split(",").map((value, key) =>
-                                                    <option value={value}>{global.getLocales(this.state.data.available[keyName].valuesNames.split(",")[key])}</option>
+                                                    <option value={value}>{getLocales(this.state.data.available[keyName].valuesNames.split(",")[key])}</option>
                                                 )
                                             }
                                         </select>
-                                        {this.state.data.available[keyName].tip ? <small dangerouslySetInnerHTML={{__html: global.getLocales(this.state.data.available[keyName].tip.replace(/"/g, "'"))}}/> : ''}
+                                        {this.state.data.available[keyName].tip ? <small dangerouslySetInnerHTML={{__html: getLocales(this.state.data.available[keyName].tip.replace(/"/g, "'"))}}/> : ''}
                                         </>
                                         :
                                         <>
                                         <input name={this.state.data.available[keyName].name} onChange={this.sendData} className='form-control' value={this.state.data.settings[keyName] ? this.state.data.settings[keyName] : this.state.data.available[keyName].default}/>
-                                        {this.state.data.available[keyName].tip ? <small dangerouslySetInnerHTML={{__html: global.getLocales(this.state.data.available[keyName].tip.replace(/"/g, "'"))}}/> : ''}
+                                        {this.state.data.available[keyName].tip ? <small dangerouslySetInnerHTML={{__html: getLocales(this.state.data.available[keyName].tip.replace(/"/g, "'"))}}/> : ''}
                                         </>
                                         }
                                     </div>

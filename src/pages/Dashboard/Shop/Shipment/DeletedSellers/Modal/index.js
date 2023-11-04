@@ -52,7 +52,7 @@ class DeletedModal extends Component {
                 }
             }
 
-            global.createRequest(data, response => {
+            request(data, response => {
                 if (response.status == 200) {
                     if (response.data.success) {
                         this.setState({
@@ -177,13 +177,13 @@ class DeletedModal extends Component {
             <div>
                 <Modal size="md" isOpen={this.props.modal} toggle={this.props.toggle}>
                     <div className="modal-header text-center">
-                        <h4 className="modal-title font-m">{global.getLocales('Восстановление адресов')}</h4>
+                        <h4 className="modal-title font-m">{getLocales('Восстановление адресов')}</h4>
                     </div>
                     <ModalBody>
                         <div class={"form-group "}>
-                            <label class="form-control-label font-m">{global.getLocales('Город')}</label>
+                            <label class="form-control-label font-m">{getLocales('Город')}</label>
                             <select disabled={this.state.loading} value={this.state.category} onChange={this.handleChange} name="category" class="form-control">
-                                <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                <option disabled value="0">{getLocales('Не выбран')}</option>
                                 {
                                     this.props.categories.map(item =>
                                         <option value={item.id}>{item.name}</option>
@@ -195,9 +195,9 @@ class DeletedModal extends Component {
                             this.state.subcategories.length > 0
                                 ?
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Район')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Район')}</label>
                                     <select disabled={this.state.loading} value={this.state.subcategory} onChange={this.handleChange} name="subcategory" class="form-control">
-                                    <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                    <option disabled value="0">{getLocales('Не выбран')}</option>
                                         {
                                             this.state.subcategories.map(item =>
                                                 <option value={item.id}>{item.name}</option>
@@ -209,9 +209,9 @@ class DeletedModal extends Component {
                                 ''
                         }
                         <div class="form-group">
-                            <label class="form-control-label font-m">{global.getLocales('Товар')}</label>
+                            <label class="form-control-label font-m">{getLocales('Товар')}</label>
                             <select disabled={this.state.loading} value={this.state.product} onChange={this.handleChange} name="product" class="form-control">
-                            <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                            <option disabled value="0">{getLocales('Не выбран')}</option>
                                 {
                                     this.props.products.map(item =>
                                         <option value={item.id}>{item.name}</option>
@@ -223,9 +223,9 @@ class DeletedModal extends Component {
                             this.state.subproducts.length > 0
                                 ?
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Фасовка')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Фасовка')}</label>
                                     <select disabled={this.state.loading} value={this.state.subproduct} onChange={this.handleChange} name="subproduct" class="form-control">
-                                    <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                    <option disabled value="0">{getLocales('Не выбран')}</option>
                                         {
                                             this.state.subproducts.map(item =>
                                                 <option value={item.id}>{item.name}</option>
@@ -237,7 +237,7 @@ class DeletedModal extends Component {
                                 ''
                         }
                                                 <div class="form-group">
-                            <label class="form-control-label font-m">{global.getLocales('Тип клада')}</label>
+                            <label class="form-control-label font-m">{getLocales('Тип клада')}</label>
                             <select disabled={this.state.loading} value={this.state.typeofklad} onChange={this.handleChange} name="typeofklad" class="form-control">
                                 {
                                     this.props.typeOfKlads.map(item =>
@@ -252,12 +252,12 @@ class DeletedModal extends Component {
                             <div className="row">
                                 <div className="col-lg-4">
                                     <div className="mr-auto">
-                                        <button value="Закрыть" class="btn btn-secondary font-m auth-btn" onClick={this.props.toggle}>{global.getLocales('Закрыть')}</button>
+                                        <button value="Закрыть" class="btn btn-secondary font-m auth-btn" onClick={this.props.toggle}>{getLocales('Закрыть')}</button>
                                     </div>
                                 </div>
                                 <div className="col-lg-8">
                                     <button disabled={this.state.loading} onClick={this.sendData} class="btn btn-primary font-m auth-btn">
-                                        {this.state.loading ? <>{global.getLocales("Загрузка...")}</> : <>{global.getLocales("Восстановить")}</>}
+                                        {this.state.loading ? <>{getLocales("Загрузка...")}</> : <>{getLocales("Восстановить")}</>}
                                     </button>
                                 </div>
                             </div>

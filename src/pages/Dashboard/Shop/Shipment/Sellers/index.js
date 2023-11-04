@@ -20,14 +20,14 @@ class SellersNavi extends Component {
                 <div className="col-lg-3">
                     <div class="xtabs xtabs_left animate__animated animate__fadeIn">
                         <div class="xtabs__body font-m">
-                            <NavLink exact to={`${this.props.match.url}/actual`} activeClassName="active" className="xtabs__item">{this.props.admin ? global.getLocales('Адреса в продаже') : global.getLocales('Адреса')} {this.props.sellers ? <span className='badge badge-secondary'>{+this.props.sellers - +this.props.sellersModer}</span> : ''}</NavLink>
-                            <NavLink exact to={`${this.props.match.url}/add`} activeClassName="active" className="xtabs__item">{global.getLocales('Добавление адресов')}</NavLink>
+                            <NavLink exact to={`${this.props.match.url}/actual`} activeClassName="active" className="xtabs__item">{this.props.admin ? getLocales('Адреса в продаже') : getLocales('Адреса')} {this.props.sellers ? <span className='badge badge-secondary'>{+this.props.sellers - +this.props.sellersModer}</span> : ''}</NavLink>
+                            <NavLink exact to={`${this.props.match.url}/add`} activeClassName="active" className="xtabs__item">{getLocales('Добавление адресов')}</NavLink>
                             {
                                 this.props.admin
                                     ?
                                     <>
-                                        <NavLink exact to={`${this.props.match.url}/moderation`} activeClassName="active" className="xtabs__item">{global.getLocales('Адреса для проверки')} {this.props.sellersModer ? <span className='badge badge-danger'>{this.props.sellersModer}</span> : ''}</NavLink>
-                                        <NavLink exact to={`${this.props.match.url}/deleted`} activeClassName="active" className="xtabs__item">{global.getLocales('Удаленные адреса')}</NavLink>
+                                        <NavLink exact to={`${this.props.match.url}/moderation`} activeClassName="active" className="xtabs__item">{getLocales('Адреса для проверки')} {this.props.sellersModer ? <span className='badge badge-danger'>{this.props.sellersModer}</span> : ''}</NavLink>
+                                        <NavLink exact to={`${this.props.match.url}/deleted`} activeClassName="active" className="xtabs__item">{getLocales('Удаленные адреса')}</NavLink>
 
                                     </>
                                     :

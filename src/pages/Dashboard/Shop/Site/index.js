@@ -26,12 +26,12 @@ class SiteParser extends Component {
                                         <div className="col-lg-3">
                         <div class="xtabs xtabs_left animate__animated animate__fadeIn">
                             <div class="xtabs__body font-m">
-                                <NavLink exact to={`${this.props.match.url}`} activeClassName="active" className="xtabs__item">{global.getLocales('Настройки')}</NavLink>
-                                <NavLink exact to={`${this.props.match.url}/templates`} activeClassName="active" className="xtabs__item">{global.getLocales('Шаблоны')}</NavLink>
-                                <NavLink exact to={`${this.props.match.url}/domains`} activeClassName="active" className="xtabs__item">{global.getLocales('Домены')}</NavLink>
-                                <NavLink to={`${this.props.match.url}/pages`} activeClassName="active" className="xtabs__item">{global.getLocales('Страницы')}</NavLink>
-                                <NavLink exact to={`${this.props.match.url}/widgets`} activeClassName="active" className="xtabs__item">{global.getLocales('Виджеты')}</NavLink>
-                                <NavLink exact to={`${this.props.match.url}/config`} activeClassName="active" className="xtabs__item">{global.getLocales('Продвинутая конфигурация')}</NavLink>
+                                <NavLink exact to={`${this.props.match.url}`} activeClassName="active" className="xtabs__item">{getLocales('Настройки')}</NavLink>
+                                <NavLink exact to={`${this.props.match.url}/templates`} activeClassName="active" className="xtabs__item">{getLocales('Шаблоны')}</NavLink>
+                                <NavLink exact to={`${this.props.match.url}/domains`} activeClassName="active" className="xtabs__item">{getLocales('Домены')}</NavLink>
+                                <NavLink to={`${this.props.match.url}/pages`} activeClassName="active" className="xtabs__item">{getLocales('Страницы')}</NavLink>
+                                <NavLink exact to={`${this.props.match.url}/widgets`} activeClassName="active" className="xtabs__item">{getLocales('Виджеты')}</NavLink>
+                                <NavLink exact to={`${this.props.match.url}/config`} activeClassName="active" className="xtabs__item">{getLocales('Продвинутая конфигурация')}</NavLink>
                             </div>
                         </div>
                     </div>

@@ -53,7 +53,7 @@ class SellerModalModer extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -116,7 +116,7 @@ class SellerModalModer extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -259,15 +259,15 @@ class SellerModalModer extends Component {
             <div>
                 <Modal size="lg" isOpen={this.props.modal} toggle={this.props.toggle}>
                     <div className="modal-header text-center">
-                        <h4 className="modal-title font-m">{global.getLocales('Адрес')} #{this.state.id}</h4>
+                        <h4 className="modal-title font-m">{getLocales('Адрес')} #{this.state.id}</h4>
                     </div>
                     <ModalBody>
                     <div className="row">
                     <div className="col-lg-6">
                                             <div class={"form-group "}>
-                            <label class="form-control-label font-m">{global.getLocales('Город')}</label>
+                            <label class="form-control-label font-m">{getLocales('Город')}</label>
                             <select disabled={this.state.loading || this.state.status == 0} value={this.state.category} onChange={this.handleChange} name="category" class="form-control">
-                                <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                <option disabled value="0">{getLocales('Не выбран')}</option>
                                 {
                                     this.props.categories.map(item =>
                                         <option value={item.id}>{item.name}</option>
@@ -279,9 +279,9 @@ class SellerModalModer extends Component {
                             this.state.subcategories.length > 0
                                 ?
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Район')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Район')}</label>
                                     <select disabled={this.state.loading || this.state.status == 0} value={this.state.subcategory} onChange={this.handleChange} name="subcategory" class="form-control">
-                                    <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                    <option disabled value="0">{getLocales('Не выбран')}</option>
                                         {
                                             this.state.subcategories.map(item =>
                                                 <option value={item.id}>{item.name}</option>
@@ -296,9 +296,9 @@ class SellerModalModer extends Component {
                             this.props.canView
                                 ?
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Создатель адреса')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Создатель адреса')}</label>
                                     <select disabled={this.state.loading} value={this.state.user} onChange={this.handleChange} name="user" class="form-control">
-                                    <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                    <option disabled value="0">{getLocales('Не выбран')}</option>
                                         {
                                             this.props.employees.map(item =>
                                                 <option value={item.systemId}>{item.login} {item.notice ? ("(" + item.notice + ")") : ''}</option>
@@ -310,15 +310,15 @@ class SellerModalModer extends Component {
                                 ''
                         }
                                                                                                        <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Дата создания')}</label>
-                                    <input disabled value={this.state.creationDate ? moment.unix(this.state.creationDate/1000).format("LLL") : global.getLocales('Нет информации')} name="creationDate" class="form-control"/>
+                                    <label class="form-control-label font-m">{getLocales('Дата создания')}</label>
+                                    <input disabled value={this.state.creationDate ? moment.unix(this.state.creationDate/1000).format("LLL") : getLocales('Нет информации')} name="creationDate" class="form-control"/>
                                 </div>
                     </div>
                     <div className="col-lg-6">
                                             <div class="form-group">
-                            <label class="form-control-label font-m">{global.getLocales('Товар')}</label>
+                            <label class="form-control-label font-m">{getLocales('Товар')}</label>
                             <select disabled={this.state.loading || this.state.status == 0} value={this.state.product} onChange={this.handleChange} name="product" class="form-control">
-                            <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                            <option disabled value="0">{getLocales('Не выбран')}</option>
                                 {
                                     this.props.products.map(item =>
                                         <option value={item.id}>{item.name}</option>
@@ -330,9 +330,9 @@ class SellerModalModer extends Component {
                             this.state.subproducts.length > 0
                                 ?
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Фасовка')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Фасовка')}</label>
                                     <select disabled={this.state.loading || this.state.status == 0} value={this.state.subproduct} onChange={this.handleChange} name="subproduct" class="form-control">
-                                    <option disabled value="0">{global.getLocales('Не выбран')}</option>
+                                    <option disabled value="0">{getLocales('Не выбран')}</option>
                                         {
                                             this.state.subproducts.map(item =>
                                                 <option value={item.id}>{item.name} {item.city ? (" (" + item.city + ")") : ''}</option>
@@ -344,7 +344,7 @@ class SellerModalModer extends Component {
                                 ''
                         }
                                                                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Тип клада')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Тип клада')}</label>
                                     <select disabled={this.state.loading} value={this.state.typeofklad} onChange={this.handleChange} name="typeofklad" class="form-control">
                                         {
                                             this.props.typeOfKlads.map(item =>
@@ -356,15 +356,15 @@ class SellerModalModer extends Component {
                     </div>
                     <div className="col-lg-12">
                                             <div class="form-group">
-                            <label class="form-control-label font-m">{global.getLocales('Адрес')}</label>
-                            <textarea placeholder={global.getLocales("Введите содержание")} disabled={this.state.loading} value={this.state.value} onChange={this.handleChange} name="value" class="form-control sellers-textarea" />
+                            <label class="form-control-label font-m">{getLocales('Адрес')}</label>
+                            <textarea placeholder={getLocales("Введите содержание")} disabled={this.state.loading} value={this.state.value} onChange={this.handleChange} name="value" class="form-control sellers-textarea" />
                         </div>
                         <div className="avatar-block">
                                                 <div class="form-group">
-                            <label class="form-control-label font-m">{global.getLocales('Комментарий для доработки')}</label>
-                            <textarea placeholder={global.getLocales("Введите комментарий")} disabled={this.state.loading} value={this.state.comment} onChange={this.handleChange} name="comment" class="form-control sellers-textarea" />
+                            <label class="form-control-label font-m">{getLocales('Комментарий для доработки')}</label>
+                            <textarea placeholder={getLocales("Введите комментарий")} disabled={this.state.loading} value={this.state.comment} onChange={this.handleChange} name="comment" class="form-control sellers-textarea" />
                         </div>
-                        <button value={global.getLocales('Отправить на доработку')} class="btn btn-secondary font-m auth-btn" onClick={this.toRe}>{global.getLocales('Отправить на доработку')}</button>
+                        <button value={getLocales('Отправить на доработку')} class="btn btn-secondary font-m auth-btn" onClick={this.toRe}>{getLocales('Отправить на доработку')}</button>
                         </div>
                     </div>
                     </div>
@@ -374,12 +374,12 @@ class SellerModalModer extends Component {
                             <div className="row">
                                 <div className="col-lg-4">
                                     <div className="mr-auto">
-                                        <button value="Закрыть" class="btn btn-secondary font-m auth-btn" onClick={this.props.toggle}>{global.getLocales('Закрыть')}</button>
+                                        <button value="Закрыть" class="btn btn-secondary font-m auth-btn" onClick={this.props.toggle}>{getLocales('Закрыть')}</button>
                                     </div>
                                 </div>
                                 <div className="col-lg-8">
                                     <button disabled={this.state.loading} onClick={this.sendData} class="btn btn-primary font-m auth-btn">
-                                        {this.state.loading ? <>{global.getLocales('Загрузка...')}</> : <>{global.getLocales("Выставить на продажу")}</>}
+                                        {this.state.loading ? <>{getLocales('Загрузка...')}</> : <>{getLocales("Выставить на продажу")}</>}
                                     </button>
                                 </div>
                             </div>

@@ -55,7 +55,7 @@ class ActivePresellers extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.getData()
@@ -174,7 +174,7 @@ class ActivePresellers extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.props.history.push('/dashboard/shops/' + this.props.match.params.shopId + "/feedback/chats/" + response.data.data.id)
@@ -213,7 +213,7 @@ class ActivePresellers extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -242,16 +242,16 @@ class ActivePresellers extends Component {
                 title: 'ID', dataIndex: 'id', key: 'id', sort: true
             },
             {
-                title: global.getLocales('Город / Район'), dataIndex: 'category', key: 'category', sort: true
+                title: getLocales('Город / Район'), dataIndex: 'category', key: 'category', sort: true
             },
             {
-                title: global.getLocales('Товар / Фасовка'), dataIndex: 'product', key: 'product', sort: true
+                title: getLocales('Товар / Фасовка'), dataIndex: 'product', key: 'product', sort: true
             },
 			            {
-                title: global.getLocales('Тип клада'), dataIndex: 'typeofklad', key: 'typeofklad', sort: true
+                title: getLocales('Тип клада'), dataIndex: 'typeofklad', key: 'typeofklad', sort: true
             },
             {
-                title: global.getLocales('Пользователь'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
+                title: getLocales('Пользователь'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
                     <div className="sparkline8">
                         <NavLink to={"/dashboard/shops/" + this.props.match.params.shopId + "/datas/users/" + item.user}>
                             {item.userName}
@@ -259,10 +259,10 @@ class ActivePresellers extends Component {
                     </div>
             },
             {
-                title: global.getLocales('Действия'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
+                title: getLocales('Действия'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
                     <div className="sparkline8">
-                        <button className='btn btn-secondary font-m btn-table' onClick={() => {this.sendMessage(item.id)}}>{global.getLocales('Написать клиенту')}</button>
-                        <button className='btn btn-danger font-m btn-table' onClick={() => {this.toggle(item.id)}}>{global.getLocales('Удалить')}</button>
+                        <button className='btn btn-secondary font-m btn-table' onClick={() => {this.sendMessage(item.id)}}>{getLocales('Написать клиенту')}</button>
+                        <button className='btn btn-danger font-m btn-table' onClick={() => {this.toggle(item.id)}}>{getLocales('Удалить')}</button>
 
                     </div>
             }
@@ -272,13 +272,13 @@ class ActivePresellers extends Component {
                 <div class="block-body">
                     <div className="row">
                         <div className="col-lg-12">
-                            <h3 className="font-m">{global.getLocales('Активные предзаказы')}</h3>
+                            <h3 className="font-m">{getLocales('Активные предзаказы')}</h3>
                             {
                                 this.state.data.presellers <= 0
                                     ?
                                     <div className='text-center font-m'>
                                         
-                                        {global.getLocales('Предзаказы отсутствуют')}
+                                        {getLocales('Предзаказы отсутствуют')}
                                     </div>
                                     :
                                     <Table search={false} columns={tableColumns} items={this.state.items} updateItems={this.updateItems} rowsPerPage="10" />
@@ -286,7 +286,7 @@ class ActivePresellers extends Component {
                         </div>
                     </div>
                 </div>
-                <ModalConfirm action={global.getLocales('Вы действительно хотите удалить данный предзаказ?')} modal={this.state.deleteModal} toggle={this.toggle} loading={this.state.loading} sendData={this.delete} />
+                <ModalConfirm action={getLocales('Вы действительно хотите удалить данный предзаказ?')} modal={this.state.deleteModal} toggle={this.toggle} loading={this.state.loading} sendData={this.delete} />
 
             </div>
             

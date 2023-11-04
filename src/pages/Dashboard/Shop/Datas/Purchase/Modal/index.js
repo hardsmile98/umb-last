@@ -55,7 +55,7 @@ class SetAsNoffoundModal extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     toast.success(response.data.message)
@@ -80,25 +80,25 @@ class SetAsNoffoundModal extends Component {
             <div>
                 <Modal size="md" isOpen={this.props.modal} toggle={this.props.toggle}>
                     <div className="modal-header text-center">
-                        <h4 className="modal-title font-m">{global.getLocales('Опции для ненахода')}</h4>
+                        <h4 className="modal-title font-m">{getLocales('Опции для ненахода')}</h4>
                     </div>
                     <ModalBody>
                         <div class="form-group">
-                            <label class="form-control-label font-m">{global.getLocales('Учитывать покупку в общем обороте')}</label>
+                            <label class="form-control-label font-m">{getLocales('Учитывать покупку в общем обороте')}</label>
                             <select disabled={this.state.loading} value={this.state.record} onChange={this.handleChange} name="record" class="form-control">
-                                <option value="0">{global.getLocales('Нет')}</option>
-                                <option value="1">{global.getLocales('Да')}</option>
+                                <option value="0">{getLocales('Нет')}</option>
+                                <option value="1">{getLocales('Да')}</option>
                             </select>
                         </div>
                         {
                             !this.props.ownerAdd
                                 ?
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Оштрафовать курьера')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Оштрафовать курьера')}</label>
                                     <select disabled={this.state.loading} value={this.state.fine} onChange={this.handleChange} name="fine" class="form-control">
-                                        <option value="0">{global.getLocales('Нет')}</option>
-                                        <option value="1">{global.getLocales('Да')}</option>
-                                        <option value="2">{global.getLocales('Да, но по отдельному тарифу')}</option>
+                                        <option value="0">{getLocales('Нет')}</option>
+                                        <option value="1">{getLocales('Да')}</option>
+                                        <option value="2">{getLocales('Да, но по отдельному тарифу')}</option>
                                     </select>
                                 </div>
                                 :
@@ -108,7 +108,7 @@ class SetAsNoffoundModal extends Component {
                             this.state.fine == 2
                                 ?
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Штраф для курьера')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Штраф для курьера')}</label>
                                     <div class="input-group">
                                         <input disabled={this.state.loading} value={this.state.fineInd} name="fineInd" onChange={this.handleChange} class="form-control" />
                                         <span class="input-group-text">{this.props.currency}</span>
@@ -122,11 +122,11 @@ class SetAsNoffoundModal extends Component {
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-lg-4">
-                                    <button value={global.getLocales('Закрыть')} class="btn btn-secondary font-m auth-btn" onClick={this.props.toggle}>{global.getLocales('Закрыть')}</button>
+                                    <button value={getLocales('Закрыть')} class="btn btn-secondary font-m auth-btn" onClick={this.props.toggle}>{getLocales('Закрыть')}</button>
                                 </div>
                                 <div className="col-lg-8">
                                     <button value="Отметить" onClick={this.sendData} disabled={this.props.loading} class="btn btn-primary font-m auth-btn">
-                                        {this.props.loading ? <>{global.getLocales('Загрузка...')}</> : <>{global.getLocales('Отметить')}</>}
+                                        {this.props.loading ? <>{getLocales('Загрузка...')}</> : <>{getLocales('Отметить')}</>}
                                     </button>
                                 </div>
                             </div>

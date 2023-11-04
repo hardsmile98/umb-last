@@ -59,7 +59,7 @@ class PageChange extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -115,7 +115,7 @@ class PageChange extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     toast.success(response.data.message)
@@ -163,27 +163,27 @@ class PageChange extends Component {
                 <div class="block-body">
                     <div className="row">
                         <div className="col-lg-12">
-                            <h3 className="font-m">{global.getLocales("Обновление страницы")}</h3>
+                            <h3 className="font-m">{getLocales("Обновление страницы")}</h3>
                             <div className='row'>
                                 <div className='col-lg-3'>
                                     <div class="form-group">
-                                        <label class="form-control-label font-m">{global.getLocales("Название")}</label>
-                                        <input onChange={this.handleChange} value={this.state.name} type="text" autoComplete="off" class="form-control" placeholder={global.getLocales("Введите название")} name="name" />
+                                        <label class="form-control-label font-m">{getLocales("Название")}</label>
+                                        <input onChange={this.handleChange} value={this.state.name} type="text" autoComplete="off" class="form-control" placeholder={getLocales("Введите название")} name="name" />
                                     </div>
                                 </div>
                                 <div className='col-lg-3'>
                                     <div class="form-group">
-                                        <label class="form-control-label font-m">{global.getLocales("Тип страницы")}</label>
+                                        <label class="form-control-label font-m">{getLocales("Тип страницы")}</label>
                                         <select onChange={this.handleChange} name="type" value={this.state.type} class="form-control">
-                                            <option value="text">{global.getLocales("Информационная страница")}</option>
-                                            <option value="link">{global.getLocales("Страница-ссылка")}</option>
+                                            <option value="text">{getLocales("Информационная страница")}</option>
+                                            <option value="link">{getLocales("Страница-ссылка")}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div className='col-lg-3'>
                                     <div class="form-group">
-                                        <label class="form-control-label font-m">{global.getLocales("Порядковый номер")}</label>
-                                        <input type="number" onChange={this.handleChange} value={this.state.indexPage} autoComplete="off" class="form-control" placeholder={global.getLocales("Введите порядковый номер")} name="indexPage" />
+                                        <label class="form-control-label font-m">{getLocales("Порядковый номер")}</label>
+                                        <input type="number" onChange={this.handleChange} value={this.state.indexPage} autoComplete="off" class="form-control" placeholder={getLocales("Введите порядковый номер")} name="indexPage" />
                                     </div>
                                 </div>
                                 {
@@ -191,19 +191,19 @@ class PageChange extends Component {
                                         ?
                                         <div className='col-lg-3'>
                                             <div class="form-group">
-                                                <label class="form-control-label font-m">{global.getLocales("Путь")}</label>
+                                                <label class="form-control-label font-m">{getLocales("Путь")}</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text font-m">/</span>
                                                     <input type="text" onChange={this.handleChange} value={this.state.path} autoComplete="off" class="form-control" placeholder="page" name="path" />
                                                 </div>
-                                                <small>{global.getLocales("Путь, по которому будет доступна страница")}</small>
+                                                <small>{getLocales("Путь, по которому будет доступна страница")}</small>
                                             </div>
                                         </div>
                                         :
                                         <div className='col-lg-3'>
                                             <div class="form-group">
-                                                <label class="form-control-label font-m">{global.getLocales("Ссылка")}</label>
-                                                <input type="text" onChange={this.handleChange} value={this.state.content} autoComplete="off" class="form-control" placeholder={global.getLocales("Вставьте ссылку")} name="content" />
+                                                <label class="form-control-label font-m">{getLocales("Ссылка")}</label>
+                                                <input type="text" onChange={this.handleChange} value={this.state.content} autoComplete="off" class="form-control" placeholder={getLocales("Вставьте ссылку")} name="content" />
                                             </div>
                                         </div>
                                 }
@@ -212,7 +212,7 @@ class PageChange extends Component {
                                         ?
                                         <div className='col-lg-12'>
                                             <div className="form-group">
-                                                <label class="form-control-label font-m">{global.getLocales("Содержание страницы")}</label>
+                                                <label class="form-control-label font-m">{getLocales("Содержание страницы")}</label>
                                                 <div className='avatar-block no-margin'>
                                                     <ReactQuill modules={{
                                                         toolbar: [
@@ -246,9 +246,9 @@ class PageChange extends Component {
                                         ''
                                 }
                                 <div className='col-lg-12'>
-                                <NavLink to={"/dashboard/shops/" + this.props.match.params.shopId + "/site/pages"}><button className='btn btn-secondary left font-m'>{global.getLocales("Назад")}</button></NavLink>
+                                <NavLink to={"/dashboard/shops/" + this.props.match.params.shopId + "/site/pages"}><button className='btn btn-secondary left font-m'>{getLocales("Назад")}</button></NavLink>
                                 <div className='mr-auto right'>
-                                <button className='btn btn-primary left font-m' onClick={this.update}>{global.getLocales("Обновить")}</button>
+                                <button className='btn btn-primary left font-m' onClick={this.update}>{getLocales("Обновить")}</button>
                                 </div>
                                 </div>
                             </div>

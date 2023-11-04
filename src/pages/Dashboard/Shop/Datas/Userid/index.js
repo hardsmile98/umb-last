@@ -98,7 +98,7 @@ class UserProfile extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     toast.success(response.data.message)
@@ -140,7 +140,7 @@ class UserProfile extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     toast.success(response.data.message)
@@ -183,7 +183,7 @@ class UserProfile extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                                         toast.success(response.data.message)
@@ -228,7 +228,7 @@ class UserProfile extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                                         toast.success(response.data.message)
@@ -271,7 +271,7 @@ class UserProfile extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                                 toast.success(response.data.message)
 								this.getData()
@@ -305,7 +305,7 @@ class UserProfile extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.props.history.push('/dashboard/shops/' + this.props.match.params.shopId + "/feedback/chats/" + response.data.data.id)
@@ -346,7 +346,7 @@ class UserProfile extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     let notFounded = 0
@@ -385,28 +385,28 @@ class UserProfile extends Component {
                 title: 'ID', dataIndex: 'id', key: 'id', sort: true
             },
             {
-                title: global.getLocales('Город'), dataIndex: 'category', key: 'category', sort: true
+                title: getLocales('Город'), dataIndex: 'category', key: 'category', sort: true
             },
             {
-                title: global.getLocales('Район'), dataIndex: 'subcategory', key: 'subcategory', sort: true
+                title: getLocales('Район'), dataIndex: 'subcategory', key: 'subcategory', sort: true
             },
             {
-                title: global.getLocales('Товар'), dataIndex: 'product', key: 'product', sort: true
+                title: getLocales('Товар'), dataIndex: 'product', key: 'product', sort: true
             },
             {
-                title: global.getLocales('Фасовка'), dataIndex: 'subproduct', key: 'subproduct', sort: true
+                title: getLocales('Фасовка'), dataIndex: 'subproduct', key: 'subproduct', sort: true
             },
            {
-                title: global.getLocales('Сумма'), dataIndex: 'sum', key: 'sum', sort: true
+                title: getLocales('Сумма'), dataIndex: 'sum', key: 'sum', sort: true
             },
             {
-                title: global.getLocales('Способ оплаты'), dataIndex: 'type', key: 'type', sort: true
+                title: getLocales('Способ оплаты'), dataIndex: 'type', key: 'type', sort: true
             },
             {
-                title: global.getLocales('Дата'), dataIndex: 'date', key: 'date', sort: true
+                title: getLocales('Дата'), dataIndex: 'date', key: 'date', sort: true
             },
             {
-                title: global.getLocales('Действие'), dataIndex: 'name', itemClassName: 'text-center', headerClassName: 'text-center', key: 'operations', render: (e, item) => <NavLink to={"/dashboard/shops/" + this.props.match.params.shopId + "/datas/purchases/" + item.id}><button className='btn btn-secondary font-m'>{global.getLocales('Подробнее')}</button></NavLink>
+                title: getLocales('Действие'), dataIndex: 'name', itemClassName: 'text-center', headerClassName: 'text-center', key: 'operations', render: (e, item) => <NavLink to={"/dashboard/shops/" + this.props.match.params.shopId + "/datas/purchases/" + item.id}><button className='btn btn-secondary font-m'>{getLocales('Подробнее')}</button></NavLink>
             }
         ]
         return (
@@ -415,17 +415,17 @@ class UserProfile extends Component {
                     <div class="block-body">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h3 className="font-m">{global.getLocales('Покупатель')} #{this.props.match.params.userId} <span onClick={this.discountZero} className='right pointer'>{global.getLocales('Обнулить скидки пользователя')}</span></h3>
+                                <h3 className="font-m">{getLocales('Покупатель')} #{this.props.match.params.userId} <span onClick={this.discountZero} className='right pointer'>{getLocales('Обнулить скидки пользователя')}</span></h3>
                             </div>
                             <div className='col-lg-4'>
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Имя')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Имя')}</label>
                                     <input name="location" value={this.state.data.user.name} class="form-control" disabled />
                                 </div>
                             </div>
                             <div className='col-lg-4'>
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Юзернейм')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Юзернейм')}</label>
                                     <input name="product" value={this.state.data.user.username ? this.state.data.user.username : "Отсутствует"} class="form-control" disabled />
                                 </div>
                             </div>
@@ -437,28 +437,28 @@ class UserProfile extends Component {
                             </div>
                             <div className='col-lg-4'>
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Баланс')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Баланс')}</label>
                                     <div class="input-group">
                                         <input disabled value={this.state.data.user.balance} class="form-control" />
                                         <span class="input-group-text">{this.state.data.currency}</span>
-                                                                                    <a onClick={this.setBalanceZero}><span className='input-group-text'>{global.getLocales('Обнулить')}</span></a>
+                                                                                    <a onClick={this.setBalanceZero}><span className='input-group-text'>{getLocales('Обнулить')}</span></a>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-4">
                                                                 <div class="form-group">
-                                        <label class="form-control-label font-m">{global.getLocales('Персональная скидка')}</label>
+                                        <label class="form-control-label font-m">{getLocales('Персональная скидка')}</label>
                                           
                                         <div className='input-group'>
                                             <input name="persDisc" onChange={this.handleChange} value={this.state.persDisc} class="form-control" />
                                              <span class="input-group-text">%</span>
-                                            <a onClick={this.setPers}><span className='input-group-text'>{global.getLocales('Сохранить')}</span></a>
+                                            <a onClick={this.setPers}><span className='input-group-text'>{getLocales('Сохранить')}</span></a>
                                         </div>
                                     </div>
                             </div>
                             <div className='col-lg-4'>
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Сумма покупок')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Сумма покупок')}</label>
                                     <div class="input-group">
                                         <input disabled value={this.state.data.user.purchasesSum} class="form-control" />
                                         <span class="input-group-text">{this.state.data.currency}</span>
@@ -467,20 +467,20 @@ class UserProfile extends Component {
                             </div>
                             <div className='col-lg-4'>
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Кол-во покупок')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Кол-во покупок')}</label>
                                     <input disabled value={this.state.data.user.purchases} class="form-control" />
                                 </div>
                             </div>
                             
                                                         <div className='col-lg-4'>
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Ненаходов')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Ненаходов')}</label>
                                     <input disabled value={this.state.notFounded} class="form-control" />
                                 </div>
                             </div>
                             <div className='col-lg-4'>
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Скидка пользователя в %')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Скидка пользователя в %')}</label>
                                     <div class="input-group">
                                         <input disabled value={this.state.data.user.percent} class="form-control" />
                                         <span class="input-group-text">%</span>
@@ -489,7 +489,7 @@ class UserProfile extends Component {
                             </div>
                             <div className='col-lg-4'>
                             <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Скидка пользователя в')} {this.state.data.currency}</label>
+                                    <label class="form-control-label font-m">{getLocales('Скидка пользователя в')} {this.state.data.currency}</label>
                                     <div class="input-group">
                                         <input disabled value={this.state.data.user.sum} class="form-control" />
                                         <span class="input-group-text">{this.state.data.currency}</span>
@@ -498,39 +498,39 @@ class UserProfile extends Component {
                             </div>
                                                         <div className='col-lg-4'>
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Пригласительный код')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Пригласительный код')}</label>
                                     <input disabled value={this.state.data.user.refid} class="form-control" />
                                 </div>
                             </div>
                                                            <div className='col-lg-4'>
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Привлечено покупателей')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Привлечено покупателей')}</label>
                                     <input disabled value={this.state.data.user.referalls ? this.state.data.user.referalls : 0} class="form-control" />
                                 </div>
                             </div>
                             <div className='col-lg-4'>
                             <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales('Зарегистрирован')}</label>
+                                    <label class="form-control-label font-m">{getLocales('Зарегистрирован')}</label>
                                     <input disabled value={moment.unix(this.state.data.user.regdate/1000).format("LLL")} class="form-control" />
 
                                 </div>
                             </div>
                                                         <div className="col-lg-8">
                                                                 <div class="form-group">
-                                        <label class="form-control-label font-m">{global.getLocales('Персональная заметка')}</label>
+                                        <label class="form-control-label font-m">{getLocales('Персональная заметка')}</label>
                                           
                                         <div className='input-group'>
                                             <input name="notice" onChange={this.handleChange} value={this.state.notice} class="form-control" />
-                                            <a onClick={this.setNotice}><span className='input-group-text'>{global.getLocales('Сохранить')}</span></a>
+                                            <a onClick={this.setNotice}><span className='input-group-text'>{getLocales('Сохранить')}</span></a>
                                         </div>
                                     </div>
                             </div>
 
                             <div className='col-lg-12'>
-                            <button onClick={() => {this.props.history.goBack()}} className='btn btn-secondary font-m left'>{global.getLocales('Назад')}</button>
-	<button onClick={this.blockAction} className={'btn font-m right block-for-block-button ' + (this.state.data.user.block == 0 ? 'btn-danger' : 'btn-success')}>{global.getLocales(this.state.data.user.block == 0 ? 'Заблокировать' : 'Разблокировать')}</button>
+                            <button onClick={() => {this.props.history.goBack()}} className='btn btn-secondary font-m left'>{getLocales('Назад')}</button>
+	<button onClick={this.blockAction} className={'btn font-m right block-for-block-button ' + (this.state.data.user.block == 0 ? 'btn-danger' : 'btn-success')}>{getLocales(this.state.data.user.block == 0 ? 'Заблокировать' : 'Разблокировать')}</button>
                        
- <button onClick={this.sendMessage} className='btn btn-primary font-m right'>{global.getLocales('Отправить сообщение')}</button>
+ <button onClick={this.sendMessage} className='btn btn-primary font-m right'>{getLocales('Отправить сообщение')}</button>
 
                             </div>
                         </div>
@@ -540,7 +540,7 @@ class UserProfile extends Component {
                 >
                     <div class="xtabs__body">
                         <a className={"xtabs__item font-m active"}>
-                            <span>{global.getLocales('История покупок')}</span>
+                            <span>{getLocales('История покупок')}</span>
                         </a>
                     </div>
                 </div>
@@ -548,14 +548,14 @@ class UserProfile extends Component {
                     <div class="block-body">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h3 className="font-m">{global.getLocales('Покупки')}</h3>
+                                <h3 className="font-m">{getLocales('Покупки')}</h3>
                                 {
                                     this.state.data.user.purchasesList.length > 0
                                         ?
                                         <Table search={false} columns={tableColumns} items={this.state.items} updateItems={this.updateItems} rowsPerPage="10" />
                                         :
                                         <div className='font-m text-center'>
-                                            {global.getLocales('Покупки отсутствуют')}
+                                            {getLocales('Покупки отсутствуют')}
                                             
                                         </div>
                                 }

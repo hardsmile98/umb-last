@@ -133,7 +133,7 @@ class ModerSellers extends Component {
             
                                 this.state.data.typeOfKlads.map(types => {
             if(types.id == item.typeofklad) {
-                itemModified.type = global.getLocales(types.name)
+                itemModified.type = getLocales(types.name)
             }
         })
             items.push(itemModified)
@@ -177,7 +177,7 @@ class ModerSellers extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -297,7 +297,7 @@ class ModerSellers extends Component {
                 }
             }
 
-            global.createRequest(data, response => {
+            request(data, response => {
                 if (response.status == 200) {
                     if (response.data.success) {
                         this.setState({
@@ -387,7 +387,7 @@ class ModerSellers extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     toast.success(response.data.message)
@@ -413,27 +413,27 @@ class ModerSellers extends Component {
                 title: 'ID', dataIndex: 'id', key: 'id', sort: true
             },
             {
-                title: global.getLocales('Город / Район'), dataIndex: 'category', key: 'category', sort: true
+                title: getLocales('Город / Район'), dataIndex: 'category', key: 'category', sort: true
             },
             {
-                title: global.getLocales('Товар / Фасовка'), dataIndex: 'product', key: 'product', sort: true
+                title: getLocales('Товар / Фасовка'), dataIndex: 'product', key: 'product', sort: true
             },
             {
-                title: global.getLocales('Тип'), dataIndex: 'type', key: 'type', sort: true
+                title: getLocales('Тип'), dataIndex: 'type', key: 'type', sort: true
             },
             {
-                title: global.getLocales('Создатель'), dataIndex: 'user', key: 'user', sort: true
+                title: getLocales('Создатель'), dataIndex: 'user', key: 'user', sort: true
             },
             {
-                title: global.getLocales('Статус'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
+                title: getLocales('Статус'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
                     <div className="sparkline8">
                         <button
-                            className={"btn  font-m auth-btn " + (item.status == 1 ? " btn-primary" : (item.status == 2 ? " btn-danger" : " btn-secondary"))}> {item.status == 1 ? global.getLocales("В продаже") : (item.status == 2 ? global.getLocales("На проверке")  : (item.status == 3 ?  global.getLocales("На доработке") :  global.getLocales("Зарезервирован")))}
+                            className={"btn  font-m auth-btn " + (item.status == 1 ? " btn-primary" : (item.status == 2 ? " btn-danger" : " btn-secondary"))}> {item.status == 1 ? getLocales("В продаже") : (item.status == 2 ? getLocales("На проверке")  : (item.status == 3 ?  getLocales("На доработке") :  getLocales("Зарезервирован")))}
                         </button>
                     </div>
             },
             {
-                title: global.getLocales('Действия'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
+                title: getLocales('Действия'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
                     <div className="sparkline8">
                         <button onClick={() => { this.editToggle(item.id) }} className="btn btn-secondary btn-table"><FontAwesomeIcon icon={faSearchPlus} /></button>
                         <button disabled={item.status == 0} onClick={() => { this.confirmToggle(item.id) }} className="btn btn-danger btn-table"><FontAwesomeIcon icon={faBackspace} /></button>
@@ -445,17 +445,17 @@ class ModerSellers extends Component {
                 <div className="col-lg-12">
                     <div class={"block animate__animated animate__fadeIn " + (this.state.loading ? "blur" : "")}>
                         <div class="block-body">
-                            <h4 className="font-m">{global.getLocales('Адреса для модерации')}</h4>
+                            <h4 className="font-m">{getLocales('Адреса для модерации')}</h4>
                             <div className="avatar-block">
                                 <h4 className="font-m">
-                                    {global.getLocales('Сортировка')}
+                                    {getLocales('Сортировка')}
                                 </h4>
                                 <div className="row">
                                     <div className="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-control-label font-m">{global.getLocales('Город')}</label>
+                                            <label class="form-control-label font-m">{getLocales('Город')}</label>
                                             <select disabled={this.state.loading} value={this.state.categorySort} onChange={this.sort} name="categorySort" class="form-control">
-                                                <option value="all">{global.getLocales('Все')}</option>
+                                                <option value="all">{getLocales('Все')}</option>
                                                 {
                                                     this.state.data.categories.map(item =>
                                                         <option value={item.id}>{item.name}</option>
@@ -466,9 +466,9 @@ class ModerSellers extends Component {
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-control-label font-m">{global.getLocales('Товар')}</label>
+                                            <label class="form-control-label font-m">{getLocales('Товар')}</label>
                                             <select disabled={this.state.loading} value={this.state.productSort} onChange={this.sort} name="productSort" class="form-control">
-                                                <option value="all">{global.getLocales('Все')}</option>
+                                                <option value="all">{getLocales('Все')}</option>
                                                 {
                                                     this.state.data.products.map(item =>
                                                         <option value={item.id}>{item.name}</option>
@@ -483,7 +483,7 @@ class ModerSellers extends Component {
                                 {
                                     this.state.items.length <= 0
                                         ?
-                                        <div className="text-center font-m">{global.getLocales('Адреса отсутствуют')}</div>
+                                        <div className="text-center font-m">{getLocales('Адреса отсутствуют')}</div>
                                         :
                                         <Table search={false} columns={tableColumns} items={this.state.items} updateItems={this.updateItems} rowsPerPage="10" />
                                 }
@@ -492,7 +492,7 @@ class ModerSellers extends Component {
                     </div>
                 </div>
                 <SellerModalModer typeOfKlads={this.state.data.typeOfKlads} employees={this.state.data.employees} canView={this.state.data.canView} {...this.props} getData={this.getData} modal={this.state.editModal} toggle={this.editToggle} seller={this.state.editSeller} categories={this.state.data.categories} products={this.state.data.products} />
-                <ModalConfirm action={global.getLocales('Вы действительно хотите перенести данный адрес в раздел удаленных товаров?')} consequences="" modal={this.state.confirmModal} toggle={this.confirmToggle} loading={this.state.loading} sendData={this.sellerDelete} />
+                <ModalConfirm action={getLocales('Вы действительно хотите перенести данный адрес в раздел удаленных товаров?')} consequences="" modal={this.state.confirmModal} toggle={this.confirmToggle} loading={this.state.loading} sendData={this.sellerDelete} />
             </div>
         )
     }

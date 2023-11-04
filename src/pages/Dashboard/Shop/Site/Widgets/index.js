@@ -62,7 +62,7 @@ class BotPages extends Component {
             let itemModified = {
                 id: item.id,
                 name: item.name,
-                type: item.type.replace(/content/g, global.getLocales("Текстовой")).replace(/link/g, global.getLocales("Ссылка")),
+                type: item.type.replace(/content/g, getLocales("Текстовой")).replace(/link/g, getLocales("Ссылка")),
                 indexPage: item.indexPage
             }
             items.push(itemModified)
@@ -109,7 +109,7 @@ class BotPages extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.toggleDelete(0)
@@ -189,7 +189,7 @@ class BotPages extends Component {
                 }
             }
 
-            global.createRequest(data, response => {
+            request(data, response => {
                 if (response.status == 200) {
                     if (response.data.success) {
                         this.setState({
@@ -237,7 +237,7 @@ class BotPages extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -266,13 +266,13 @@ class BotPages extends Component {
                 title: 'ID', dataIndex: 'id', key: 'id', sort: true
             },
             {
-                title: global.getLocales("Тип"), dataIndex: 'type', key: 'type', sort: true
+                title: getLocales("Тип"), dataIndex: 'type', key: 'type', sort: true
             },
             {
-                title: global.getLocales("Название"), dataIndex: 'name', key: 'name', sort: true
+                title: getLocales("Название"), dataIndex: 'name', key: 'name', sort: true
             },
             {
-                title: global.getLocales("Действия"), itemClassName: 'text-center', headerClassName: 'text-center', dataIndex: 'value', key: 'operations', render: (e, item) => 
+                title: getLocales("Действия"), itemClassName: 'text-center', headerClassName: 'text-center', dataIndex: 'value', key: 'operations', render: (e, item) => 
                 <div className="sparkline8">
                 <button onClick={() => {this.toggle(item.id)}} className="btn btn-secondary btn-table"><FontAwesomeIcon icon={faSearchPlus} /></button>
                 <button onClick={() => { this.toggleDelete(item.id) }} className="btn btn-danger btn-table"><FontAwesomeIcon icon={faBackspace} /></button>
@@ -286,42 +286,42 @@ class BotPages extends Component {
                         <div class="block-body">
                             <div className="row">
                                 <div className="col-lg-12">
-                                    <h3 className="font-m">{global.getLocales("Добавление виджета")}</h3>
+                                    <h3 className="font-m">{getLocales("Добавление виджета")}</h3>
                                     <div class="form-group">
-                                        <label class="form-control-label font-m">{global.getLocales("Название")}</label>
-                                        <input type="text"  placeholder={global.getLocales("Введите название виджета")}  disabled={this.state.loading} value={this.state.name} onChange={this.handleChange} name="name" class="form-control" />
+                                        <label class="form-control-label font-m">{getLocales("Название")}</label>
+                                        <input type="text"  placeholder={getLocales("Введите название виджета")}  disabled={this.state.loading} value={this.state.name} onChange={this.handleChange} name="name" class="form-control" />
                                     </div>
                                 </div>
                                 <div className='col-lg-12'>
                                     <div class="form-group">
-                                        <label class="form-control-label font-m">{global.getLocales("Порядковый номер")}</label>
+                                        <label class="form-control-label font-m">{getLocales("Порядковый номер")}</label>
                                         <input type="number" disabled={this.state.loading} value={this.state.indexPage} onChange={this.handleChange} name="indexPage" class="form-control" />
                                     </div>
                                 </div>
                                 <div className="col-lg-12">
                                     <div class="form-group">
-                                        <label class="form-control-label font-m">{global.getLocales("Тип виджета")}</label>
+                                        <label class="form-control-label font-m">{getLocales("Тип виджета")}</label>
                                         <select disabled={this.state.loading} value={this.state.type} onChange={this.handleChange} name="type" class="form-control">
-                                            <option value="content">{global.getLocales("Виджет с текстом")}</option>
-                                            <option value="link">{global.getLocales("Виджет-ссылка")}</option>
+                                            <option value="content">{getLocales("Виджет с текстом")}</option>
+                                            <option value="link">{getLocales("Виджет-ссылка")}</option>
                                         </select>
                                     </div>
                                     {
                                         this.state.type == "content"
                                             ?
                                             <div class="form-group">
-                                                <label class="form-control-label font-m">{global.getLocales("Содержание виджета")}</label>
-                                                <textarea placeholder={global.getLocales("Введите содержание виджета")} value={this.state.content} class="form-control" name="content" onChange={this.handleChange}></textarea>
+                                                <label class="form-control-label font-m">{getLocales("Содержание виджета")}</label>
+                                                <textarea placeholder={getLocales("Введите содержание виджета")} value={this.state.content} class="form-control" name="content" onChange={this.handleChange}></textarea>
                                             </div>
                                             :
                                             <div class="form-group">
-                                                <label class="form-control-label font-m">{global.getLocales("Ссылка")}</label>
-                                                <input placeholder={global.getLocales('Вставьте ссылку')} type="text" disabled={this.state.loading} value={this.state.content} onChange={this.handleChange} name="content" class="form-control" />
+                                                <label class="form-control-label font-m">{getLocales("Ссылка")}</label>
+                                                <input placeholder={getLocales('Вставьте ссылку')} type="text" disabled={this.state.loading} value={this.state.content} onChange={this.handleChange} name="content" class="form-control" />
                                             </div>
                                     }
                                 </div>
                                 <div className='col-lg-12'>
-                                    <button onClick={this.sendData} disabled={this.state.loading} class="btn btn-primary font-m auth-btn margin-15">{this.state.loading ? <>{global.getLocales("Загрузка...")}</> : <>{global.getLocales("Создать виджет")}</>}</button>
+                                    <button onClick={this.sendData} disabled={this.state.loading} class="btn btn-primary font-m auth-btn margin-15">{this.state.loading ? <>{getLocales("Загрузка...")}</> : <>{getLocales("Создать виджет")}</>}</button>
                                 </div>
                             </div>
                         </div>
@@ -332,7 +332,7 @@ class BotPages extends Component {
                         <div class="block-body">
                             <div className="row">
                                 <div className="col-lg-12">
-                                    <h3 className="font-m">{global.getLocales("Виджеты")}</h3>
+                                    <h3 className="font-m">{getLocales("Виджеты")}</h3>
                                     {
                             this.state.data.widgets.length > 0
                             ?
@@ -340,7 +340,7 @@ class BotPages extends Component {
                             :
                             <div className='text-center font-m'>
                                 
-                                {global.getLocales("Виджеты отсутствуют")}
+                                {getLocales("Виджеты отсутствуют")}
                                 </div>
                         }
                                 </div>
@@ -349,7 +349,7 @@ class BotPages extends Component {
                     </div>
                 </div>
                 <WidgetModal toggleDelete={this.toggleDelete} getData={this.getData} {...this.props} page={this.state.activePage} modal={this.state.modal} toggle={this.toggle}/>
-                <ModalConfirm action={global.getLocales("Вы действительно хотите удалить данный виджет?")} consequences="" modal={this.state.modalDelete} toggle={this.toggleDelete} loading={this.state.loading} sendData={this.delete} />
+                <ModalConfirm action={getLocales("Вы действительно хотите удалить данный виджет?")} consequences="" modal={this.state.modalDelete} toggle={this.toggleDelete} loading={this.state.loading} sendData={this.delete} />
             </div>
         )
     }

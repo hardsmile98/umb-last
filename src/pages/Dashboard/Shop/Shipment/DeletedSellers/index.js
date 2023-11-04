@@ -112,7 +112,7 @@ class DeletedSellers extends Component {
                 }
             }
     
-            global.createRequest(data, response => {
+            request(data, response => {
                 if (response.status == 200) {
                     if (response.data.success) {
                         toast.success(response.data.message)
@@ -158,7 +158,7 @@ class DeletedSellers extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -185,7 +185,7 @@ class DeletedSellers extends Component {
     render() {
         const tableColumns = [
             {
-                title: global.getLocales('Выбрать'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
+                title: getLocales('Выбрать'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
                     <div className="sparkline8">
                                                                         <div class="i-checks">
                         <input checked={this.state.selected.indexOf(item.id) > -1} onChange={this.sellerAction} value={item.id} type="checkbox" class="checkbox-template" />
@@ -193,7 +193,7 @@ class DeletedSellers extends Component {
                     </div>
             },
             {
-                title: global.getLocales('Адрес'), itemClassName: 'width-100', dataIndex: 'value', key: 'value', sort: true
+                title: getLocales('Адрес'), itemClassName: 'width-100', dataIndex: 'value', key: 'value', sort: true
             }
         ]
         return (
@@ -201,14 +201,14 @@ class DeletedSellers extends Component {
                 <div className="col-lg-8">
                     <div class={"block animate__animated animate__fadeIn " + (this.state.loading ? "blur" : "")}>
                         <div class="block-body">
-                            <h4 className="font-m">{global.getLocales('Удаленные адреса')}</h4>
+                            <h4 className="font-m">{getLocales('Удаленные адреса')}</h4>
                             <div className="row">
                                 <div className="col-lg-12 margin-15">
                                     <div className="row">
                                     {
                                     this.state.items.length <= 0
                                         ?
-                                        <div className="text-center font-m">{global.getLocales('Адреса отсутствуют')}</div>
+                                        <div className="text-center font-m">{getLocales('Адреса отсутствуют')}</div>
                                         :
                                         <Table search={false} columns={tableColumns} items={this.state.items} updateItems={this.updateItems} rowsPerPage="10" />
                                 }
@@ -222,22 +222,22 @@ class DeletedSellers extends Component {
                     <div class={"block animate__animated animate__fadeIn " + (this.state.loading ? "blur" : "")}>
                         <div class="block-body">
                         <div class="form-group">
-                                <label class="form-control-label font-m">{global.getLocales('Выбрано адресов')}</label>
-                                <input disabled={this.state.loading} value={this.state.selected.length + " " + global.getLocales('шт.')} autocomplete="off" type="text" name="selected" class="form-control" />
+                                <label class="form-control-label font-m">{getLocales('Выбрано адресов')}</label>
+                                <input disabled={this.state.loading} value={this.state.selected.length + " " + getLocales('шт.')} autocomplete="off" type="text" name="selected" class="form-control" />
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-lg-6">
-                            <button onClick={this.confirmToggle} disabled={this.state.loading || this.state.selected.length <= 0} class="btn btn-danger font-m auth-btn margin-15">{this.state.loading ? <>{global.getLocales('Загрузка...')}</> : <>{global.getLocales("Удалить")}</>}</button>
+                            <button onClick={this.confirmToggle} disabled={this.state.loading || this.state.selected.length <= 0} class="btn btn-danger font-m auth-btn margin-15">{this.state.loading ? <>{getLocales('Загрузка...')}</> : <>{getLocales("Удалить")}</>}</button>
                             </div>
                             <div className="col-lg-6">
-                            <button onClick={this.toggle} disabled={this.state.loading || this.state.selected.length <= 0} class="btn btn-primary font-m auth-btn margin-15">{this.state.loading ? <>{global.getLocales('Загрузка...')}</> : <>{global.getLocales("Восстановить")}</>}</button>
+                            <button onClick={this.toggle} disabled={this.state.loading || this.state.selected.length <= 0} class="btn btn-primary font-m auth-btn margin-15">{this.state.loading ? <>{getLocales('Загрузка...')}</> : <>{getLocales("Восстановить")}</>}</button>
                                 </div>
                         </div>
                     </div>
                 </div>
                 <DeletedModal typeOfKlads={this.state.data.typeOfKlads} categories={this.state.data.categories} products={this.state.data.products} modal={this.state.modal} toggle={this.toggle} getData={this.getData} {...this.props} selected={this.state.selected}/>
-                <ModalConfirm action={global.getLocales('Вы действительно хотите удалить данные товары?" consequences="Это действие безвозвратно, будьте осторожны.')} modal={this.state.confirmModal} toggle={this.confirmToggle} loading={this.state.loading} sendData={this.deleteSellers} />
+                <ModalConfirm action={getLocales('Вы действительно хотите удалить данные товары?" consequences="Это действие безвозвратно, будьте осторожны.')} modal={this.state.confirmModal} toggle={this.confirmToggle} loading={this.state.loading} sendData={this.deleteSellers} />
             </div>
         )
     }

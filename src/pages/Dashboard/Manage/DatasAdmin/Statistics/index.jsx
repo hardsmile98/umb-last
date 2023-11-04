@@ -324,7 +324,7 @@ class Statistics extends Component {
               <div className="col-lg-6">
                 <div className="form-group">
                   <label className="form-control-label font-m">
-                    {global.getLocales('От')}
+                    {getLocales('От')}
                   </label>
                   <input
                     type="date"
@@ -339,7 +339,7 @@ class Statistics extends Component {
               <div className="col-lg-6">
                 <div className="form-group">
                   <label className="form-control-label font-m">
-                    {global.getLocales('До')}
+                    {getLocales('До')}
                   </label>
                   <input
                     type="date"
@@ -359,7 +359,7 @@ class Statistics extends Component {
                   onClick={this.getData}
                   className="btn btn-primary auth-btn font-m margin-15"
                 >
-                  {global.getLocales('Применить')}
+                  {getLocales('Применить')}
                 </button>
               </div>
             </div>
@@ -390,15 +390,15 @@ class Statistics extends Component {
             <div className="avatar-block font-m">
               <div className="row">
                 <div className="col-lg-5 text-center">
-                  {global.getLocales('Магазин')}
+                  {getLocales('Магазин')}
                 </div>
 
                 <div className="col-lg-2 text-center">
-                  {global.getLocales('Оборот')}
+                  {getLocales('Оборот')}
                 </div>
 
                 <div className="col-lg-5 text-center">
-                  {global.getLocales('Владелец')}
+                  {getLocales('Владелец')}
                 </div>
               </div>
             </div>

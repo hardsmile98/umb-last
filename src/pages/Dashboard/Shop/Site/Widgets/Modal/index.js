@@ -66,7 +66,7 @@ class WidgetModal extends Component {
                 }
             }
 
-            global.createRequest(data, response => {
+            request(data, response => {
                 if (response.status == 200) {
                     if (response.data.success) {
                         this.props.getData()
@@ -109,42 +109,42 @@ class WidgetModal extends Component {
             <div>
                 <Modal size="lg" isOpen={this.props.modal} toggle={() => { this.props.toggle(0) }}>
                     <div className="modal-header text-center">
-                        <h4 className="modal-title font-m">{global.getLocales("Виджет")} #{this.props.page.id}</h4>
+                        <h4 className="modal-title font-m">{getLocales("Виджет")} #{this.props.page.id}</h4>
                     </div>
                     <ModalBody>
                         <div className="row">
                             <div className="col-lg-12">
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales("Название")}</label>
-                                    <input className='form-control' value={this.state.name} placeholder={global.getLocales("Введите название страницы")} name="name" onChange={this.handleChange} />
+                                    <label class="form-control-label font-m">{getLocales("Название")}</label>
+                                    <input className='form-control' value={this.state.name} placeholder={getLocales("Введите название страницы")} name="name" onChange={this.handleChange} />
                                 </div>
                             </div>
                             <div className='col-lg-12'>
                                 <div class="form-group">
-                                    <label class="form-control-label font-m">{global.getLocales("Порядковый номер")}</label>
+                                    <label class="form-control-label font-m">{getLocales("Порядковый номер")}</label>
                                     <input type="number" disabled={this.state.loading} value={this.state.indexPage} onChange={this.handleChange} name="indexPage" class="form-control" />
                                 </div>
                             </div>
                                     <>
                                         <div className="col-lg-12">
                                             <div class="form-group">
-                                                <label class="form-control-label font-m">{global.getLocales("Тип страницы")}</label>
+                                                <label class="form-control-label font-m">{getLocales("Тип страницы")}</label>
                                                 <select disabled={this.state.loading} value={this.state.type} onChange={this.handleChange} name="type" class="form-control">
-                                                    <option value="content">{global.getLocales("Страница с текстом")}</option>
-                                                    <option value="link">{global.getLocales("Страница-ссылка")}</option>
+                                                    <option value="content">{getLocales("Страница с текстом")}</option>
+                                                    <option value="link">{getLocales("Страница-ссылка")}</option>
                                                 </select>
                                             </div>
                                             {
                                                 this.state.type == "content"
                                                     ?
                                                     <div class="form-group">
-                                                        <label class="form-control-label font-m">{global.getLocales("Содержание страницы")}</label>
-                                                        <textarea className='form-control' value={this.state.content} placeholder={global.getLocales("Введите содержание страницы")} name="content" onChange={this.handleChange} />
+                                                        <label class="form-control-label font-m">{getLocales("Содержание страницы")}</label>
+                                                        <textarea className='form-control' value={this.state.content} placeholder={getLocales("Введите содержание страницы")} name="content" onChange={this.handleChange} />
                                                     </div>
                                                     :
                                                     <div class="form-group">
-                                                        <label class="form-control-label font-m">{global.getLocales("Ссылка")}</label>
-                                                        <input placeholder={global.getLocales('Вставьте ссылку')} type="text" disabled={this.state.loading} value={this.state.content} onChange={this.handleChange} name="content" class="form-control" />
+                                                        <label class="form-control-label font-m">{getLocales("Ссылка")}</label>
+                                                        <input placeholder={getLocales('Вставьте ссылку')} type="text" disabled={this.state.loading} value={this.state.content} onChange={this.handleChange} name="content" class="form-control" />
                                                     </div>
                                             }
                                         </div>
@@ -156,12 +156,12 @@ class WidgetModal extends Component {
                             <div className="row">
                                 <div className="col-lg-4">
                                     <div className="mr-auto">
-                                        <button value="Закрыть" class="btn btn-secondary font-m auth-btn" onClick={() => { this.props.toggle(0) }}>{global.getLocales("Закрыть")}</button>
+                                        <button value="Закрыть" class="btn btn-secondary font-m auth-btn" onClick={() => { this.props.toggle(0) }}>{getLocales("Закрыть")}</button>
                                     </div>
                                 </div>
                                 <div className="col-lg-8">
                                     <button disabled={this.state.loading} onClick={this.sendData} class="btn btn-primary font-m auth-btn">
-                                        {this.state.loading ? <>{global.getLocales("Загрузка...")}</> : <>{global.getLocales("Сохранить")}</>}
+                                        {this.state.loading ? <>{getLocales("Загрузка...")}</> : <>{getLocales("Сохранить")}</>}
                                     </button>
                                 </div>
                             </div>

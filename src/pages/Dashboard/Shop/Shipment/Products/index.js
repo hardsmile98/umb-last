@@ -59,7 +59,7 @@ class Products extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.confirmToggle()
@@ -99,7 +99,7 @@ class Products extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -126,7 +126,7 @@ class Products extends Component {
                 <div className="col-lg-12">
                     <div class={"block animate__animated animate__fadeIn " + (this.state.loading ? "blur" : "")}>
                         <div class="block-body">
-                            <h4 className="font-m">{global.getLocales('Товары')}</h4>
+                            <h4 className="font-m">{getLocales('Товары')}</h4>
                             <div className="row">
                                 <div className="col-lg-12 margin-15">
                                     <div className="row">
@@ -139,17 +139,17 @@ class Products extends Component {
                                                             <div className="text-center">
                                                                 <h4 className="font-m">{item.name}</h4>
                                                                 <div className="text-left font-m">
-                                                                    {global.getLocales('Фасовка')}: <span className="highlight">{item.sub == 1 ? <>{global.getLocales('Да')}</> : <>{global.getLocales('Нет')}</>}</span><br />
-                                                                    {global.getLocales('Скидка')}: <span className="highlight">{item.discount}%</span><br />
-                                                                    {global.getLocales('Адресов в наличии')}: <span className="highlight">{item.sellers} {global.getLocales('шт.')}</span><br />
-                                                                    {global.getLocales('Продаж')}: <span className="highlight">{item.sales} {global.getLocales('шт.')}</span><br />
-                                                                    {global.getLocales('Сумма продаж')}: <span className="highlight">{item.salessum.toFixed(2)} {this.state.data.currency}</span><br />
+                                                                    {getLocales('Фасовка')}: <span className="highlight">{item.sub == 1 ? <>{getLocales('Да')}</> : <>{getLocales('Нет')}</>}</span><br />
+                                                                    {getLocales('Скидка')}: <span className="highlight">{item.discount}%</span><br />
+                                                                    {getLocales('Адресов в наличии')}: <span className="highlight">{item.sellers} {getLocales('шт.')}</span><br />
+                                                                    {getLocales('Продаж')}: <span className="highlight">{item.sales} {getLocales('шт.')}</span><br />
+                                                                    {getLocales('Сумма продаж')}: <span className="highlight">{item.salessum.toFixed(2)} {this.state.data.currency}</span><br />
                                                                 </div>
                                                                 <div className="text-center">
                                                                     <div className="row">
                                                                         <div className="col-lg-8">
                                                                             <Link to={`${this.props.match.url}/${item.id}`}>
-                                                                                <button disabled={this.state.loading} class="btn btn-secondary font-m auth-btn margin-15">{this.state.loading ? <>{global.getLocales("Загрузка...")}</> : <>{global.getLocales("Открыть")}</>}</button>
+                                                                                <button disabled={this.state.loading} class="btn btn-secondary font-m auth-btn margin-15">{this.state.loading ? <>{getLocales("Загрузка...")}</> : <>{getLocales("Открыть")}</>}</button>
                                                                             </Link>
                                                                         </div>
                                                                         <div className="col-lg-4">
@@ -162,12 +162,12 @@ class Products extends Component {
                                                 )
                                                 :
                                                 <div className="text-center">
-                                                    {global.getLocales('Товары отсутствуют')}
+                                                    {getLocales('Товары отсутствуют')}
                                                 </div>
                                         }
                                         <div className='col-lg-12'>
                                             <NavLink to={`${this.props.match.url}/add`}>
-                                                <button disabled={this.state.loading} class="btn btn-primary margin-15 font-m auth-btn right">{this.state.loading ? <>{global.getLocales("Загрузка...")}</> : <>{global.getLocales("Добавить товар")}</>}</button>
+                                                <button disabled={this.state.loading} class="btn btn-primary margin-15 font-m auth-btn right">{this.state.loading ? <>{getLocales("Загрузка...")}</> : <>{getLocales("Добавить товар")}</>}</button>
                                             </NavLink>
                                         </div>
                                     </div>
@@ -176,7 +176,7 @@ class Products extends Component {
                         </div>
                     </div>
                 </div>
-                <ModalConfirm action={global.getLocales('Вы действительно хотите удалить данный товар?')} consequences={global.getLocales("Все адреса данного товара будут перенесены в раздел удаленных адресов.")} modal={this.state.confirmModal} toggle={this.confirmToggle} loading={this.state.loading} sendData={this.deleteProduct} />
+                <ModalConfirm action={getLocales('Вы действительно хотите удалить данный товар?')} consequences={getLocales("Все адреса данного товара будут перенесены в раздел удаленных адресов.")} modal={this.state.confirmModal} toggle={this.confirmToggle} loading={this.state.loading} sendData={this.deleteProduct} />
             </div>
         )
     }

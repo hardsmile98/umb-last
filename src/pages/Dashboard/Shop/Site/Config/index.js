@@ -45,7 +45,7 @@ class Config extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     toast.success(response.data.message)
@@ -85,7 +85,7 @@ class Config extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -123,14 +123,14 @@ class Config extends Component {
                 <div class="block-body">
                     <div className="row">
                         <div className="col-lg-12">
-                            <h3 className="font-m">{global.getLocales('Продвинутая конфигурация')}</h3>
+                            <h3 className="font-m">{getLocales('Продвинутая конфигурация')}</h3>
                             <br />
                             <div className='form-group'>
                                 <label class="form-control-label font-m">CSS</label>
                                 <textarea value={this.state.css} className='form-control height-auto' name="css" onChange={this.handleChange}>{this.state.data.css}</textarea>
                             </div>
                             <div className='mr-auto right'>
-                                <button className='btn btn-primary font-m' onClick={this.sendData}>{global.getLocales('Сохранить')}</button>
+                                <button className='btn btn-primary font-m' onClick={this.sendData}>{getLocales('Сохранить')}</button>
                             </div>
                         </div>
                     </div>

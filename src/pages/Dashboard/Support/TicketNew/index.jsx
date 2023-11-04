@@ -49,7 +49,7 @@ class TicketNew extends Component {
       },
     };
 
-    global.createRequest(data, (response) => {
+    request(data, (response) => {
       if (response.status === 200) {
         if (response.data.success) {
           this.setState({

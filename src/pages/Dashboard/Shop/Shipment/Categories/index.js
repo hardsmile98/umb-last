@@ -102,7 +102,7 @@ class Categories extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -150,7 +150,7 @@ class Categories extends Component {
                 }
             }
 
-            global.createRequest(data, response => {
+            request(data, response => {
                 if (response.status == 200) {
                     if (response.data.success) {
                         this.setState({
@@ -202,7 +202,7 @@ class Categories extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -250,43 +250,43 @@ class Categories extends Component {
                 <div className="col-lg-4">
                     <div class={"block animate__animated animate__fadeIn " + (this.state.loading ? "blur" : "")}>
                         <div class="block-body">
-                            <h4 className="font-m">{global.getLocales('Создание города')}</h4>
+                            <h4 className="font-m">{getLocales('Создание города')}</h4>
                             <div class="form-group">
-                                <label class="form-control-label font-m">{global.getLocales('Название')}</label>
-                                <input disabled={this.state.loading} value={this.state.name} onChange={this.handleChange} autocomplete="off" type="text" placeholder={global.getLocales("Введите название города")} name="name" class="form-control" />
+                                <label class="form-control-label font-m">{getLocales('Название')}</label>
+                                <input disabled={this.state.loading} value={this.state.name} onChange={this.handleChange} autocomplete="off" type="text" placeholder={getLocales("Введите название города")} name="name" class="form-control" />
                             </div>
 
                             <div class="form-group">
-                                <label class="form-control-label font-m">{global.getLocales('Районы')}</label>
+                                <label class="form-control-label font-m">{getLocales('Районы')}</label>
                                 <select disabled={this.state.loading} value={this.state.sub} onChange={this.handleChange} name="sub" class="form-control">
-                                    <option value="0">{global.getLocales('Отсутствуют')}</option>
-                                    <option value="1">{global.getLocales('Присутствуют')}</option>
+                                    <option value="0">{getLocales('Отсутствуют')}</option>
+                                    <option value="1">{getLocales('Присутствуют')}</option>
                                 </select>
                             </div>
                             {
                                 this.state.sub == 1
                                     ?
                                     <>
-                                        <label class="form-control-label font-m">{global.getLocales('Список районов')}</label>
+                                        <label class="form-control-label font-m">{getLocales('Список районов')}</label>
                                         <div className="avatar-block">
                                             {
                                                 this.state.subcategories.map((item, key) =>
                                                     <div className="avatar-block">
                                                         <div class="form-group">
-                                                            <label class="form-control-label font-m">{global.getLocales('Название')}</label>
-                                                            <input disabled={this.state.loading} value={this.state.subcategories[key].name} autocomplete="off" onChange={this.handleChange} autocomplete="off" type="text" placeholder={global.getLocales('Введите название района')} name="subcategory" id={key} class="form-control" />
+                                                            <label class="form-control-label font-m">{getLocales('Название')}</label>
+                                                            <input disabled={this.state.loading} value={this.state.subcategories[key].name} autocomplete="off" onChange={this.handleChange} autocomplete="off" type="text" placeholder={getLocales('Введите название района')} name="subcategory" id={key} class="form-control" />
                                                         </div>
-                                                        <button onClick={() => { this.deleteSubcategory(key) }} disabled={this.state.loading} class="btn btn-danger font-m auth-btn margin-15">{this.state.loading ? <>{global.getLocales('Загрузка...')}</> : <>{global.getLocales('Удалить')}</>}</button>
+                                                        <button onClick={() => { this.deleteSubcategory(key) }} disabled={this.state.loading} class="btn btn-danger font-m auth-btn margin-15">{this.state.loading ? <>{getLocales('Загрузка...')}</> : <>{getLocales('Удалить')}</>}</button>
                                                     </div>
                                                 )
                                             }
-                                            <button onClick={this.addSubcategory} disabled={this.state.loading} class="btn btn-secondary font-m auth-btn margin-15">{this.state.loading ? <>{global.getLocales('Загрузка...')}</> : <>{global.getLocales('Добавить')}</>}</button>
+                                            <button onClick={this.addSubcategory} disabled={this.state.loading} class="btn btn-secondary font-m auth-btn margin-15">{this.state.loading ? <>{getLocales('Загрузка...')}</> : <>{getLocales('Добавить')}</>}</button>
                                         </div>
                                     </>
                                     :
                                     ''
                             }
-                            <button onClick={this.createCategory} disabled={this.state.loading} class="btn btn-primary font-m auth-btn margin-15">{this.state.loading ? <>{global.getLocales('Загрузка...')}</> : <>{global.getLocales("Добавить город")}</>}</button>
+                            <button onClick={this.createCategory} disabled={this.state.loading} class="btn btn-primary font-m auth-btn margin-15">{this.state.loading ? <>{getLocales('Загрузка...')}</> : <>{getLocales("Добавить город")}</>}</button>
 
                         </div>
                     </div>
@@ -294,7 +294,7 @@ class Categories extends Component {
                 <div className="col-lg-8">
                     <div class={"block animate__animated animate__fadeIn " + (this.state.loading ? "blur" : "")}>
                         <div class="block-body">
-                            <h4 className="font-m">{global.getLocales('Города')}</h4>
+                            <h4 className="font-m">{getLocales('Города')}</h4>
                             {
                                 this.state.data.length > 0
                                     ?
@@ -308,16 +308,16 @@ class Categories extends Component {
                                                         </h4>
                                                         <br />
                                                         <p className="font-m">
-                                                        {global.getLocales('Районов')}: <span className="highlight">{item.subcategories.length} {global.getLocales('шт.')}</span><br />
-                                                        {global.getLocales('Адресов в наличии')}: <span className="highlight">{item.sellers} {global.getLocales('шт.')}</span><br />
-                                                        {global.getLocales('Продаж')}: <span className="highlight">{item.sales} {global.getLocales('шт.')}</span><br />
-                                                        {global.getLocales('Сумма продаж')}: <span className="highlight">{item.salessum.toFixed(2)} {this.state.currency}</span><br />
+                                                        {getLocales('Районов')}: <span className="highlight">{item.subcategories.length} {getLocales('шт.')}</span><br />
+                                                        {getLocales('Адресов в наличии')}: <span className="highlight">{item.sellers} {getLocales('шт.')}</span><br />
+                                                        {getLocales('Продаж')}: <span className="highlight">{item.sales} {getLocales('шт.')}</span><br />
+                                                        {getLocales('Сумма продаж')}: <span className="highlight">{item.salessum.toFixed(2)} {this.state.currency}</span><br />
                                                         </p>
 
                                                         <div className="text-center">
                                                             <div className="row">
                                                                 <div className="col-lg-8">
-                                                                    <button onClick={() => { this.toggle(item.id) }} disabled={this.state.loading} class="btn btn-secondary font-m auth-btn margin-15">{this.state.loading ? <>{global.getLocales('Загрузка...')}</> : <>{global.getLocales("Открыть")}</>}</button>
+                                                                    <button onClick={() => { this.toggle(item.id) }} disabled={this.state.loading} class="btn btn-secondary font-m auth-btn margin-15">{this.state.loading ? <>{getLocales('Загрузка...')}</> : <>{getLocales("Открыть")}</>}</button>
                                                                 </div>
                                                                 <div className="col-lg-4">
                                                                     <button onClick={() => { this.confirmToggle(item.id) }} disabled={this.state.loading} class="btn btn-danger font-m auth-btn margin-15"><FontAwesomeIcon icon={faTrashAlt} /></button>
@@ -331,14 +331,14 @@ class Categories extends Component {
                                     </div>
                                     :
                                     <div className="text-center">
-                                        {global.getLocales('Городаненайдены')}
+                                        {getLocales('Городаненайдены')}
                                         </div>
                             }
                         </div>
                     </div>
 
                     <CategoryEdit {...this.props} getData={this.getData} modal={this.state.modal} toggle={this.toggle} category={this.state.category} />
-                    <ModalConfirm action={global.getLocales('Вы действительно хотите удалить данный город?')} consequences={global.getLocales('Все адреса, из данной категории будут перенесены в раздел удаленных адресов.')} modal={this.state.confirmModal} toggle={this.confirmToggle} loading={this.state.loading} sendData={this.categoryDelete} />
+                    <ModalConfirm action={getLocales('Вы действительно хотите удалить данный город?')} consequences={getLocales('Все адреса, из данной категории будут перенесены в раздел удаленных адресов.')} modal={this.state.confirmModal} toggle={this.confirmToggle} loading={this.state.loading} sendData={this.categoryDelete} />
                 </div>
             </div>
         )

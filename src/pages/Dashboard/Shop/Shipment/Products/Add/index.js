@@ -84,7 +84,7 @@ class ProductsAdd extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -166,7 +166,7 @@ class ProductsAdd extends Component {
                 }
             }
 
-            global.createRequest(data, response => {
+            request(data, response => {
                 if (response.status == 200) {
                     if (response.data.success) {
                         this.setState({
@@ -254,12 +254,12 @@ class ProductsAdd extends Component {
                 <div className="col-lg-12">
                     <div class={"block animate__animated animate__fadeIn " + (this.state.loading ? "blur" : "")}>
                         <div class="block-body">
-                            <h4 className="font-m">{global.getLocales('Добавление товара')}</h4>
+                            <h4 className="font-m">{getLocales('Добавление товара')}</h4>
                             {
                                 this.state.action == "edit"
                                     ?
                                     <div className="avatar-block font-m text-center" style={{ margin: "0 !important" }}>
-                                        <span className="text-danger">{global.getLocales('При удалении фасовки - адреса, из данной фасовки перенесутся в раздел удаленных адресов. Будьте осторожны с изменением.')}</span>
+                                        <span className="text-danger">{getLocales('При удалении фасовки - адреса, из данной фасовки перенесутся в раздел удаленных адресов. Будьте осторожны с изменением.')}</span>
                                     </div>
                                     :
                                     ''
@@ -269,28 +269,28 @@ class ProductsAdd extends Component {
                                     <div className="row">
                                         <div className="col-lg-6">
                                             <div class="form-group">
-                                                <label class="form-control-label font-m">{global.getLocales('Название')}</label>
-                                                <input disabled={this.state.loading} value={this.state.name} onChange={this.handleChange} autocomplete="off" type="text" placeholder={global.getLocales('Введите название товара')} name="name" class="form-control" />
+                                                <label class="form-control-label font-m">{getLocales('Название')}</label>
+                                                <input disabled={this.state.loading} value={this.state.name} onChange={this.handleChange} autocomplete="off" type="text" placeholder={getLocales('Введите название товара')} name="name" class="form-control" />
                                             </div>
                                             <div class="form-group">
-                                                <label class="form-control-label font-m">{global.getLocales('Изображение')}</label>
-                                                <input disabled={this.state.loading} value={this.state.image} onChange={this.handleChange} autocomplete="off" type="text" placeholder={global.getLocales("Вставьте ссылку на изображение")} name="image" class="form-control" />
-                                                <small>{global.getLocales('Для загрузки изображений рекомендуем воспользоваться нашим фотохостингом')} <a target="_blank" href="https://umb.photos">umb.photos</a></small>
+                                                <label class="form-control-label font-m">{getLocales('Изображение')}</label>
+                                                <input disabled={this.state.loading} value={this.state.image} onChange={this.handleChange} autocomplete="off" type="text" placeholder={getLocales("Вставьте ссылку на изображение")} name="image" class="form-control" />
+                                                <small>{getLocales('Для загрузки изображений рекомендуем воспользоваться нашим фотохостингом')} <a target="_blank" href="https://umb.photos">umb.photos</a></small>
                                             </div>
                                             <div class="form-group">
-                                                <label class="form-control-label font-m">{global.getLocales('Фасовка')}</label>
+                                                <label class="form-control-label font-m">{getLocales('Фасовка')}</label>
                                                 <select disabled={this.state.loading} value={this.state.sub} onChange={this.handleChange} name="sub" class="form-control">
-                                                    <option value="0">{global.getLocales('Отсутствует')}</option>
-                                                    <option value="1">{global.getLocales('Присутствует')}</option>
+                                                    <option value="0">{getLocales('Отсутствует')}</option>
+                                                    <option value="1">{getLocales('Присутствует')}</option>
                                                 </select>
                                             </div>
                                             {
                                                 this.state.sub == 0
                                                     ?
                                                     <div class="form-group">
-                                                        <label class="form-control-label font-m">{global.getLocales('Цена')}</label>
+                                                        <label class="form-control-label font-m">{getLocales('Цена')}</label>
                                                         <div class="input-group">
-                                                            <input disabled={this.state.loading} value={this.state.price} onChange={this.handleChange} autocomplete="off" type="number" placeholder={global.getLocales('Введите цену товара')} name="price" class="form-control" />
+                                                            <input disabled={this.state.loading} value={this.state.price} onChange={this.handleChange} autocomplete="off" type="number" placeholder={getLocales('Введите цену товара')} name="price" class="form-control" />
                                                             <span class="input-group-text">{this.props.currency}</span>
                                                         </div>
                                                     </div>
@@ -303,31 +303,31 @@ class ProductsAdd extends Component {
                                                 this.state.sub == 1
                                                     ?
                                                     <div class="form-group">
-                                                        <label class="form-control-label font-m">{global.getLocales('Описание товара')}</label>
+                                                        <label class="form-control-label font-m">{getLocales('Описание товара')}</label>
                                                         <div class="input-group">
-                                                            <textarea disabled={this.state.loading} value={this.state.description} onChange={this.handleChange} autocomplete="off" type="text" placeholder={global.getLocales('Введите описание товара, доступно использование тегов HTML')} name="description" class="form-control" />
+                                                            <textarea disabled={this.state.loading} value={this.state.description} onChange={this.handleChange} autocomplete="off" type="text" placeholder={getLocales('Введите описание товара, доступно использование тегов HTML')} name="description" class="form-control" />
                                                         </div>
                                                     </div>
                                                     :
                                                     <>
                                                         <div class="form-group">
-                                                            <label class="form-control-label font-m">{global.getLocales('Скидка')}</label>
+                                                            <label class="form-control-label font-m">{getLocales('Скидка')}</label>
                                                             <div class="input-group">
-                                                                <input disabled={this.state.loading} value={this.state.discount} onChange={this.handleChange} autocomplete="off" type="number" placeholder={global.getLocales('Введите скидку товара')} name="discount" class="form-control" />
+                                                                <input disabled={this.state.loading} value={this.state.discount} onChange={this.handleChange} autocomplete="off" type="number" placeholder={getLocales('Введите скидку товара')} name="discount" class="form-control" />
                                                                 <span class="input-group-text">%</span>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label class="form-control-label font-m">{global.getLocales('Плата за добавление адреса')}</label>
+                                                            <label class="form-control-label font-m">{getLocales('Плата за добавление адреса')}</label>
                                                             <div class="input-group">
-                                                                <input disabled={this.state.loading} value={this.state.bonus} onChange={this.handleChange} autocomplete="off" type="number" placeholder={global.getLocales('Введите сумму')} name="bonus" class="form-control" />
+                                                                <input disabled={this.state.loading} value={this.state.bonus} onChange={this.handleChange} autocomplete="off" type="number" placeholder={getLocales('Введите сумму')} name="bonus" class="form-control" />
                                                                 <span class="input-group-text">{this.props.currency}</span>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label class="form-control-label font-m">{global.getLocales('Штраф за ненаход')}</label>
+                                                            <label class="form-control-label font-m">{getLocales('Штраф за ненаход')}</label>
                                                             <div class="input-group">
-                                                                <input disabled={this.state.loading} value={this.state.fine} onChange={this.handleChange} autocomplete="off" type="number" placeholder={global.getLocales('Введите сумму')} name="fine" class="form-control" />
+                                                                <input disabled={this.state.loading} value={this.state.fine} onChange={this.handleChange} autocomplete="off" type="number" placeholder={getLocales('Введите сумму')} name="fine" class="form-control" />
                                                                 <span class="input-group-text">{this.props.currency}</span>
                                                             </div>
                                                         </div>
@@ -348,55 +348,55 @@ class ProductsAdd extends Component {
                                                                     <div className="col-lg-3">
                                                                         <div className="avatar-block">
                                                                             <div class="form-group">
-                                                                                <label class="form-control-label font-m">{global.getLocales('Название')}</label>
-                                                                                <input disabled={this.state.loading} value={item.name} id={key} onChange={this.handleChange} autocomplete="off" type="text" placeholder={global.getLocales("Введите название фасовки")} name="subproductName" class="form-control" />
+                                                                                <label class="form-control-label font-m">{getLocales('Название')}</label>
+                                                                                <input disabled={this.state.loading} value={item.name} id={key} onChange={this.handleChange} autocomplete="off" type="text" placeholder={getLocales("Введите название фасовки")} name="subproductName" class="form-control" />
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label class="form-control-label font-m">{global.getLocales('Цена')}</label>
+                                                                                <label class="form-control-label font-m">{getLocales('Цена')}</label>
                                                                                 <div class="input-group">
-                                                                                    <input disabled={this.state.loading} value={item.price} id={key} onChange={this.handleChange} autocomplete="off" type="number" placeholder={global.getLocales('Введите цену подтовара')} name="subproductPrice" class="form-control" />
+                                                                                    <input disabled={this.state.loading} value={item.price} id={key} onChange={this.handleChange} autocomplete="off" type="number" placeholder={getLocales('Введите цену подтовара')} name="subproductPrice" class="form-control" />
                                                                                     <span class="input-group-text">{this.props.currency}</span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label class="form-control-label font-m">{global.getLocales('Скидка')}</label>
+                                                                                <label class="form-control-label font-m">{getLocales('Скидка')}</label>
                                                                                 <div class="input-group">
-                                                                                    <input disabled={this.state.loading} value={item.discount} id={key} onChange={this.handleChange} autocomplete="off" type="number" placeholder={global.getLocales('Введите процент скидки')} name="subproductDiscount" class="form-control" />
+                                                                                    <input disabled={this.state.loading} value={item.discount} id={key} onChange={this.handleChange} autocomplete="off" type="number" placeholder={getLocales('Введите процент скидки')} name="subproductDiscount" class="form-control" />
                                                                                     <span class="input-group-text">%</span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                            <label class="form-control-label font-m">{global.getLocales('Плата за добавление адреса')}</label>
+                                                                            <label class="form-control-label font-m">{getLocales('Плата за добавление адреса')}</label>
                                                                                 <div class="input-group">
-                                                                                    <input disabled={this.state.loading} value={item.bonus} id={key} onChange={this.handleChange} autocomplete="off" type="number" placeholder={global.getLocales('Введите сумму')} name="subproductBonus" class="form-control" />
+                                                                                    <input disabled={this.state.loading} value={item.bonus} id={key} onChange={this.handleChange} autocomplete="off" type="number" placeholder={getLocales('Введите сумму')} name="subproductBonus" class="form-control" />
                                                                                     <span class="input-group-text">{this.props.currency}</span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                            <label class="form-control-label font-m">{global.getLocales('Штраф за ненаход')}</label>
+                                                                            <label class="form-control-label font-m">{getLocales('Штраф за ненаход')}</label>
                                                                                 <div class="input-group">
-                                                                                    <input disabled={this.state.loading} value={item.fine} id={key} onChange={this.handleChange} autocomplete="off" type="fine" placeholder={global.getLocales('Введите сумму')} name="subproductFine" class="form-control" />
+                                                                                    <input disabled={this.state.loading} value={item.fine} id={key} onChange={this.handleChange} autocomplete="off" type="fine" placeholder={getLocales('Введите сумму')} name="subproductFine" class="form-control" />
                                                                                     <span class="input-group-text">{this.props.currency}</span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                            <label class="form-control-label font-m">{global.getLocales('Себестоимость')}</label>
+                                                                            <label class="form-control-label font-m">{getLocales('Себестоимость')}</label>
                                                                                 <div class="input-group">
-                                                                                    <input disabled={this.state.loading} value={item.sum} id={key} onChange={this.handleChange} autocomplete="off" type="sum" placeholder={global.getLocales('Введите себестоимость')} name="subproductSum" class="form-control" />
+                                                                                    <input disabled={this.state.loading} value={item.sum} id={key} onChange={this.handleChange} autocomplete="off" type="sum" placeholder={getLocales('Введите себестоимость')} name="subproductSum" class="form-control" />
                                                                                     <span class="input-group-text">{this.props.currency}</span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                            <label class="form-control-label font-m">{global.getLocales('Заметка')}</label>
-                                                                                    <input disabled={this.state.loading} value={item.city} id={key} onChange={this.handleChange} autocomplete="off" type="city" placeholder={global.getLocales('Введите заметку (Например: город)')} name="subproductCity" class="form-control" />
+                                                                            <label class="form-control-label font-m">{getLocales('Заметка')}</label>
+                                                                                    <input disabled={this.state.loading} value={item.city} id={key} onChange={this.handleChange} autocomplete="off" type="city" placeholder={getLocales('Введите заметку (Например: город)')} name="subproductCity" class="form-control" />
                                                                             </div>
-                                                                            <button onClick={() => { this.deleteSubproduct(key) }} disabled={this.state.loading} class="btn btn-danger font-m auth-btn margin-15">{this.state.loading ? <>{global.getLocales("Загрузка...")}</>  : <>{global.getLocales("Удалить")}</> }</button>
+                                                                            <button onClick={() => { this.deleteSubproduct(key) }} disabled={this.state.loading} class="btn btn-danger font-m auth-btn margin-15">{this.state.loading ? <>{getLocales("Загрузка...")}</>  : <>{getLocales("Удалить")}</> }</button>
                                                                         </div>
                                                                     </div>
                                                                 )
                                                             }
                                                         </div>
-                                                        <button onClick={this.addSubproduct} style={{ marginBottom: "60px" }} disabled={this.state.loading} class="btn btn-secondary font-m auth-btn margin-15">{this.state.loading ? <>{global.getLocales("Загрузка...")}</>  : <>{global.getLocales("Добавить")}</> }</button>
+                                                        <button onClick={this.addSubproduct} style={{ marginBottom: "60px" }} disabled={this.state.loading} class="btn btn-secondary font-m auth-btn margin-15">{this.state.loading ? <>{getLocales("Загрузка...")}</>  : <>{getLocales("Добавить")}</> }</button>
                                                     </div>
                                                 </div>
                                         }
@@ -405,9 +405,9 @@ class ProductsAdd extends Component {
                                                 ?
                                                 <div className='col-lg-12'>
                                                     <div class="form-group">
-                                                        <label class="form-control-label font-m">{global.getLocales("Описание товара")}</label>
+                                                        <label class="form-control-label font-m">{getLocales("Описание товара")}</label>
                                                         <div class="input-group">
-                                                            <textarea disabled={this.state.loading} value={this.state.description} onChange={this.handleChange} autocomplete="off" type="text" placeholder={global.getLocales('Введите описание товара, доступно использование тегов HTML')} name="description" class="form-control" />
+                                                            <textarea disabled={this.state.loading} value={this.state.description} onChange={this.handleChange} autocomplete="off" type="text" placeholder={getLocales('Введите описание товара, доступно использование тегов HTML')} name="description" class="form-control" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -418,11 +418,11 @@ class ProductsAdd extends Component {
                                     </div>
                                     <div className="row margin-15">
                                         <div className="col-lg-2">
-                                            <button onClick={this.props.history.goBack} disabled={this.state.loading} class="btn btn-secondary auth-btn font-m left">{this.state.loading ? <>{global.getLocales("Загрузка...")}</> : <>{global.getLocales("Назад")}</>}</button>
+                                            <button onClick={this.props.history.goBack} disabled={this.state.loading} class="btn btn-secondary auth-btn font-m left">{this.state.loading ? <>{getLocales("Загрузка...")}</> : <>{getLocales("Назад")}</>}</button>
                                         </div>
                                         <div className="col-lg-6" />
                                         <div className="col-lg-4">
-                                            <button onClick={this.sendData} disabled={this.state.loading} class="btn btn-primary font-m auth-btn right">{this.state.loading ? <>{global.getLocales("Загрузка...")}</> : (this.state.action == "edit" ? <>{global.getLocales("Сохранить")}</> : <>{global.getLocales("Добавить товар")}</>)}</button>
+                                            <button onClick={this.sendData} disabled={this.state.loading} class="btn btn-primary font-m auth-btn right">{this.state.loading ? <>{getLocales("Загрузка...")}</> : (this.state.action == "edit" ? <>{getLocales("Сохранить")}</> : <>{getLocales("Добавить товар")}</>)}</button>
                                         </div>
                                     </div>
                                 </div>

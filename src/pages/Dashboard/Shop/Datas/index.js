@@ -26,13 +26,13 @@ class Datas extends Component {
                                         <div className="col-lg-3">
                         <div class="xtabs xtabs_left animate__animated animate__fadeIn">
                             <div class="xtabs__body font-m">
-                                <NavLink to={`${this.props.match.url}/users`} activeClassName="active" className="xtabs__item">{global.getLocales('Покупатели')}</NavLink>
-                                <NavLink to={`${this.props.match.url}/purchases`} activeClassName="active" className="xtabs__item">{global.getLocales('Покупки')}</NavLink>
-                                <NavLink to={`${this.props.match.url}/activeorders`} activeClassName="active" className="xtabs__item">{global.getLocales('Активные заказы')}</NavLink>
+                                <NavLink to={`${this.props.match.url}/users`} activeClassName="active" className="xtabs__item">{getLocales('Покупатели')}</NavLink>
+                                <NavLink to={`${this.props.match.url}/purchases`} activeClassName="active" className="xtabs__item">{getLocales('Покупки')}</NavLink>
+                                <NavLink to={`${this.props.match.url}/activeorders`} activeClassName="active" className="xtabs__item">{getLocales('Активные заказы')}</NavLink>
 
-                                <NavLink to={`${this.props.match.url}/presellers`} activeClassName="active" className="xtabs__item">{global.getLocales('Предзаказы')} {this.props.presellers ? <span className='badge badge-danger'>{this.props.presellers}</span> : ''}</NavLink>
-                                <NavLink to={`${this.props.match.url}/massspam`} activeClassName="active" className="xtabs__item">{global.getLocales('Массовая рассылка TG')}</NavLink>
-                                <NavLink to={`${this.props.match.url}/reviews`} activeClassName="active" className="xtabs__item">{global.getLocales('Отзывы')}</NavLink>
+                                <NavLink to={`${this.props.match.url}/presellers`} activeClassName="active" className="xtabs__item">{getLocales('Предзаказы')} {this.props.presellers ? <span className='badge badge-danger'>{this.props.presellers}</span> : ''}</NavLink>
+                                <NavLink to={`${this.props.match.url}/massspam`} activeClassName="active" className="xtabs__item">{getLocales('Массовая рассылка TG')}</NavLink>
+                                <NavLink to={`${this.props.match.url}/reviews`} activeClassName="active" className="xtabs__item">{getLocales('Отзывы')}</NavLink>
                             </div>
                         </div>
                     </div>

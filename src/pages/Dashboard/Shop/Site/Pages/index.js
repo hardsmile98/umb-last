@@ -51,7 +51,7 @@ class SitePages extends Component {
                 id: item.id,
                 name: item.name,
                 path: item.path ? ("/" + item.path) : item.content,
-                type: item.type.replace(/text/g, global.getLocales("Информационная страница")).replace(/link/g, global.getLocales("Страница-ссылка"))
+                type: item.type.replace(/text/g, getLocales("Информационная страница")).replace(/link/g, getLocales("Страница-ссылка"))
             }
             items.push(itemModified)
         })
@@ -90,7 +90,7 @@ class SitePages extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     toast.success(response.data.message)
@@ -131,7 +131,7 @@ class SitePages extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -160,16 +160,16 @@ class SitePages extends Component {
                 title: 'ID', dataIndex: 'id', key: 'id', sort: true
             },
             {
-                title: global.getLocales("Тип"), dataIndex: 'type', key: 'type', sort: true
+                title: getLocales("Тип"), dataIndex: 'type', key: 'type', sort: true
             },
             {
-                title: global.getLocales("Название"), dataIndex: 'name', key: 'name', sort: true
+                title: getLocales("Название"), dataIndex: 'name', key: 'name', sort: true
             },
             {
-                title: global.getLocales("Путь"), dataIndex: 'path', key: 'path', sort: true
+                title: getLocales("Путь"), dataIndex: 'path', key: 'path', sort: true
             },
             {
-                title: global.getLocales("Действия"), itemClassName: 'text-center', headerClassName: 'text-center', dataIndex: 'value', key: 'operations', render: (e, item) => 
+                title: getLocales("Действия"), itemClassName: 'text-center', headerClassName: 'text-center', dataIndex: 'value', key: 'operations', render: (e, item) => 
                 <div className="sparkline8">
                 <NavLink to={'/dashboard/shops/' + this.props.match.params.shopId + '/site/pages/' + item.id}><button className="btn btn-secondary btn-table"><FontAwesomeIcon icon={faSearchPlus} /></button></NavLink>
                 <button onClick={() => { this.confirmToggle(item.id) }} className="btn btn-danger btn-table"><FontAwesomeIcon icon={faBackspace} /></button>
@@ -181,21 +181,21 @@ class SitePages extends Component {
             <div class="block-body">
                 <div className="row">
                     <div className="col-lg-12">
-                        <h3 className="font-m">{global.getLocales("Страницы")} <span className='right'><NavLink to={'/dashboard/shops/' + this.props.match.params.shopId + '/site/pages/new'}> + {global.getLocales("Создать страницу")}</NavLink></span></h3>
+                        <h3 className="font-m">{getLocales("Страницы")} <span className='right'><NavLink to={'/dashboard/shops/' + this.props.match.params.shopId + '/site/pages/new'}> + {getLocales("Создать страницу")}</NavLink></span></h3>
                         {
                             this.state.data.pages.length > 0
                             ?
                             <Table search={false} columns={tableColumns} items={this.state.items} updateItems={this.updateItems} rowsPerPage="10" />
                             :
                             <div className='text-center font-m'>
-                                {global.getLocales("Страницы отсутствуют")}
+                                {getLocales("Страницы отсутствуют")}
                                 </div>
                         }
 
                     </div>
                 </div>
             </div>
-            <ModalConfirm action={global.getLocales("Вы действительно хотите удалить данную страницу?")} consequences="" modal={this.state.confirmModal} toggle={this.confirmToggle} loading={this.state.loading} sendData={this.delete} />
+            <ModalConfirm action={getLocales("Вы действительно хотите удалить данную страницу?")} consequences="" modal={this.state.confirmModal} toggle={this.confirmToggle} loading={this.state.loading} sendData={this.delete} />
 
         </div>
         )

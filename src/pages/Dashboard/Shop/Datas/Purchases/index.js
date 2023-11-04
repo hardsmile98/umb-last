@@ -230,7 +230,7 @@ class Purchases extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -260,34 +260,34 @@ class Purchases extends Component {
                 title: 'ID', dataIndex: 'id', key: 'id', sort: true
             },
             {
-                title: global.getLocales('Город'), dataIndex: 'category', key: 'category', sort: true
+                title: getLocales('Город'), dataIndex: 'category', key: 'category', sort: true
             },
             {
-                title: global.getLocales('Район'), dataIndex: 'subcategory', key: 'subcategory', sort: true
+                title: getLocales('Район'), dataIndex: 'subcategory', key: 'subcategory', sort: true
             },
             {
-                title: global.getLocales('Товар'), dataIndex: 'product', key: 'product', sort: true
+                title: getLocales('Товар'), dataIndex: 'product', key: 'product', sort: true
             },
             {
-                title: global.getLocales('Фасовка'), dataIndex: 'subproduct', key: 'subproduct', sort: true
+                title: getLocales('Фасовка'), dataIndex: 'subproduct', key: 'subproduct', sort: true
             },
             {
-                title: global.getLocales('Сумма'), dataIndex: 'sum', key: 'sum', sort: true
+                title: getLocales('Сумма'), dataIndex: 'sum', key: 'sum', sort: true
             },
             {
-                title: global.getLocales('Покупатель'), dataIndex: 'user', itemClassName: 'text-center', headerClassName: 'text-center', key: 'operations', render: (e, item) => <>{item.user == 0 ? "Anonym" : <NavLink to={"/dashboard/shops/" + this.props.match.params.shopId + "/datas/users/" + item.user}>{item.login}</NavLink>}</>
+                title: getLocales('Покупатель'), dataIndex: 'user', itemClassName: 'text-center', headerClassName: 'text-center', key: 'operations', render: (e, item) => <>{item.user == 0 ? "Anonym" : <NavLink to={"/dashboard/shops/" + this.props.match.params.shopId + "/datas/users/" + item.user}>{item.login}</NavLink>}</>
             },
             {
-                title: global.getLocales('Способ оплаты'), dataIndex: 'type', key: 'type', sort: true
+                title: getLocales('Способ оплаты'), dataIndex: 'type', key: 'type', sort: true
             },
             {
-                title: global.getLocales('Дата'), dataIndex: 'date', key: 'date', sort: true
+                title: getLocales('Дата'), dataIndex: 'date', key: 'date', sort: true
             },
             {
-                title: global.getLocales('Теги'), dataIndex: 'tags', itemClassName: 'text-center', headerClassName: 'text-center', key: 'operations', render: (e, item) => <>{item.notfound == 1 ? <span title={global.getLocales('Ненаход')} className='text-danger'><FontAwesomeIcon icon={faExclamationTriangle}/></span> : ''}</>
+                title: getLocales('Теги'), dataIndex: 'tags', itemClassName: 'text-center', headerClassName: 'text-center', key: 'operations', render: (e, item) => <>{item.notfound == 1 ? <span title={getLocales('Ненаход')} className='text-danger'><FontAwesomeIcon icon={faExclamationTriangle}/></span> : ''}</>
             },
             {
-                title: global.getLocales('Действие'), dataIndex: 'name', itemClassName: 'text-center', headerClassName: 'text-center', key: 'operations', render: (e, item) => <NavLink to={"/dashboard/shops/" + this.props.match.params.shopId + "/datas/purchases/" + item.id}><button className='btn btn-secondary font-m'>{global.getLocales('Подробнее')}</button></NavLink>
+                title: getLocales('Действие'), dataIndex: 'name', itemClassName: 'text-center', headerClassName: 'text-center', key: 'operations', render: (e, item) => <NavLink to={"/dashboard/shops/" + this.props.match.params.shopId + "/datas/purchases/" + item.id}><button className='btn btn-secondary font-m'>{getLocales('Подробнее')}</button></NavLink>
             }
         ]
         return (
@@ -296,27 +296,27 @@ class Purchases extends Component {
                 <div class="block-body">
                     <div className="row">
                         <div className="col-lg-12">
-                            <h3 className="font-m">{global.getLocales('Покупки')}</h3>
+                            <h3 className="font-m">{getLocales('Покупки')}</h3>
                             {
                                 this.state.data.purchases <= 0
                                     ?
                                     <div className='text-center font-m'>
 
-                                        {global.getLocales('Покупки отсутствуют')}
+                                        {getLocales('Покупки отсутствуют')}
                                     </div>
                                     :
                                     <>
                                         <div className="avatar-block">
                                             <h4 className="font-m">
 
-                                                {global.getLocales('Сортировка')}
+                                                {getLocales('Сортировка')}
                                             </h4>
                                             <div className="row">
                                                 <div className="col-lg-4">
                                                     <div class="form-group">
-                                                        <label class="form-control-label font-m">{global.getLocales('Город')}</label>
+                                                        <label class="form-control-label font-m">{getLocales('Город')}</label>
                                                         <select disabled={this.state.loading} value={this.state.categorySort} onChange={this.sort} name="categorySort" class="form-control">
-                                                            <option value="all">{global.getLocales('Все')}</option>
+                                                            <option value="all">{getLocales('Все')}</option>
                                                             {
                                                                 this.state.categories.map(item =>
                                                                     <option value={item}>{item}</option>
@@ -327,9 +327,9 @@ class Purchases extends Component {
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label class="form-control-label font-m">{global.getLocales('Товар')}</label>
+                                                        <label class="form-control-label font-m">{getLocales('Товар')}</label>
                                                         <select disabled={this.state.loading} value={this.state.productSort} onChange={this.sort} name="productSort" class="form-control">
-                                                            <option value="all">{global.getLocales('Все')}</option>
+                                                            <option value="all">{getLocales('Все')}</option>
                                                             {
                                                                 this.state.products.map(item =>
                                                                     <option value={item}>{item}</option>
@@ -340,9 +340,9 @@ class Purchases extends Component {
                                                 </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
-                                                        <label class="form-control-label font-m">{global.getLocales('Способ оплаты')}</label>
+                                                        <label class="form-control-label font-m">{getLocales('Способ оплаты')}</label>
                                                         <select disabled={this.state.loading} value={this.state.typeSort} onChange={this.sort} name="typeSort" class="form-control">
-                                                            <option value="all">{global.getLocales('Все')}</option>
+                                                            <option value="all">{getLocales('Все')}</option>
                                                             {
                                                                 this.state.types.map(item =>
                                                                     <option value={item}>{item}</option>
@@ -353,14 +353,14 @@ class Purchases extends Component {
                                                 </div>
                                                 <div className='col-lg-6'>
                                                     <div class="form-group">
-                                                        <label class="form-control-label font-m">{global.getLocales('Дата от')}</label>
+                                                        <label class="form-control-label font-m">{getLocales('Дата от')}</label>
                                                         <input type="date" disabled={this.state.loading} value={this.state.dateFrom} onChange={this.sort} name="dateFrom" class="form-control" />
 
                                                     </div>
                                                 </div>
                                                 <div className='col-lg-6'>
                                                     <div class="form-group">
-                                                        <label class="form-control-label font-m">{global.getLocales('Дата до')}</label>
+                                                        <label class="form-control-label font-m">{getLocales('Дата до')}</label>
                                                         <input type="date" disabled={this.state.loading} value={this.state.dateTo} onChange={this.sort} name="dateTo" class="form-control" />
                                                     </div>
                                                 </div>
@@ -373,7 +373,7 @@ class Purchases extends Component {
                                                 :
                                                 <div className='font-m text-center'>
 
-                                                    {global.getLocales('Покупки отсутствуют')}
+                                                    {getLocales('Покупки отсутствуют')}
                                                 </div>
                                         }
 

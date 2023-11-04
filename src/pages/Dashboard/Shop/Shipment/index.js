@@ -60,7 +60,7 @@ class Shipment extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -88,16 +88,16 @@ class Shipment extends Component {
                     <div class="xtabs xtabs_bottom"
                     ><div class="xtabs__body">
                             <NavLink to={`${this.props.match.url}/categories`} className="xtabs__item font-m" activeClassName="active">
-                                <span> {global.getLocales('Города')}</span>
+                                <span> {getLocales('Города')}</span>
                             </NavLink>
                             <NavLink to={`${this.props.match.url}/products`} className="xtabs__item font-m" activeClassName="active">
-                                <span> {global.getLocales('Товары')}</span>
+                                <span> {getLocales('Товары')}</span>
                             </NavLink>
                             <NavLink to={`${this.props.match.url}/sellers`} className="xtabs__item font-m" activeClassName="active">
-                                <span> {global.getLocales('Адреса')} {this.state.data.sellers > 0 ? <span className='badge badge-secondary'>{this.state.data.sellers}</span> : ''}</span>
+                                <span> {getLocales('Адреса')} {this.state.data.sellers > 0 ? <span className='badge badge-secondary'>{this.state.data.sellers}</span> : ''}</span>
                             </NavLink>
                             <NavLink to={`${this.props.match.url}/presellers`} className="xtabs__item font-m" activeClassName="active">
-                                <span> {global.getLocales('Предзаказы')}</span>
+                                <span> {getLocales('Предзаказы')}</span>
                             </NavLink>
                         </div>
                     </div>

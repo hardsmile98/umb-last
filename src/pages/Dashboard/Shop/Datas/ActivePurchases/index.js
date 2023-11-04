@@ -122,7 +122,7 @@ class ActivePurchases extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.props.history.push('/dashboard/shops/' + this.props.match.params.shopId + "/feedback/chats/" + response.data.data.id)
@@ -160,7 +160,7 @@ class ActivePurchases extends Component {
             }
         }
 
-        global.createRequest(data, response => {
+        request(data, response => {
             if (response.status == 200) {
                 if (response.data.success) {
                     this.setState({
@@ -189,19 +189,19 @@ class ActivePurchases extends Component {
                 title: 'ID', dataIndex: 'id', key: 'id', sort: true
             },
             {
-                title: global.getLocales('Город / Район'), dataIndex: 'category', key: 'category', sort: true
+                title: getLocales('Город / Район'), dataIndex: 'category', key: 'category', sort: true
             },
             {
-                title: global.getLocales('Товар / Фасовка'), dataIndex: 'product', key: 'product', sort: true
+                title: getLocales('Товар / Фасовка'), dataIndex: 'product', key: 'product', sort: true
             },
             {
-                title: global.getLocales('Сумма'), dataIndex: 'sum', key: 'sum', sort: true
+                title: getLocales('Сумма'), dataIndex: 'sum', key: 'sum', sort: true
             },
             {
-                title: global.getLocales('Способ оплаты'), dataIndex: 'type', key: 'type', sort: true
+                title: getLocales('Способ оплаты'), dataIndex: 'type', key: 'type', sort: true
             },
             {
-                title: global.getLocales('Пользователь'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
+                title: getLocales('Пользователь'), dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
                 <>
                 {
                     item.user == 0
@@ -219,7 +219,7 @@ class ActivePurchases extends Component {
             {
                 title: '', dataIndex: '', key: 'operations', itemClassName: 'text-center', headerClassName: 'text-center', render: (e, item) =>
                     <div className="sparkline8">
-                        <span className='text-warning'>{global.getLocales('Ожидает оплаты')}</span>
+                        <span className='text-warning'>{getLocales('Ожидает оплаты')}</span>
 
                     </div>
             }
@@ -229,13 +229,13 @@ class ActivePurchases extends Component {
                 <div class="block-body">
                     <div className="row">
                         <div className="col-lg-12">
-                            <h3 className="font-m">{global.getLocales('Активные заказы')}</h3>
+                            <h3 className="font-m">{getLocales('Активные заказы')}</h3>
                             {
                                 this.state.data.purchases <= 0
                                     ?
                                     <div className='text-center font-m'>
                                         
-                                        {global.getLocales('Активные заказы отсутствуют')}
+                                        {getLocales('Активные заказы отсутствуют')}
                                     </div>
                                     :
                                     <Table search={false} columns={tableColumns} items={this.state.items} updateItems={this.updateItems} rowsPerPage="10" />
