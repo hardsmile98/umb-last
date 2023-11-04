@@ -12,6 +12,7 @@ class Config extends Component {
         css: '',
       },
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.sendData = this.sendData.bind(this);
   }
@@ -33,6 +34,7 @@ class Config extends Component {
     this.setState({
       loading: true,
     });
+
     const data = {
       api: 'user',
       body: {
