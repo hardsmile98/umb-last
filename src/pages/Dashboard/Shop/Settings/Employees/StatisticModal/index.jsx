@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable default-case */
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */

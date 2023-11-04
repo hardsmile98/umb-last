@@ -1,6 +1,5 @@
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from 'react';
 
 import { toast } from 'react-toastify';

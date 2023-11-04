@@ -2,7 +2,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/no-static-element-interactions */

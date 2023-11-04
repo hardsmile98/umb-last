@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable react/sort-comp */
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -15,6 +14,7 @@ import { Table, ModalConfirm } from 'components';
 import { request, getLocales } from 'utils';
 import PromocodeModal from './PromocodeModal';
 
+// TODO
 class Promocodes extends Component {
   constructor(props) {
     super(props);

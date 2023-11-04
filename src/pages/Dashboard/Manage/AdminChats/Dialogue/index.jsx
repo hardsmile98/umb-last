@@ -1,5 +1,4 @@
 /* eslint-disable react/no-access-state-in-setstate */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-deprecated */
 /* eslint-disable react/no-find-dom-node */

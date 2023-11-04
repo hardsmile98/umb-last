@@ -1,5 +1,4 @@
 /* eslint-disable react/no-deprecated */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from 'react';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { toast } from 'react-toastify';

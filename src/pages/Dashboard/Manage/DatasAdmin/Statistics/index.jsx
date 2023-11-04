@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-param-reassign */
 /* eslint-disable camelcase */
@@ -11,7 +10,7 @@ import am4lang_ru_RU from '@amcharts/amcharts4/lang/ru_RU';
 import am4themes_dark from '@amcharts/amcharts4/themes/dark';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { NavLink } from 'react-router-dom';
-import { request } from 'utils';
+import { request, getLocales } from 'utils';
 
 am4core.useTheme(am4themes_animated);
 

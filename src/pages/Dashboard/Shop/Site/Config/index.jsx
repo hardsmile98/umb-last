@@ -1,19 +1,18 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { request } from 'utils';
+import { request, getLocales } from 'utils';
 
-class Terms extends Component {
+class Config extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
-      terms: '',
+      loading: false,
+      data: {
+        css: '',
+      },
     };
-
     this.handleChange = this.handleChange.bind(this);
-    this.getData = this.getData.bind(this);
     this.sendData = this.sendData.bind(this);
   }
 
@@ -22,9 +21,7 @@ class Terms extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox'
-      ? 'checked'
-      : 'value'];
+    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -33,14 +30,20 @@ class Terms extends Component {
   }
 
   getData() {
+    this.setState({
+      loading: true,
+    });
     const data = {
       api: 'user',
       body: {
         data: {
-          section: 'inform',
-          type: 'getTerms',
+          section: 'shop',
+          type: 'site',
+          subtype: 'css',
+          shop: this.props.match.params.shopId,
+          action: 'get',
         },
-        action: 'admin',
+        action: 'shops',
       },
       headers: {
         authorization: localStorage.getItem('token'),
@@ -51,8 +54,9 @@ class Terms extends Component {
       if (response.status === 200) {
         if (response.data.success) {
           this.setState({
-            terms: response.data.data.terms,
+            data: response.data.data,
             loading: false,
+            css: response.data.data.css,
           });
         } else {
           this.setState({
@@ -67,21 +71,21 @@ class Terms extends Component {
   }
 
   sendData() {
-    const { state } = this;
-
     this.setState({
       loading: true,
     });
-
     const data = {
       api: 'user',
       body: {
         data: {
-          section: 'inform',
-          type: 'updateTerms',
-          value: state.terms,
+          section: 'shop',
+          type: 'site',
+          subtype: 'css',
+          shop: this.props.match.params.shopId,
+          action: 'update',
+          value: this.state.css,
         },
-        action: 'admin',
+        action: 'shops',
       },
       headers: {
         authorization: localStorage.getItem('token'),
@@ -106,45 +110,40 @@ class Terms extends Component {
   }
 
   render() {
-    const { state } = this;
-
     return (
-      <div className={`block animate__animated animate__fadeIn ${state.loading ? 'blur' : ''}`}>
+      <div className={`block animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
         <div className="block-body">
           <div className="row">
             <div className="col-lg-12">
               <h3 className="font-m">
-                Настроки пользовательского соглашения
+                {getLocales('Продвинутая конфигурация')}
               </h3>
 
-              <div className="avatar-block notice-chat">
-                <FontAwesomeIcon icon={faInfoCircle} />
-                {' HTML поддерживается.'}
-              </div>
+              <br />
 
-              <div className="form-group message-area">
-                <label
-                  htmlFor="terms"
-                  className="font-m"
-                >
-                  Пользовательское соглашение
+              <div className="form-group">
+                <label className="form-control-label font-m">
+                  CSS
                 </label>
                 <textarea
-                  name="terms"
-                  value={state.terms}
+                  value={this.state.css}
+                  className="form-control height-auto"
+                  name="css"
                   onChange={this.handleChange}
-                  className="form-control"
-                  placeholder="Введите соглашение"
-                />
+                >
+                  {this.state.data.css}
+                </textarea>
               </div>
 
-              <button
-                type="button"
-                className="btn btn-primary font-m right"
-                onClick={this.sendData}
-              >
-                Сохранить
-              </button>
+              <div className="mr-auto right">
+                <button
+                  type="button"
+                  className="btn btn-primary font-m"
+                  onClick={this.sendData}
+                >
+                  {getLocales('Сохранить')}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -153,4 +152,4 @@ class Terms extends Component {
   }
 }
 
-export default Terms;
+export default Config;

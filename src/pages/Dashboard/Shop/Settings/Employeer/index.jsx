@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/no-danger */
 /* eslint-disable no-case-declarations */
 /* eslint-disable default-case */

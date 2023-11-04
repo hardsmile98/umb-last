@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';

@@ -1,6 +1,5 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/destructuring-assignment */

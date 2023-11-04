@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/no-access-state-in-setstate */
 import React, { Component } from 'react';
 

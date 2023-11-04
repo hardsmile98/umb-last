@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/no-find-dom-node */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
