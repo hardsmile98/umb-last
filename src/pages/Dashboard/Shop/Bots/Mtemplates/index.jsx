@@ -103,6 +103,7 @@ class Mtemplates extends Component {
         canRecovery = true;
       }
     });
+
     if (!result) {
       this.state.data.tTemplates.map((item) => {
         if (item.name === name) {
@@ -235,6 +236,7 @@ class Mtemplates extends Component {
         datas.push(item);
       }
     });
+
     this.state.data.shoptTemplates.map((item) => {
       if (item.name === datas[0].name) {
         datas[0].content = item.content;
