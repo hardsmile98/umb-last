@@ -47,7 +47,6 @@ class AuthPage extends Component {
 
         <div className="container">
           <div className="row">
-
             <img className="bg" alt="background" src={bg} />
 
             <div className="col-lg-2" />
