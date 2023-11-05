@@ -1,12 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-  Switch,
-  Route,
-  Redirect,
-  BrowserRouter,
-} from 'react-router-dom';
-import { Zoom, ToastContainer } from 'react-toastify';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,40 +13,8 @@ import 'assets/styles/index.css';
 import moment from 'moment';
 import localization from 'moment/locale/ru';
 
-import Dashboard from 'pages/Dashboard';
-import Auth from 'pages/Auth';
+import Routes from 'Routes';
 
 moment.updateLocale('ru', localization);
 
-ReactDOM.render(
-  <BrowserRouter>
-    <ToastContainer
-      autoClose={1500}
-      transition={Zoom}
-      closeButton={false}
-      hideProgressBar
-    />
-
-    <Switch>
-      <Route
-        path="/security"
-        render={(props) => (localStorage.getItem('token')
-          ? <Redirect to="/dashboard" />
-          : <Auth {...props} />)}
-      />
-
-      <Route
-        path="/dashboard"
-        render={(props) => (localStorage.getItem('token')
-          ? <Dashboard {...props} />
-          : <Redirect to="/security" />)}
-      />
-
-      <Route render={(props) => (localStorage.getItem('token')
-        ? <Redirect to="/dashboard" {...props} />
-        : <Redirect to="/security" {...props} />)}
-      />
-    </Switch>
-  </BrowserRouter>,
-  document.getElementById('root'),
-);
+ReactDOM.render(<Routes />, document.getElementById('root'));
