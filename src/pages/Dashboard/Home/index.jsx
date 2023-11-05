@@ -19,6 +19,7 @@ import { request, getLocales } from 'utils';
 
 am4core.useTheme(am4themes_material);
 
+// TODO
 class HomePage extends Component {
   constructor(props) {
     super(props);

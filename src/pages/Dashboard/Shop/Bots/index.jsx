@@ -9,7 +9,6 @@ import Mtemplates from './Mtemplates';
 import BotPages from './Pages';
 import BotsSettings from './Settings';
 import TelegramBots from './Telegram';
-import Userspam from './Userspam';
 import Dispensers from './Dispensers';
 
 class ShopBots extends Component {
@@ -83,7 +82,6 @@ class ShopBots extends Component {
             <Route exact path={`${this.props.match.path}/telegram`} component={TelegramBots} />
             <Route exact path={`${this.props.match.path}/pages`} component={BotPages} />
             <Route exact path={`${this.props.match.path}/dispensers`} component={Dispensers} />
-            <Route exact path={`${this.props.match.path}/userspam`} component={Userspam} />
             <Route exact path={`${this.props.match.path}/messages`} component={Mtemplates} />
             <Route exact path={`${this.props.match.path}/buttons`} component={Btemplates} />
 
