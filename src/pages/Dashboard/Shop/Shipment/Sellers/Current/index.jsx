@@ -353,10 +353,10 @@ class Sellers extends Component {
 
     if (e.target.name === 'categorySort') {
       this.state.data.sellers.map((item) => {
-        if ((item.category === e.target.value || e.target.value === 'all')
-        && (this.state.typeofkladSort === item.typeofklad || this.state.typeofkladSort === 'all')
-        && (this.state.productSort === 'all' || this.state.productSort === item.product)
-        && (this.state.subproductSort === 'all' || this.state.subproductSort === item.subproduct)) {
+        if ((String(item.category) === String(e.target.value) || String(e.target.value) === 'all')
+        && (String(this.state.typeofkladSort) === String(item.typeofklad) || String(this.state.typeofkladSort) === 'all')
+        && (String(this.state.productSort) === 'all' || String(this.state.productSort) === String(item.product))
+        && (String(this.state.subproductSort) === 'all' || String(this.state.subproductSort) === String(item.subproduct))) {
           sorted.push(item);
         }
       });
@@ -379,11 +379,11 @@ class Sellers extends Component {
       });
     } else if (e.target.name === 'subcategorySort') {
       this.state.data.sellers.map((item) => {
-        if ((item.subcategory === e.target.value || e.target.value === 'all')
-        && (this.state.typeofkladSort === item.typeofklad || this.state.typeofkladSort === 'all')
-        && (this.state.productSort === 'all' || this.state.productSort === item.product)
-        && (this.state.categorySort === 'all' || this.state.categorySort === item.category)
-        && (this.state.subproductSort === 'all' || this.state.subproductSort === item.subproduct)) {
+        if ((String(item.subcategory) === String(e.target.value) || String(e.target.value) === 'all')
+        && (String(this.state.typeofkladSort) === String(item.typeofklad) || String(this.state.typeofkladSort) === 'all')
+        && (String(this.state.productSort) === 'all' || String(this.state.productSort) === String(item.product))
+        && (String(this.state.categorySort) === 'all' || String(this.state.categorySort) === String(item.category))
+        && (String(this.state.subproductSort) === 'all' || String(this.state.subproductSort) === String(item.subproduct))) {
           sorted.push(item);
         }
       });
@@ -396,11 +396,11 @@ class Sellers extends Component {
       });
     } else if (e.target.name === 'subproductSort') {
       this.state.data.sellers.map((item) => {
-        if ((item.subproduct === e.target.value || e.target.value === 'all')
-        && (this.state.typeofkladSort === item.typeofklad || this.state.typeofkladSort === 'all')
-        && (this.state.productSort === 'all' || this.state.productSort === item.product)
-        && (this.state.categorySort === 'all' || this.state.categorySort === item.category)
-        && (this.state.subcategorySort === 'all' || this.state.subcategorySort === item.subcategory)) {
+        if ((String(item.subproduct) === String(e.target.value) || String(e.target.value) === 'all')
+        && (String(this.state.typeofkladSort) === String(item.typeofklad) || String(this.state.typeofkladSort) === 'all')
+        && (String(this.state.productSort) === 'all' || String(this.state.productSort) === String(item.product))
+        && (String(this.state.categorySort) === 'all' || String(this.state.categorySort) === String(item.category))
+        && (String(this.state.subcategorySort) === 'all' || String(this.state.subcategorySort) === String(item.subcategory))) {
           sorted.push(item);
         }
       });
@@ -412,11 +412,11 @@ class Sellers extends Component {
       });
     } else if (e.target.name === 'typeofkladSort') {
       this.state.data.sellers.map((item) => {
-        if ((item.typeofklad === e.target.value || e.target.value === 'all')
-        && (this.state.subcategorySort === item.subcategory || this.state.subcategorySort === 'all')
-        && (this.state.productSort === 'all' || this.state.productSort === item.product)
-        && (this.state.categorySort === 'all' || this.state.categorySort === item.category)
-        && (this.state.subproductSort === 'all' || this.state.subproductSort === item.subproduct)) {
+        if ((String(item.typeofklad) === String(e.target.value) || String(e.target.value) === 'all')
+        && (String(this.state.subcategorySort) === String(item.subcategory) || String(this.state.subcategorySort) === 'all')
+        && (String(this.state.productSort) === 'all' || String(this.state.productSort) === String(item.product))
+        && (String(this.state.categorySort) === 'all' || String(this.state.categorySort) === String(item.category))
+        && (String(this.state.subproductSort) === 'all' || String(this.state.subproductSort) === String(item.subproduct))) {
           sorted.push(item);
         }
       });
@@ -428,10 +428,10 @@ class Sellers extends Component {
       });
     } else {
       this.state.data.sellers.map((item) => {
-        if ((item.product === e.target.value || e.target.value === 'all')
-        && (this.state.typeofkladSort === item.typeofklad || this.state.typeofkladSort === 'all')
-        && (this.state.categorySort === 'all' || this.state.categorySort === item.category)
-        && (this.state.subcategorySort === 'all' || this.state.subcategorySort === item.subcategory)) {
+        if ((String(item.product) === String(e.target.value) || String(e.target.value) === 'all')
+        && (String(this.state.typeofkladSort) === String(item.typeofklad) || String(this.state.typeofkladSort) === 'all')
+        && (String(this.state.categorySort) === 'all' || String(this.state.categorySort) === String(item.category))
+        && (String(this.state.subcategorySort) === 'all' || String(this.state.subcategorySort) === String(item.subcategory))) {
           sorted.push(item);
         }
       });

@@ -69,11 +69,11 @@ class Purchases extends Component {
 
     if (e.target.name === 'categorySort') {
       this.state.data.purchases.map((item) => {
-        if ((+item.closed <= +this.state.dateTo || this.state.dateTo === '')
-            && (+item.closed >= +new Date(this.state.dateFrom) || this.state.dateFrom === '')
-            && (item.category === e.target.value || e.target.value === 'all')
-            && (this.state.productSort === 'all' || this.state.productSort === item.product)
-            && (this.state.typeSort === 'all' || this.state.typeSort === item.type)) {
+        if ((+item.closed <= +this.state.dateTo || String(this.state.dateTo) === '')
+            && (+item.closed >= +new Date(this.state.dateFrom) || String(this.state.dateFrom) === '')
+            && (String(item.category) === String(e.target.value) || String(e.target.value) === 'all')
+            && (String(this.state.productSort) === 'all' || String(this.state.productSort) === String(item.product))
+            && (String(this.state.typeSort) === 'all' || String(this.state.typeSort) === String(item.type))) {
           sorted.push(item);
         }
       });
@@ -85,11 +85,11 @@ class Purchases extends Component {
       });
     } else if (e.target.name === 'dateFrom') {
       this.state.data.purchases.map((item) => {
-        if ((+item.closed >= +new Date(e.target.value) || e.target.value === '')
-            && (+item.closed <= +new Date(this.state.dateTo) || this.state.dateTo === '')
-            && (item.category === this.state.categorySort || this.state.categorySort === 'all')
-            && (this.state.productSort === 'all' || this.state.productSort === item.product)
-            && (this.state.typeSort === 'all' || this.state.typeSort === item.type)) {
+        if ((+item.closed >= +new Date(e.target.value) || String(e.target.value) === '')
+            && (+item.closed <= +new Date(this.state.dateTo) || String(this.state.dateTo) === '')
+            && (String(item.category) === String(this.state.categorySort) || String(this.state.categorySort) === 'all')
+            && (String(this.state.productSort) === 'all' || String(this.state.productSort) === String(item.product))
+            && (String(this.state.typeSort) === 'all' || String(this.state.typeSort) === String(item.type))) {
           sorted.push(item);
         }
       });
@@ -101,11 +101,11 @@ class Purchases extends Component {
       });
     } else if (e.target.name === 'dateTo') {
       this.state.data.purchases.map((item) => {
-        if ((+item.closed <= +new Date(e.target.value) || e.target.value === '')
-        && (+item.closed >= +new Date(this.state.dateFrom) || this.state.dateFrom === '')
-        && (item.category === this.state.categorySort || this.state.categorySort === 'all')
-        && (this.state.productSort === 'all' || this.state.productSort === item.product)
-        && (this.state.typeSort === 'all' || this.state.typeSort === item.type)) {
+        if ((+item.closed <= +new Date(e.target.value) || String(e.target.value) === '')
+        && (+item.closed >= +new Date(this.state.dateFrom) || String(this.state.dateFrom) === '')
+        && (String(item.category) === String(this.state.categorySort) || String(this.state.categorySort) === 'all')
+        && (String(this.state.productSort) === 'all' || String(this.state.productSort) === String(item.product))
+        && (String(this.state.typeSort) === 'all' || String(this.state.typeSort) === String(item.type))) {
           sorted.push(item);
         }
       });
@@ -117,14 +117,15 @@ class Purchases extends Component {
       });
     } else if (e.target.name === 'typeSort') {
       this.state.data.purchases.map((item) => {
-        if ((+item.closed <= +this.state.dateTo || this.state.dateTo === '')
-        && (+item.closed >= +new Date(this.state.dateFrom) || this.state.dateFrom === '')
-        && (item.category === this.state.categorySort || this.state.categorySort === 'all')
-        && (this.state.productSort === 'all' || this.state.productSort === item.product)
-        && (e.target.value === 'all' || e.target.value === item.type)) {
+        if ((+item.closed <= +this.state.dateTo || String(this.state.dateTo) === '')
+        && (+item.closed >= +new Date(this.state.dateFrom) || String(this.state.dateFrom) === '')
+        && (String(item.category) === String(this.state.categorySort) || String(this.state.categorySort) === 'all')
+        && (String(this.state.productSort) === 'all' || String(this.state.productSort) === String(item.product))
+        && (String(e.target.value) === 'all' || String(e.target.value) === String(item.type))) {
           sorted.push(item);
         }
       });
+
       this.setState({
         sorted,
         typeSort: e.target.value,
@@ -133,11 +134,11 @@ class Purchases extends Component {
       });
     } else {
       this.state.data.purchases.map((item) => {
-        if ((+item.closed <= +this.state.dateTo || this.state.dateTo === '')
-        && (+item.closed >= +new Date(this.state.dateFrom) || this.state.dateFrom === '')
-        && (item.product === e.target.value || e.target.value === 'all')
-        && (this.state.categorySort === 'all' || this.state.categorySort === item.category)
-        && (this.state.typeSort === 'all' || this.state.typeSort === item.type)) {
+        if ((+item.closed <= +this.state.dateTo || String(this.state.dateTo) === '')
+        && (+item.closed >= +new Date(this.state.dateFrom) || String(this.state.dateFrom) === '')
+        && (String(item.product) === String(e.target.value) || String(e.target.value) === 'all')
+        && (String(this.state.categorySort) === 'all' || String(this.state.categorySort) === String(item.category))
+        && (String(this.state.typeSort) === 'all' || String(this.state.typeSort) === String(item.type))) {
           sorted.push(item);
         }
       });

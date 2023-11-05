@@ -331,8 +331,8 @@ class ModerSellers extends Component {
     const sorted = [];
     if (e.target.name === 'categorySort') {
       this.state.data.sellers.map((item) => {
-        if ((item.category === e.target.value || e.target.value === 'all')
-        && (this.state.productSort === 'all' || this.state.productSort === item.product)) {
+        if ((String(item.category) === String(e.target.value) || String(e.target.value) === 'all')
+        && (String(this.state.productSort) === 'all' || String(this.state.productSort) === String(item.product))) {
           sorted.push(item);
         }
       });
@@ -345,8 +345,8 @@ class ModerSellers extends Component {
       });
     } else {
       this.state.data.sellers.map((item) => {
-        if ((item.product === e.target.value || e.target.value === 'all')
-        && (this.state.categorySort === 'all' || this.state.categorySort === item.category)) {
+        if ((String(item.product) === String(e.target.value) || String(e.target.value) === 'all')
+        && (String(this.state.categorySort) === 'all' || String(this.state.categorySort) === String(item.category))) {
           sorted.push(item);
         }
       });
