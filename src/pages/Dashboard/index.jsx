@@ -259,8 +259,7 @@ class Dashboard extends Component {
                                   <FontAwesomeIcon icon={faWallet} />
                                   {' '}
                                   {state.data.user.balance.toFixed(6)}
-                                  {' '}
-                                  BTC
+                                  {' BTC'}
                                 </span>
                               </li>
                             </NavLink>
@@ -300,9 +299,9 @@ class Dashboard extends Component {
                                 <span>
                                   {getLocales('Поддержка')}
                                   {state.data.unreaded > 0 && (
-                                  <span>
-                                    {state.data.unreaded}
-                                  </span>
+                                    <span>
+                                      {state.data.unreaded}
+                                    </span>
                                   )}
                                 </span>
                               </li>
