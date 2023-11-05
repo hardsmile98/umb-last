@@ -10,8 +10,6 @@ import Dashboard from 'pages/Dashboard';
 import Auth from 'pages/Auth';
 
 function Routes() {
-  const isAuth = localStorage.getItem('token');
-
   return (
     <>
       <ToastContainer
@@ -25,19 +23,19 @@ function Routes() {
         <Switch>
           <Route
             path="/security"
-            render={(props) => (isAuth
+            render={(props) => (localStorage.getItem('token')
               ? <Redirect to="/dashboard" />
               : <Auth {...props} />)}
           />
 
           <Route
             path="/dashboard"
-            render={(props) => (isAuth
+            render={(props) => (localStorage.getItem('token')
               ? <Dashboard {...props} />
               : <Redirect to="/security" />)}
           />
 
-          <Route render={(props) => (isAuth
+          <Route render={(props) => (localStorage.getItem('token')
             ? <Redirect to="/dashboard" {...props} />
             : <Redirect to="/security" {...props} />)}
           />
