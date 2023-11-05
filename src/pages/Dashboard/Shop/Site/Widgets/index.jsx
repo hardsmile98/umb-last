@@ -10,7 +10,6 @@ import { Table, ModalConfirm } from 'components';
 import { request, getLocales } from 'utils';
 import WidgetModal from './WidgetModal';
 
-// TODO
 class Widgets extends Component {
   constructor(props) {
     super(props);

@@ -10,7 +10,7 @@ import moment from 'moment';
 import { toast } from 'react-toastify';
 import { request, getLocales } from 'utils';
 
-// TODO
+
 class Employeer extends Component {
   constructor(props) {
     super(props);

@@ -11,7 +11,6 @@
 import React from 'react';
 import { getLocales } from 'utils';
 
-// TODO REFACTORING
 class Table extends React.Component {
   constructor(props) {
     super(props);

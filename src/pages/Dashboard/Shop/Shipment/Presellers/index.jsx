@@ -13,7 +13,6 @@ import { request, getLocales } from 'utils';
 
 let sellers = [''];
 
-// TODO
 class Presellers extends Component {
   constructor(props) {
     super(props);

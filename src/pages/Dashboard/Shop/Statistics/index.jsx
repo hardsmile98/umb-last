@@ -13,7 +13,6 @@ import { request, getLocales } from 'utils';
 
 am4core.useTheme(am4themes_animated);
 
-// TODO REFACTOR
 class Statistics extends Component {
   constructor(props) {
     super(props);

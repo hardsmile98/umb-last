@@ -14,7 +14,6 @@ import { request, getLocales } from 'utils';
 
 am4core.useTheme(am4themes_animated);
 
-// TODO REFACTOR METHODS
 class Statistics extends Component {
   constructor(props) {
     super(props);
@@ -30,8 +29,10 @@ class Statistics extends Component {
       card: [],
       cripta: [],
       shops: [],
-      dateFrom: moment.unix(new Date(Date.now() - 2592000000).setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
-      dateTo: moment.unix(new Date(Date.now() + 86400000).setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
+      dateFrom: moment.unix(new Date(Date.now() - 2592000000)
+        .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
+      dateTo: moment.unix(new Date(Date.now() + 86400000)
+        .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
     };
 
     this.prepateChartCard = this.prepateChartCard.bind(this);

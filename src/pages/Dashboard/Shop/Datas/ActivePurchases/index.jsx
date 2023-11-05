@@ -10,7 +10,6 @@ import { request, getLocales } from 'utils';
 
 let interval;
 
-// TODO
 class ActivePurchases extends Component {
   constructor(props) {
     super(props);

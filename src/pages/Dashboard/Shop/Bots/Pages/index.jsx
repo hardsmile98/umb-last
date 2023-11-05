@@ -13,7 +13,6 @@ import PageEdit from './PageEdit';
 
 let links = [];
 
-// TODO
 class BotPages extends Component {
   constructor(props) {
     super(props);

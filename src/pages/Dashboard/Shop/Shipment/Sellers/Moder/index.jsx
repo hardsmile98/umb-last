@@ -13,7 +13,6 @@ import SellerModalModer from './Modal';
 
 let sellers = [''];
 
-// TODO
 class ModerSellers extends Component {
   constructor(props) {
     super(props);

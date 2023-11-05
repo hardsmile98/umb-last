@@ -189,7 +189,6 @@ class Dashboard extends Component {
     }));
   }
 
-  // TODO REFACTOR HEADER AND IMPORT DARK CSS
   render() {
     const { props, state } = this;
 

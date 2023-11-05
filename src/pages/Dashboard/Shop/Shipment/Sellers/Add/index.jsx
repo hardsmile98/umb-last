@@ -11,7 +11,6 @@ let sellers = [{
   typeofklad: 0,
 }];
 
-// TODO
 class SellersAdd extends Component {
   constructor(props) {
     super(props);

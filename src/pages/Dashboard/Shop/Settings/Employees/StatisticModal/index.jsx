@@ -10,7 +10,6 @@ import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import moment from 'moment';
 import { getLocales } from 'utils';
 
-// TODO
 class StatisticModal extends Component {
   constructor(props) {
     super(props);

@@ -8,7 +8,6 @@ import { NavLink } from 'react-router-dom';
 import { Table, ModalConfirm } from 'components';
 import { request, getLocales } from 'utils';
 
-// TODO
 class ActivePresellers extends Component {
   constructor(props) {
     super(props);

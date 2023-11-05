@@ -9,6 +9,7 @@ class EmojiInput extends Component {
     this.state = {
       emoji: false,
     };
+
     this.toggleEmoji = this.toggleEmoji.bind(this);
     this.onEmojiClick = this.onEmojiClick.bind(this);
   }

@@ -14,7 +14,6 @@ import { Table, ModalConfirm } from 'components';
 import { request, getLocales } from 'utils';
 import PromocodeModal from './PromocodeModal';
 
-// TODO
 class Promocodes extends Component {
   constructor(props) {
     super(props);
