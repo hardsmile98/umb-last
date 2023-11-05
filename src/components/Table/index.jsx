@@ -181,45 +181,39 @@ class Table extends React.Component {
 
     return (
       <div className="table-wrapper">
-        <style>
-          {'.pagination .item {text-align: center;border-radius: 0 !important;padding: 5px;border: 1px solid #44464f;borderRadius: 3px;marginLeft: 5px;min-width: 35px;height: 35px;textAlign: center;cursor: pointer} .pagination .active {background-color: #44464f;} '}
-        </style>
+        {this.props.search && (
+          <div className="search-wrapper">
+            <label className="font-m">
+              {getLocales('Поиск')}
+              {'( '}
+              {getLocales('Всего')}
+              {': '}
+              {this.props.items.length}
+              {' '}
+              {getLocales('шт.')}
+              )
+            </label>
 
-        {this.props.search === false
-          ? ''
-          : (
-            <div className="search-wrapper">
-              <label className="font-m">
-                {getLocales('Поиск')}
-                {' '}
-                (
-                {getLocales('Всего')}
-                :
-                {' '}
-                {this.props.items.length}
-                {' '}
-                {getLocales('шт.')}
-                )
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                value={this.state.query}
-                onChange={this.handleSearch}
-                placeholder={getLocales('Поиск')}
-              />
-            </div>
-          )}
+            <input
+              type="text"
+              className="form-control"
+              value={this.state.query}
+              onChange={this.handleSearch}
+              placeholder={getLocales('Поиск')}
+            />
+          </div>
+        )}
 
         <table className="table table-striped table-hover">
           <thead>
             <tr>
               {this.props.columns.map((item, index) => (
                 <th key={index} className={item.headerClassName}>
-                  {(item.sort === true)
+                  {item.sort
                     ? (
                       <>
                         <span
+                          aria-hidden
                           className="cursor-pointer"
                           onClick={() => this.sortColumn(item.dataIndex)}
                         >
@@ -238,7 +232,7 @@ class Table extends React.Component {
             {items.map((item) => (
               <tr key={item.id} data-id={item.id}>
                 {this.props.columns
-                  .map((field, index) => ((field.dataIndex === '' || field.key === 'operations')
+                  .map((field, index) => ((!field.dataIndex || field.key === 'operations')
                     ? (
                       <td
                         key={index}

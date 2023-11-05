@@ -773,7 +773,7 @@ li {
 .menu.right {
   width: 100%;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .header-link.active li {
