@@ -30,7 +30,7 @@ class UserModal extends Component {
   componentWillReceiveProps(nextProps) {
     const { props } = this;
 
-    if (String(props.user) !== String(nextProps.user)) {
+    if (props.user !== nextProps.user) {
       this.setState({
         id: nextProps.user.id,
         login: nextProps.user.login,

@@ -26,7 +26,7 @@ class PromocodeModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (String(this.props.promocode) !== String(nextProps.promocode)) {
+    if (this.props.promocode !== nextProps.promocode) {
       this.setState({
         value: nextProps.promocode.value,
         fromDate: moment.unix(nextProps.promocode.fromDate / 1000).format('YYYY-MM-DD'),

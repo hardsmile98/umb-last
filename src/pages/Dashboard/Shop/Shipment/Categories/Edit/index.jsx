@@ -28,7 +28,7 @@ class CategoryEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (String(this.props.category) !== String(nextProps.category)) {
+    if (this.props.category !== nextProps.category) {
       this.setState({
         sub: nextProps.category.sub,
         name: nextProps.category.name,

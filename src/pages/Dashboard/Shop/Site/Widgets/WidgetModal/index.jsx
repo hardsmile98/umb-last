@@ -19,7 +19,7 @@ class WidgetModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (String(this.props.page) !== String(nextProps.page)) {
+    if (this.props.page !== nextProps.page) {
       this.setState({
         name: nextProps.page.name,
         indexPage: nextProps.page.indexPage,
@@ -43,6 +43,7 @@ class WidgetModal extends Component {
       this.setState({
         loading: true,
       });
+
       const data = {
         api: 'user',
         body: {

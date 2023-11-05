@@ -22,7 +22,7 @@ class FaqModal extends Component {
   componentWillReceiveProps(nextProps) {
     const { props } = this;
 
-    if (String(props.new) !== String(nextProps.new)) {
+    if (props.new !== nextProps.new) {
       this.setState({
         content: nextProps.new.content,
         id: nextProps.new.id,

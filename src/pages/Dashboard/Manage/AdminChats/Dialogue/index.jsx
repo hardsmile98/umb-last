@@ -67,7 +67,7 @@ class Dialogue extends Component {
   componentWillReceiveProps(nextProps) {
     const { props } = this;
 
-    if (String(props.match.params.chatId) !== String(nextProps.match.params.chatId)) {
+    if (props.match.params.chatId !== nextProps.match.params.chatId) {
       clearInterval(interval);
 
       this.setState({

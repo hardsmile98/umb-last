@@ -29,7 +29,7 @@ class PageEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (String(this.props.page) !== String(nextProps.page)) {
+    if (this.props.page !== nextProps.page) {
       this.setState({
         name: nextProps.page.name,
         width: nextProps.page.width,
