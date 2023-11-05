@@ -1,3 +1,5 @@
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import Picker from 'emoji-picker-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,10 +28,8 @@ class EmojiInput extends Component {
   }
 
   toggleEmoji() {
-    const { state, setState } = this;
-
-    setState({
-      emoji: !state.emoji,
+    this.setState({
+      emoji: !this.state.emoji,
     });
   }
 

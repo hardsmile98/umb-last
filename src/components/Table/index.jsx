@@ -29,11 +29,10 @@ class Table extends React.Component {
   handleSearch(event) {
     const query = event.target.value;
     const regex = new RegExp(query, 'gi');
-    const { items } = this.props;
     const newItems = [];
 
     if (query.length > 0) {
-      items.map((item) => {
+      this.props.items.map((item) => {
         for (const k in item) {
           if (regex.test(item[k])) {
             newItems.push(item);
