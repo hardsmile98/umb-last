@@ -595,7 +595,6 @@ class Promocodes extends Component {
                 {this.state.data.promocodes.length > 0
                   ? (
                     <Table
-                      search={false}
                       columns={tableColumns}
                       items={this.state.items}
                       updateItems={this.updateItems}

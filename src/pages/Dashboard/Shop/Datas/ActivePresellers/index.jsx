@@ -304,7 +304,6 @@ class ActivePresellers extends Component {
                   )
                   : (
                     <Table
-                      search={false}
                       columns={tableColumns}
                       items={this.state.items}
                       updateItems={this.updateItems}

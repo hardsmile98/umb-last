@@ -360,7 +360,6 @@ class MassWithdrawals extends Component {
             </h3>
 
             <Table
-              search={false}
               columns={tableColumns}
               items={this.state.items}
               updateItems={this.updateItems}

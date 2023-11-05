@@ -235,6 +235,7 @@ class DataUsers extends Component {
                     </div>
 
                     <Table
+                      search
                       columns={tableColumns}
                       items={this.state.items}
                       updateItems={this.updateItems}

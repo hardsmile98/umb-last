@@ -243,7 +243,6 @@ class Faq extends Component {
                 </h3>
 
                 <Table
-                  search={false}
                   columns={tableColumns}
                   items={state.items}
                   updateItems={this.updateItems}

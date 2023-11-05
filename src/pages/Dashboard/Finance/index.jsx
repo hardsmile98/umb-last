@@ -955,7 +955,6 @@ class Finance extends Component {
                   )
                   : (
                     <Table
-                      search={false}
                       columns={tableColumns}
                       items={state.items}
                       updateItems={this.updateItems}

@@ -110,6 +110,7 @@ class Activities extends Component {
               <br />
 
               <Table
+                search
                 columns={tableColumns}
                 items={state.items}
                 updateItems={this.updateItems}

@@ -219,6 +219,7 @@ class Reviews extends Component {
             {this.state.data.reviewsAc.length > 0
               ? (
                 <Table
+                  search
                   columns={tableColumns}
                   items={this.state.items1}
                   updateItems={this.updateItems}
@@ -242,6 +243,7 @@ class Reviews extends Component {
             {this.state.data.reviewsDe.length > 0
               ? (
                 <Table
+                  search
                   columns={tableColumns}
                   items={this.state.items2}
                   updateItems={this.updateItems}

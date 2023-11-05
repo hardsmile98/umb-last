@@ -153,6 +153,7 @@ class ShopsAdmin extends Component {
               {state.data.shops.length > 0
                 ? (
                   <Table
+                    search
                     columns={tableColumns}
                     items={state.items}
                     updateItems={this.updateItems}

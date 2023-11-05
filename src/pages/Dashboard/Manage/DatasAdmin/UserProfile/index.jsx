@@ -676,6 +676,7 @@ class UserProfile extends Component {
               {state.data.user.finance.length > 0
                 ? (
                   <Table
+                    search
                     columns={tableColumns}
                     items={state.items}
                     updateItems={this.updateItems}

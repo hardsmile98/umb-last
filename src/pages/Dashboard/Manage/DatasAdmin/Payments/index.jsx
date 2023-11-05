@@ -177,7 +177,6 @@ class Payments extends Component {
               {state.data.payments.length > 0
                 ? (
                   <Table
-                    search={false}
                     columns={tableColumns}
                     items={state.items}
                     updateItems={this.updateItems}

@@ -703,7 +703,6 @@ class UserProfile extends Component {
                 {this.state.data.user.purchasesList.length > 0
                   ? (
                     <Table
-                      search={false}
                       columns={tableColumns}
                       items={this.state.items}
                       updateItems={this.updateItems}

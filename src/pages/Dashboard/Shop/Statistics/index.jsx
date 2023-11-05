@@ -611,7 +611,6 @@ class Statistics extends Component {
                 {this.state.data.products.length > 0
                   ? (
                     <Table
-                      search={false}
                       columns={tableColumns}
                       items={this.state.items}
                       updateItems={this.updateItems}

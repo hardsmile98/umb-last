@@ -240,7 +240,6 @@ class Userspam extends Component {
                 {this.state.data.spam.length > 0
                   ? (
                     <Table
-                      search={false}
                       columns={tableColumns}
                       items={this.state.items}
                       updateItems={this.updateItems}

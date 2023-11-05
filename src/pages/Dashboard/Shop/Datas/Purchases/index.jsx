@@ -476,6 +476,7 @@ class Purchases extends Component {
                     {this.state.items.length > 0
                       ? (
                         <Table
+                          search
                           columns={tableColumns}
                           items={this.state.items}
                           updateItems={this.updateItems}

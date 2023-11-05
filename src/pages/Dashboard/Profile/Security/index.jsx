@@ -473,8 +473,9 @@ class Security extends Component {
                     <h3 className="font-m">
                       {getLocales('История сессий')}
                     </h3>
-                    <br />
+
                     <Table
+                      search
                       columns={tableColumns}
                       items={state.items}
                       updateItems={this.updateItems}
