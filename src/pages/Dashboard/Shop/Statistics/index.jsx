@@ -9,7 +9,7 @@ import am4themes_dark from '@amcharts/amcharts4/themes/dark';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Table } from 'components';
 import { request, getLocales } from 'utils';
-// import ProfitModal from './ProfitModal'
+import ProfitModal from './ProfitModal'
 
 am4core.useTheme(am4themes_animated);
 
@@ -628,13 +628,14 @@ class Statistics extends Component {
           </div>
         </div>
 
-        {/* <ProfitModal
-        products={this.state.data.products}
-        currency={this.state.data.currency}
-        purchases={this.state.data.purchases}
-        subproducts={this.state.data.subproducts}
-        toggle={this.toggle}
-        modal={this.state.modal}/> */}
+        <ProfitModal
+          products={this.state.data.products}
+          currency={this.state.data.currency}
+          purchases={this.state.data.purchases}
+          subproducts={this.state.data.subproducts}
+          toggle={this.toggle}
+          modal={this.state.modal}
+        />
       </>
     );
   }
