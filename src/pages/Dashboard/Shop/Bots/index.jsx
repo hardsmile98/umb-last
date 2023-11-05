@@ -41,8 +41,7 @@ class ShopBots extends Component {
               </NavLink>
 
               <NavLink
-                t
-                o={`${this.props.match.url}/dispensers`}
+                to={`${this.props.match.url}/dispensers`}
                 activeClassName="active"
                 className="xtabs__item"
               >
