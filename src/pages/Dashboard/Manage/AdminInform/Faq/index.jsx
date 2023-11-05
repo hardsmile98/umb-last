@@ -38,7 +38,9 @@ class Faq extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -156,7 +158,7 @@ class Faq extends Component {
 
     if (id !== 0) {
       state.data.news.forEach((item) => {
-        if (item.id === id) {
+        if (String(item.id) === String(id)) {
           this.setState({
             modal: true,
             new: item,

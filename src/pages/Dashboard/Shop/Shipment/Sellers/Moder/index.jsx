@@ -55,13 +55,13 @@ class ModerSellers extends Component {
   }
 
   editToggle(id) {
-    if (id === 0) {
+    if (+id === 0) {
       this.setState({
         editModal: !this.state.editModal,
       });
     } else {
       this.state.data.sellers.map((item) => {
-        if (item.id === id) {
+        if (String(item.id) === String(id)) {
           this.setState({
             editSeller: item,
           });
@@ -94,46 +94,52 @@ class ModerSellers extends Component {
 
     this.state.sorted.map((item) => {
       this.state.data.categories.map((category) => {
-        if (item.category === category.id) {
+        if (String(item.category) === String(category.id)) {
           data.category = category.name;
-          if (category.sub === 1) {
+
+          if (String(category.sub) === '1') {
             category.subcategories.map((subcategory) => {
-              if (subcategory.id === item.subcategory) {
+              if (String(subcategory.id) === String(item.subcategory)) {
                 data.category += ` / ${subcategory.name}`;
               }
             });
           }
         }
       });
+
       this.state.data.products.map((product) => {
-        if (item.product === product.id) {
+        if (String(item.product) === String(product.id)) {
           data.product = product.name;
-          if (product.sub === 1) {
+
+          if (String(product.sub) === '1') {
             product.subproducts.map((subproduct) => {
-              if (subproduct.id === item.subproduct) {
+              if (String(subproduct.id) === String(item.subproduct)) {
                 data.product += ` / ${subproduct.name}${subproduct.city ? (` (${subproduct.city})`) : ''}`;
               }
             });
           }
         }
       });
+
       const itemModified = {
         id: item.id,
         category: data.category,
         product: data.product,
         status: item.status,
       };
+
       this.state.data.employees.map((employer) => {
-        if (employer.systemId === item.user) {
+        if (String(employer.systemId) === String(item.user)) {
           itemModified.user = employer.login + (employer.notice ? (` (${employer.notice})`) : '');
         }
       });
 
       this.state.data.typeOfKlads.map((types) => {
-        if (types.id === item.typeofklad) {
+        if (String(types.id) === String(item.typeofklad)) {
           itemModified.type = getLocales(types.name);
         }
       });
+
       items.push(itemModified);
     });
 
@@ -201,8 +207,8 @@ class ModerSellers extends Component {
 
     if (name === 'category') {
       this.state.data.categories.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === '1') {
             this.setState({
               subcategory: '0',
             });
@@ -211,6 +217,7 @@ class ModerSellers extends Component {
               subcategory: '0',
             });
           }
+
           this.setState({
             [name]: value,
           });
@@ -218,8 +225,8 @@ class ModerSellers extends Component {
       });
     } else if (name === 'product') {
       this.state.data.products.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === '1') {
             this.setState({
               subproduct: '0',
             });
@@ -228,6 +235,7 @@ class ModerSellers extends Component {
               subproduct: '0',
             });
           }
+
           this.setState({
             [name]: value,
           });
@@ -328,6 +336,7 @@ class ModerSellers extends Component {
           sorted.push(item);
         }
       });
+
       this.setState({
         sorted,
         categorySort: e.target.value,
@@ -341,6 +350,7 @@ class ModerSellers extends Component {
           sorted.push(item);
         }
       });
+
       this.setState({
         sorted,
         productSort: e.target.value,
@@ -417,13 +427,17 @@ class ModerSellers extends Component {
           <div className="sparkline8">
             <button
               type="button"
-              className={`btn  font-m auth-btn ${item.status === 1 ? ' btn-primary' : (item.status === 2 ? ' btn-danger' : ' btn-secondary')}`}
+              className={`btn  font-m auth-btn ${String(item.status) === '1'
+                ? ' btn-primary'
+                : (String(item.status) === '2'
+                  ? ' btn-danger'
+                  : ' btn-secondary')}`}
             >
               {' '}
-              {item.status === 1
+              {String(item.status) === '1'
                 ? getLocales('В продаже')
-                : (item.status === 2 ? getLocales('На проверке')
-                  : (item.status === 3 ? getLocales('На доработке')
+                : (String(item.status) === '2' ? getLocales('На проверке')
+                  : (String(item.status) === '3' ? getLocales('На доработке')
                     : getLocales('Зарезервирован')))}
             </button>
           </div>
@@ -447,7 +461,7 @@ class ModerSellers extends Component {
 
             <button
               type="button"
-              disabled={item.status === 0}
+              disabled={String(item.status) === '0'}
               onClick={() => this.confirmToggle(item.id)}
               className="btn btn-danger btn-table"
             >

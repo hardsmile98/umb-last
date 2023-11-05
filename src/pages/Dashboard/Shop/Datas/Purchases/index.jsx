@@ -66,6 +66,7 @@ class Purchases extends Component {
 
   sort(e) {
     const sorted = [];
+
     if (e.target.name === 'categorySort') {
       this.state.data.purchases.map((item) => {
         if ((+item.closed <= +this.state.dateTo || this.state.dateTo === '')
@@ -159,7 +160,7 @@ class Purchases extends Component {
 
     this.state.sorted.map((item) => {
       let itemModified;
-      if (item.user === 0) {
+      if (String(item.user) === '0') {
         itemModified = {
           id: item.id,
           category: item.category,
@@ -176,7 +177,7 @@ class Purchases extends Component {
         };
       } else {
         this.state.data.users.map((user) => {
-          if (item.user === user.id) {
+          if (String(item.user) === String(user.id)) {
             itemModified = {
               id: item.id,
               category: item.category,
@@ -295,7 +296,7 @@ class Purchases extends Component {
         itemClassName: 'text-center',
         headerClassName: 'text-center',
         key: 'operations',
-        render: (e, item) => (item.user === 0
+        render: (e, item) => (String(item.user) === '0'
           ? 'Anonym'
           : (
             <NavLink to={`/dashboard/shops/${this.props.match.params.shopId}/datas/users/${item.user}`}>
@@ -316,7 +317,7 @@ class Purchases extends Component {
         itemClassName: 'text-center',
         headerClassName: 'text-center',
         key: 'operations',
-        render: (e, item) => (item.notfound === 1
+        render: (e, item) => (String(item.notfound) === '1'
           ? (
             <span
               title={getLocales('Ненаход')}
@@ -382,9 +383,7 @@ class Purchases extends Component {
                             >
                               <option value="all">{getLocales('Все')}</option>
                               {this.state.categories.map((item) => (
-                                <option
-                                  value={item}
-                                >
+                                <option value={item}>
                                   {item}
                                 </option>
                               ))}

@@ -213,11 +213,14 @@ class ProductsAdd extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     if (name.slice(0, 10) === 'subproduct') {
       subproducts[e.target.id][name.slice(10).toLowerCase()] = value;
+
       this.setState({
         subproducts,
       });
@@ -231,11 +234,14 @@ class ProductsAdd extends Component {
   deleteSubproduct(id) {
     if (this.state.action === 'edit') {
       deleted.push(this.state.subproducts[id].id);
+
       this.setState({
         deleted,
       });
     }
+
     subproducts.splice(id, 1);
+
     this.setState({
       subproducts,
     });
@@ -317,7 +323,8 @@ class ProductsAdd extends Component {
                           <option value="1">{getLocales('Присутствует')}</option>
                         </select>
                       </div>
-                      {this.state.sub === 0
+
+                      {String(this.state.sub) === '0'
                         ? (
                           <div className="form-group">
                             <label className="form-control-label font-m">
@@ -342,7 +349,7 @@ class ProductsAdd extends Component {
                     </div>
 
                     <div className="col-lg-6">
-                      {this.state.sub === 1
+                      {String(this.state.sub) === '1'
                         ? (
                           <div className="form-group">
                             <label className="form-control-label font-m">
@@ -424,7 +431,7 @@ class ProductsAdd extends Component {
                         )}
                     </div>
 
-                    {this.state.sub === 0
+                    {String(this.state.sub) === '0'
                       ? ''
                       : (
                         <div className="col-lg-12">
@@ -599,7 +606,7 @@ class ProductsAdd extends Component {
                         </div>
                       )}
 
-                    {this.state.sub === 0
+                    {String(this.state.sub) === '0'
                       ? (
                         <div className="col-lg-12">
                           <div className="form-group">
@@ -648,10 +655,10 @@ class ProductsAdd extends Component {
                         className="btn btn-primary font-m auth-btn right"
                       >
                         {this.state.loading
-                          ? <>{getLocales('Загрузка...')}</>
-                          : (this.state.action === 'edit'
-                            ? <>{getLocales('Сохранить')}</>
-                            : <>{getLocales('Добавить товар')}</>)}
+                          ? getLocales('Загрузка...')
+                          : this.state.action === 'edit'
+                            ? getLocales('Сохранить')
+                            : getLocales('Добавить товар')}
                       </button>
                     </div>
                   </div>

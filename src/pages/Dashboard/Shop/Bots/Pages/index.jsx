@@ -56,7 +56,9 @@ class BotPages extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     if (name === 'link' || name === 'value') {
@@ -169,7 +171,7 @@ class BotPages extends Component {
   toggle(id) {
     if (id) {
       this.state.data.pages.map((item) => {
-        if (item.id === id) {
+        if (String(item.id) === String(id)) {
           this.setState({
             activePage: item,
             modal: !this.state.modal,
@@ -264,7 +266,7 @@ class BotPages extends Component {
     const keyboard = [];
     let line = [];
     this.state.data.pages.map((page, index) => {
-      if (page.width === 1) {
+      if (String(page.width) === '1') {
         if (line.length === 0) {
           line.push(page);
           keyboard.push(line);
@@ -418,6 +420,7 @@ class BotPages extends Component {
                               </span>
                             </div>
                           )}
+
                           {this.state.links.map((item, key) => (
                             <div className="avatar-block">
                               <div className="row">

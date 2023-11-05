@@ -46,6 +46,7 @@ class Guide extends Component {
             if (item.replace(/[\r\n]/gm, '').slice(0, 2) === localStorage.getItem('lang')) {
               response.data.data.guide = item.slice(2);
             }
+
             return item;
           });
 

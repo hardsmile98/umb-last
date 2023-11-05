@@ -90,9 +90,9 @@ function ModalFinance({
             <input
               disabled
               autoComplete="off"
-              value={operation.status === 1
+              value={String(operation.status) === '1'
                 ? getLocales('Завершена')
-                : (operation.status === -1
+                : (String(operation.status) === '-1'
                   ? getLocales('Отменена')
                   : getLocales('Ожидает подтверждений'))}
               className="form-control"

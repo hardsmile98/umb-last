@@ -85,12 +85,12 @@ class Payments extends Component {
       type: item.type,
       exId: item.exId,
       realStatus: item.status,
-      status: item.status === 0
-        ? 'Ожидает оплаты' : (item.status === 1
-          ? 'Ожидает подтверждений' : (item.status === 2
+      status: +item.status === 0
+        ? 'Ожидает оплаты' : (+item.status === 1
+          ? 'Ожидает подтверждений' : (+item.status === 2
             ? 'Успешно оплачена'
             : 'Отменена')),
-      closed: item.status === 2
+      closed: +item.status === 2
         ? moment.unix(item.closed / 1000).format('LLL')
         : moment.unix(item.created / 1000).format('LLL'),
     }));

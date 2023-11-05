@@ -59,7 +59,9 @@ class Ticket extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -379,7 +381,7 @@ class Ticket extends Component {
                       Направление
                     </label>
                     <select
-                      disabled={state.loading || state.data.ticket.status === -1}
+                      disabled={state.loading || String(state.data.ticket.status) === '-1'}
                       onChange={this.changeDirection}
                       value={state.data.ticket.direction}
                       className="form-control"
@@ -397,7 +399,7 @@ class Ticket extends Component {
 
                   <button
                     type="button"
-                    disabled={state.data.ticket.status === -1}
+                    disabled={String(state.data.ticket.status) === '-1'}
                     onClick={this.closeTicket}
                     className="btn btn-danger fullwidth font-m auth-btn"
                   >
@@ -433,7 +435,7 @@ class Ticket extends Component {
 
                   <button
                     type="button"
-                    disabled={state.data.ticket.status === -1}
+                    disabled={String(state.data.ticket.status) === '-1'}
                     onClick={this.closeTicket}
                     className="btn btn-danger fullwidth font-m auth-btn"
                   >

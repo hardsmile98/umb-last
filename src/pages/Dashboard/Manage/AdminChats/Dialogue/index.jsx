@@ -115,7 +115,7 @@ class Dialogue extends Component {
     request(data, (response) => {
       if (response.status === 200) {
         if (response.data.success) {
-          if (response.data.data.chat.id === state.chatId) {
+          if (String(response.data.data.chat.id) === String(state.chatId)) {
             const last = state.data;
 
             this.setState({
@@ -424,7 +424,7 @@ class Dialogue extends Component {
                   >
                     {state.data.chat.messages.length > 0
                       ? state.data.chat.messages.map((message) => (
-                        <div className={`message-block font-m chat ${message.admin === 0 ? 'admin' : 'user'}`}>
+                        <div className={`message-block font-m chat ${String(message.admin) === '0' ? 'admin' : 'user'}`}>
                           <div className="bold message-name">
                             {message.user}
                           </div>
@@ -586,7 +586,7 @@ class Dialogue extends Component {
                     </div>
                   </div>
                   <div className="col-lg-12">
-                    {state.data.chat.user.block === 0
+                    {String(state.data.chat.user.block) === '0'
                       ? (
                         <button
                           type="button"

@@ -77,7 +77,7 @@ class UsersAdmin extends Component {
 
     if (id !== 0) {
       state.data.users.forEach((user) => {
-        if (user.id === id) {
+        if (String(user.id) === String(id)) {
           this.setState({
             modal: true,
             user,
@@ -243,9 +243,9 @@ class UsersAdmin extends Component {
             <button
               type="button"
               onClick={() => this.blockAction(item.id)}
-              className={`btn btn-table ${item.block === 0 ? 'btn-danger' : 'btn-primary'}`}
+              className={`btn btn-table ${String(item.block) === '0' ? 'btn-danger' : 'btn-primary'}`}
             >
-              {item.block === 0
+              {String(item.block) === '0'
                 ? 'Блок'
                 : 'Разблок'}
             </button>

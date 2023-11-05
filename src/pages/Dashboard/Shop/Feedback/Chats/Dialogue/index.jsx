@@ -66,7 +66,9 @@ class FeedbackDialogue extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -97,8 +99,9 @@ class FeedbackDialogue extends Component {
     request(data, (response) => {
       if (response.status === 200) {
         if (response.data.success) {
-          if (response.data.data.chat.id === this.state.chatId) {
+          if (String(response.data.data.chat.id) === String(this.state.chatId)) {
             const last = this.state.data;
+
             this.setState({
               data: response.data.data,
               loading: false,
@@ -300,7 +303,7 @@ class FeedbackDialogue extends Component {
                 <h3 className="font-m chat-delete-chat">
                   {getLocales('Чат')}
                   {' '}
-                  {this.state.data.chat.readed === 0 ? (
+                  {String(this.state.data.chat.readed) === '0' ? (
                     <span>
                       |
                       <a aria-hidden onClick={this.readed}>
@@ -470,7 +473,7 @@ class FeedbackDialogue extends Component {
                   </div>
 
                   <div className="col-lg-12">
-                    {this.state.data.chat.user.block === 0
+                    {String(this.state.data.chat.user.block) === '0'
                       ? (
                         <button
                           type="button"

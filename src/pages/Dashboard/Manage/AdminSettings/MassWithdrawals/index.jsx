@@ -166,7 +166,7 @@ class MassWithdrawals extends Component {
 
     this.state.data.finance.map((item) => {
       this.state.data.users.map((user) => {
-        if (user.id === item.user) {
+        if (String(user.id) === String(item.user)) {
           const itemModified = {
             id: item.id,
             wallet: item.wallet,
@@ -305,24 +305,25 @@ class MassWithdrawals extends Component {
                           </div>
 
                           <div className="col-lg-2 center">
-                            {this.state.data.users.map((user) => (user.id === item.user
-                              ? (
-                                <NavLink to={`/dashboard/manage/datas/users/${item.user}`}>
-                                  {user.login}
-                                  {' '}
-                                  (выводов:
-                                  {' '}
-                                  {item.last}
-                                  )
-                                  {' '}
-                                  {item.isPremium === 1 && <FontAwesomeIcon icon={faStar} />}
-                                </NavLink>
-                              )
-                              : ''))}
+                            {this.state.data.users
+                              .map((user) => (String(user.id) === String(item.user)
+                                ? (
+                                  <NavLink to={`/dashboard/manage/datas/users/${item.user}`}>
+                                    {user.login}
+                                    {' '}
+                                    (выводов:
+                                    {' '}
+                                    {item.last}
+                                    )
+                                    {' '}
+                                    {String(item.isPremium) === '1' && <FontAwesomeIcon icon={faStar} />}
+                                  </NavLink>
+                                )
+                                : ''))}
                           </div>
 
                           <div className="col-lg-2">
-                            {(item.isPremium === 0 && +item.last < 2 && item.moder === 0)
+                            {(String(item.isPremium) === '0' && +item.last < 2 && String(item.moder) === '0')
                               ? (
                                 <button
                                   type="button"

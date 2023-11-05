@@ -70,7 +70,7 @@ class Sellers extends Component {
 
   getTypeOfKlad(id) {
     this.state.data.typeOfKlads.map((item) => {
-      if (item.id === id) {
+      if (String(item.id) === String(id)) {
         return getLocales(item.name);
       }
     });
@@ -78,12 +78,13 @@ class Sellers extends Component {
 
   editToggle(id) {
     this.state.data.sellers.map((item) => {
-      if (item.id === id) {
+      if (String(item.id) === String(id)) {
         this.setState({
           editSeller: item,
         });
       }
     });
+
     this.setState({
       editModal: !this.state.editModal,
     });
@@ -118,40 +119,48 @@ class Sellers extends Component {
 
     this.state.sorted.map((item) => {
       this.state.data.categories.map((category) => {
-        if (item.category === category.id) {
+        if (String(item.category) === String(category.id)) {
           data.category = category.name;
-          if (category.sub === 1) {
+
+          if (String(category.sub) === '1') {
             category.subcategories.map((subcategory) => {
-              if (subcategory.id === item.subcategory) {
+              if (String(subcategory.id) === String(item.subcategory)) {
                 data.category += ` / ${subcategory.name}`;
               }
             });
           }
         }
       });
+
       this.state.data.products.map((product) => {
-        if (item.product === product.id) {
+        if (String(item.product) === String(product.id)) {
           data.product = product.name;
-          if (product.sub === 1) {
+
+          if (String(product.sub) === '1') {
             product.subproducts.map((subproduct) => {
-              if (subproduct.id === item.subproduct) {
-                data.product += ` / ${subproduct.name}${subproduct.city ? (` (${subproduct.city})`) : ''}`;
+              if (String(subproduct.id) === String(item.subproduct)) {
+                data.product += ` / ${subproduct.name}${subproduct.city
+                  ? (` (${subproduct.city})`)
+                  : ''}`;
               }
             });
           }
         }
       });
+
       const itemModified = {
         id: item.id,
         category: data.category,
         product: data.product,
         status: item.status,
       };
+
       this.state.data.typeOfKlads.map((types) => {
-        if (types.id === item.typeofklad) {
+        if (String(types.id) === String(item.typeofklad)) {
           itemModified.type = getLocales(types.name);
         }
       });
+
       items.push(itemModified);
     });
 
@@ -219,8 +228,8 @@ class Sellers extends Component {
 
     if (name === 'category') {
       this.state.data.categories.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === '1') {
             this.setState({
               subcategory: '0',
             });
@@ -229,6 +238,7 @@ class Sellers extends Component {
               subcategory: '0',
             });
           }
+
           this.setState({
             [name]: value,
           });
@@ -236,8 +246,8 @@ class Sellers extends Component {
       });
     } else if (name === 'product') {
       this.state.data.products.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === '1') {
             this.setState({
               subproduct: '0',
             });
@@ -246,6 +256,7 @@ class Sellers extends Component {
               subproduct: '0',
             });
           }
+
           this.setState({
             [name]: value,
           });
@@ -339,6 +350,7 @@ class Sellers extends Component {
 
   sort(e) {
     const sorted = [];
+
     if (e.target.name === 'categorySort') {
       this.state.data.sellers.map((item) => {
         if ((item.category === e.target.value || e.target.value === 'all')
@@ -348,12 +360,15 @@ class Sellers extends Component {
           sorted.push(item);
         }
       });
+
       let sub;
+
       this.state.data.categories.map((item) => {
         if (item.id === e.target.value) {
           sub = item.sub;
         }
       });
+
       this.setState({
         sorted,
         categorySort: e.target.value,
@@ -372,6 +387,7 @@ class Sellers extends Component {
           sorted.push(item);
         }
       });
+
       this.setState({
         sorted,
         subcategorySort: e.target.value,
@@ -420,11 +436,13 @@ class Sellers extends Component {
         }
       });
       let sub;
+
       this.state.data.products.map((item) => {
         if (item.id === e.target.value) {
           sub = item.sub;
         }
       });
+
       this.setState({
         sorted,
         productSort: e.target.value,
@@ -540,13 +558,17 @@ class Sellers extends Component {
           <div className="sparkline8">
             <button
               type="button"
-              className={`btn  font-m auth-btn ${item.status === 1 ? ' btn-primary' : (item.status === 2 ? ' btn-danger' : ' btn-secondary')}`}
+              className={`btn  font-m auth-btn ${String(item.status) === '1'
+                ? ' btn-primary'
+                : (String(item.status) === '2'
+                  ? ' btn-danger'
+                  : ' btn-secondary')}`}
             >
               {' '}
-              {item.status === 1
+              {String(item.status) === '1'
                 ? getLocales('В продаже')
-                : (item.status === 2 ? getLocales('На проверке')
-                  : (item.status === 3 ? getLocales('Требует доработки')
+                : (String(item.status) === '2' ? getLocales('На проверке')
+                  : (String(item.status) === '3' ? getLocales('Требует доработки')
                     : getLocales('Зарезервирован')))}
             </button>
           </div>
@@ -583,7 +605,7 @@ class Sellers extends Component {
 
             <button
               type="button"
-              disabled={item.status === 0}
+              disabled={String(item.status) === '0'}
               onClick={() => this.confirmToggle(item.id)}
               className="btn btn-danger btn-table"
             >
@@ -610,7 +632,7 @@ class Sellers extends Component {
                   </h4>
 
                   <div className="row">
-                    <div className={this.state.cSub === 0 ? 'col-lg-4' : 'col-lg-3'}>
+                    <div className={String(this.state.cSub) === '0' ? 'col-lg-4' : 'col-lg-3'}>
                       <div className="form-group">
                         <label className="form-control-label font-m">
                           {getLocales('Город')}
@@ -632,7 +654,7 @@ class Sellers extends Component {
                       </div>
                     </div>
 
-                    {this.state.cSub === 0
+                    {String(this.state.cSub) === '0'
                       ? ''
                       : (
                         <div className="col-lg-2">
@@ -649,7 +671,7 @@ class Sellers extends Component {
                             >
                               <option value="all">{getLocales('Все')}</option>
                               {this.state.data.categories
-                                .map((item) => (item.id === this.state.categorySort
+                                .map((item) => (String(item.id) === String(this.state.categorySort)
                                   ? (
                                     item.subcategories.map((subcategory) => (
                                       <option value={subcategory.id}>
@@ -663,7 +685,7 @@ class Sellers extends Component {
                         </div>
                       )}
 
-                    <div className={this.state.pSub === 0 ? 'col-lg-4' : 'col-lg-3'}>
+                    <div className={String(this.state.pSub) === '0' ? 'col-lg-4' : 'col-lg-3'}>
                       <div className="form-group">
                         <label className="form-control-label font-m">
                           {getLocales('Товар')}
@@ -685,7 +707,7 @@ class Sellers extends Component {
                       </div>
                     </div>
 
-                    {this.state.pSub === 0
+                    {String(this.state.pSub) === '0'
                       ? ''
                       : (
                         <div className="col-lg-2">
@@ -702,7 +724,7 @@ class Sellers extends Component {
                             >
                               <option value="all">{getLocales('Все')}</option>
                               {this.state.data.products
-                                .map((item) => (item.id === this.state.productSort
+                                .map((item) => (String(item.id) === String(this.state.productSort)
                                   ? item.subproducts.map((subproduct) => (
                                     <option value={subproduct.id}>
                                       {subproduct.name}
@@ -715,7 +737,12 @@ class Sellers extends Component {
                         </div>
                       )}
 
-                    <div className={(this.state.pSub === 0 && this.state.cSub === 0) ? 'col-lg-4' : ((this.state.pSub === 0 || this.state.cSub === 0) ? 'col-lg-3' : 'col-lg-2')}>
+                    <div className={(String(this.state.pSub) === '0' && String(this.state.cSub) === '0')
+                      ? 'col-lg-4'
+                      : ((String(this.state.pSub) === '0' || String(this.state.cSub) === '0')
+                        ? 'col-lg-3'
+                        : 'col-lg-2')}
+                    >
                       <div className="form-group">
                         <label className="form-control-label font-m">
                           {getLocales('Тип клада')}

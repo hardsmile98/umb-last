@@ -78,7 +78,9 @@ class Finance extends Component {
   handleChange(e) {
     const { state } = this;
 
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     if (name === 'withdrawalSumFiat') {
@@ -128,7 +130,7 @@ class Finance extends Component {
             });
           }
 
-          if (state.satoshi === 1) {
+          if (String(state.satoshi) === '1') {
             this.setState({
               satoshi: +response.data.data.courses.fee60min,
             });
@@ -168,7 +170,7 @@ class Finance extends Component {
     const { state } = this;
 
     state.data.operations.forEach((operation) => {
-      if (operation.id === id) {
+      if (String(operation.id) === String(id)) {
         this.setState({
           operation,
         });
@@ -618,16 +620,16 @@ class Finance extends Component {
           <div className="sparkline8">
             <button
               type="button"
-              className={`btn  font-m auth-btn ${item.status === 1
+              className={`btn  font-m auth-btn ${String(item.status) === '1'
                 ? ' btn-primary'
-                : (item.status === -1
+                : (String(item.status) === '-1'
                   ? ' btn-danger'
                   : ' btn-secondary')}`}
             >
               {' '}
-              {item.status === 1
+              {String(item.status) === '1'
                 ? getLocales('Завершена')
-                : (item.status === -1
+                : (String(item.status) === '-1'
                   ? getLocales('Отменена')
                   : getLocales('Ожидает подтверждений'))}
             </button>

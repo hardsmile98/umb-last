@@ -94,12 +94,13 @@ class Presellers extends Component {
 
   editToggle(id) {
     this.state.data.sellers.map((item) => {
-      if (item.id === id) {
+      if (String(item.id) === String(id)) {
         this.setState({
           editSeller: item,
         });
       }
     });
+
     this.setState({
       editModal: !this.state.editModal,
     });
@@ -125,29 +126,33 @@ class Presellers extends Component {
 
     this.state.sorted.map((item) => {
       this.state.data.categories.map((category) => {
-        if (item.category === category.id) {
+        if (String(item.category) === String(category.id)) {
           data.category = category.name;
-          if (category.sub === 1) {
+
+          if (String(category.sub) === '1') {
             category.subcategories.map((subcategory) => {
-              if (subcategory.id === item.subcategory) {
+              if (String(subcategory.id) === String(item.subcategory)) {
                 data.category += ` / ${subcategory.name}`;
               }
             });
           }
         }
       });
+
       this.state.data.products.map((product) => {
-        if (item.product === product.id) {
+        if (String(item.product) === String(product.id)) {
           data.product = product.name;
-          if (product.sub === 1) {
+
+          if (String(product.sub) === '1') {
             product.subproducts.map((subproduct) => {
-              if (subproduct.id === item.subproduct) {
+              if (String(subproduct.id) === String(item.subproduct)) {
                 data.product += ` / ${subproduct.name}`;
               }
             });
           }
         }
       });
+
       const itemModified = {
         id: item.id,
         category: data.category,
@@ -156,10 +161,11 @@ class Presellers extends Component {
       };
 
       this.state.data.typeOfKlads.map((type) => {
-        if (type.id === item.typeofklad) {
+        if (String(type.id) === String(item.typeofklad)) {
           itemModified.typeofklad = type.name;
         }
       });
+
       items.push(itemModified);
     });
 
@@ -228,13 +234,15 @@ class Presellers extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     if (name === 'category') {
       this.state.data.categories.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === 1) {
             this.setState({
               subcategories: item.subcategories,
               subcategory: '0',
@@ -252,8 +260,8 @@ class Presellers extends Component {
       });
     } else if (name === 'product') {
       this.state.data.products.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === 1) {
             this.setState({
               subproducts: item.subproducts,
               subproduct: '0',
@@ -447,13 +455,13 @@ class Presellers extends Component {
             <button
               type="button"
               onClick={() => { this.changeStatus(item.id); }}
-              className={`btn  font-m auth-btn ${item.status === 1
-                ? ' btn-primary' : (item.status === 2
+              className={`btn  font-m auth-btn ${String(item.status) === '1'
+                ? ' btn-primary' : (String(item.status) === '2'
                   ? ' btn-danger'
                   : ' btn-secondary')}`}
             >
               {' '}
-              {item.status === 1
+              {String(item.status) === '1'
                 ? getLocales('Доступно')
                 : getLocales('Отключено')}
             </button>
@@ -466,11 +474,11 @@ class Presellers extends Component {
         key: 'operations',
         itemClassName: 'text-center',
         headerClassName: 'text-center',
-        render: (e, item) => (
+        render: (_e, item) => (
           <div className="sparkline8">
             <button
               type="button"
-              disabled={item.status === 2}
+              disabled={String(item.status) === '2'}
               onClick={() => this.confirmToggle(item.id)}
               className="btn btn-danger btn-table"
             >

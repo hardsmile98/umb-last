@@ -45,7 +45,9 @@ class Dispensers extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -176,7 +178,7 @@ class Dispensers extends Component {
   toggle(action, id) {
     if (action === 'edit') {
       this.state.data.dispansers.map((dis) => {
-        if (dis.id === id) {
+        if (String(dis.id) === String(id)) {
           this.setState({
             modal: !this.state.modal,
             modalAction: action,
@@ -337,7 +339,7 @@ class Dispensers extends Component {
                   {getLocales('Подписка #NOBLOCK')}
                 </h3>
 
-                {this.state.data.subscription === false
+                {!this.state.data.subscription
                   ? (
                     <>
                       <div
@@ -388,7 +390,7 @@ class Dispensers extends Component {
                           className="form-control"
                         />
                       </div>
-                      {this.state.data.autoDebit === 1
+                      {String(this.state.data.autoDebit) === '1'
                         ? (
                           <div
                             aria-hidden

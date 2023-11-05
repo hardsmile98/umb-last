@@ -73,9 +73,10 @@ class Templates extends Component {
   setT(name, needconfrim) {
     if (needconfrim) {
       let needbuy = true;
+
       this.state.data.templates.map((item) => {
         if (item.name === name) {
-          if (item.price === 0) {
+          if (+item.price === 0) {
             needbuy = false;
           } else {
             this.state.data.templatesBuyed.map((buyed) => {
@@ -229,7 +230,7 @@ class Templates extends Component {
                         <b>
                           {' '}
                           <button type="button" className="btn btn-secondary auth-btn font-m">
-                            {item.price === 0
+                            {+item.price === 0
                               ? 'FREE'
                               : (`${item.price}$`)}
                             {' '}

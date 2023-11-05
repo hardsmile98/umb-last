@@ -81,8 +81,8 @@ class DeletedModal extends Component {
 
   componentDidMount() {
     this.props.categories.map((item) => {
-      if (item.id === this.state.category) {
-        if (item.sub === 1) {
+      if (String(item.id) === String(this.state.category)) {
+        if (String(item.sub) === '1') {
           this.setState({
             subcategories: item.subcategories,
           });
@@ -96,8 +96,8 @@ class DeletedModal extends Component {
     });
 
     this.props.products.map((item) => {
-      if (item.id === this.state.product) {
-        if (item.sub === 1) {
+      if (String(item.id) === String(this.state.product)) {
+        if (String(item.sub) === '1') {
           this.setState({
             subproducts: item.subproducts,
           });
@@ -112,13 +112,15 @@ class DeletedModal extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     if (name === 'category') {
       this.props.categories.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === '1') {
             this.setState({
               subcategories: item.subcategories,
               subcategory: 0,
@@ -136,8 +138,8 @@ class DeletedModal extends Component {
       });
     } else if (name === 'product') {
       this.props.products.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === '1') {
             this.setState({
               subproducts: item.subproducts,
               subproduct: 0,

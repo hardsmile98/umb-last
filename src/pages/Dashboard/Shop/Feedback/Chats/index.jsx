@@ -90,7 +90,7 @@ class FeedbackChats extends Component {
                     to={`/dashboard/shops/${this.props.match.params.shopId}/feedback/chats/${chat.id}`}
                     activeClassName="activeChat"
                   >
-                    <div className={`avatar-block chat-block ${chat.readed === 0 ? 'unreaded' : ''}`}>
+                    <div className={`avatar-block chat-block ${String(chat.readed) === '0' ? 'unreaded' : ''}`}>
                       {chat.message
                         ? (
                           <div className="text-left">
@@ -98,7 +98,7 @@ class FeedbackChats extends Component {
                               <b>
                                 {chat.message.typeof === 'user'
                                   ? (`${chat.username}:`)
-                                  : <>{getLocales('Оператор:')}</>}
+                                  : getLocales('Оператор:')}
 
                               </b>
                               {' '}

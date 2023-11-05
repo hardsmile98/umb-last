@@ -103,6 +103,7 @@ class Btemplates extends Component {
         canRecovery = true;
       }
     });
+
     if (!result) {
       this.state.data.tTemplates.map((item) => {
         if (item.name === name) {

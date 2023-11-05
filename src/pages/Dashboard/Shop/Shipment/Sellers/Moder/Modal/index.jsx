@@ -161,8 +161,8 @@ class SellerModalModer extends Component {
         creationDate: nextProps.seller.creationDate,
       }, () => {
         this.props.categories.map((item) => {
-          if (item.id === this.state.category) {
-            if (item.sub === 1) {
+          if (String(item.id) === String(this.state.category)) {
+            if (String(item.sub) === '1') {
               this.setState({
                 subcategories: item.subcategories,
               });
@@ -176,8 +176,8 @@ class SellerModalModer extends Component {
         });
 
         this.props.products.map((item) => {
-          if (item.id === this.state.product) {
-            if (item.sub === 1) {
+          if (String(item.id) === String(this.state.product)) {
+            if (String(item.sub) === '1') {
               this.setState({
                 subproducts: item.subproducts,
               });
@@ -194,13 +194,16 @@ class SellerModalModer extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
+
     const { name } = e.target;
 
     if (name === 'category') {
       this.props.categories.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === '1') {
             this.setState({
               subcategories: item.subcategories,
               subcategory: 0,
@@ -218,8 +221,8 @@ class SellerModalModer extends Component {
       });
     } else if (name === 'product') {
       this.props.products.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === '1') {
             this.setState({
               subproducts: item.subproducts,
               subproduct: 0,
@@ -230,6 +233,7 @@ class SellerModalModer extends Component {
               subproduct: 0,
             });
           }
+
           this.setState({
             [name]: value,
           });
@@ -266,7 +270,7 @@ class SellerModalModer extends Component {
                   {getLocales('Город')}
                 </label>
                 <select
-                  disabled={this.state.loading || this.state.status === 0}
+                  disabled={this.state.loading || String(this.state.status) === '0'}
                   value={this.state.category}
                   onChange={this.handleChange}
                   name="category"
@@ -288,7 +292,7 @@ class SellerModalModer extends Component {
                       {getLocales('Район')}
                     </label>
                     <select
-                      disabled={this.state.loading || this.state.status === 0}
+                      disabled={this.state.loading || String(this.state.status) === '0'}
                       value={this.state.subcategory}
                       onChange={this.handleChange}
                       name="subcategory"
@@ -353,7 +357,7 @@ class SellerModalModer extends Component {
                   {getLocales('Товар')}
                 </label>
                 <select
-                  disabled={this.state.loading || this.state.status === 0}
+                  disabled={this.state.loading || String(this.state.status) === '0'}
                   value={this.state.product}
                   onChange={this.handleChange}
                   name="product"
@@ -375,7 +379,7 @@ class SellerModalModer extends Component {
                       {getLocales('Фасовка')}
                     </label>
                     <select
-                      disabled={this.state.loading || this.state.status === 0}
+                      disabled={this.state.loading || String(this.state.status) === '0'}
                       value={this.state.subproduct}
                       onChange={this.handleChange}
                       name="subproduct"

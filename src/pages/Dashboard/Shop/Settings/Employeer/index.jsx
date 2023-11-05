@@ -239,7 +239,10 @@ class Employeer extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
+
     const { name } = e.target;
 
     this.setState({
@@ -487,7 +490,7 @@ class Employeer extends Component {
                       </select>
                     </div>
 
-                    {(this.state.rate === 1 || this.state.rate === 2)
+                    {(String(this.state.rate) === '1' || String(this.state.rate) === '2')
                       ? (
                         <div className="form-group">
                           <label className="form-control-label font-m">
@@ -507,7 +510,7 @@ class Employeer extends Component {
                       )
                       : ''}
 
-                    {this.state.rate === 2
+                    {String(this.state.rate) === '2'
                       ? (
                         <>
                           <div className="form-group">

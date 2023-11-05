@@ -18,7 +18,9 @@ class SetAsNoffoundModal extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -95,47 +97,44 @@ class SetAsNoffoundModal extends Component {
             </select>
           </div>
 
-          {!this.props.ownerAdd
-            ? (
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('Оштрафовать курьера')}
-                </label>
-                <select
+          {!this.props.ownerAdd && (
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('Оштрафовать курьера')}
+              </label>
+              <select
+                disabled={this.state.loading}
+                value={this.state.fine}
+                onChange={this.handleChange}
+                name="fine"
+                className="form-control"
+              >
+                <option value="0">{getLocales('Нет')}</option>
+                <option value="1">{getLocales('Да')}</option>
+                <option value="2">{getLocales('Да, но по отдельному тарифу')}</option>
+              </select>
+            </div>
+          )}
+
+          {String(this.state.fine) === '2' && (
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('Штраф для курьера')}
+              </label>
+              <div className="input-group">
+                <input
                   disabled={this.state.loading}
-                  value={this.state.fine}
+                  value={this.state.fineInd}
+                  name="fineInd"
                   onChange={this.handleChange}
-                  name="fine"
                   className="form-control"
-                >
-                  <option value="0">{getLocales('Нет')}</option>
-                  <option value="1">{getLocales('Да')}</option>
-                  <option value="2">{getLocales('Да, но по отдельному тарифу')}</option>
-                </select>
+                />
+                <span className="input-group-text">
+                  {this.props.currency}
+                </span>
               </div>
-            )
-            : ''}
-          {this.state.fine === 2
-            ? (
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('Штраф для курьера')}
-                </label>
-                <div className="input-group">
-                  <input
-                    disabled={this.state.loading}
-                    value={this.state.fineInd}
-                    name="fineInd"
-                    onChange={this.handleChange}
-                    className="form-control"
-                  />
-                  <span className="input-group-text">
-                    {this.props.currency}
-                  </span>
-                </div>
-              </div>
-            )
-            : ''}
+            </div>
+          )}
         </ModalBody>
 
         <ModalFooter>

@@ -33,7 +33,7 @@ class Coworkers extends Component {
     coworkers = this.state.data.coworkers;
 
     coworkers.map((item) => {
-      if (item.id === id) {
+      if (String(item.id) === String(id)) {
         item[name] = value;
       }
     });
@@ -87,7 +87,7 @@ class Coworkers extends Component {
     });
 
     this.state.data.coworkers.map((item) => {
-      if (item.id === id) {
+      if (String(item.id) === String(id)) {
         coworker = item;
       }
     });

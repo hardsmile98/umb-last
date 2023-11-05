@@ -95,11 +95,14 @@ class CategoryEdit extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     if (name === 'subcategory') {
       subcategories[e.target.id].name = value;
+
       this.setState({
         subcategories,
       });
@@ -183,7 +186,8 @@ class CategoryEdit extends Component {
                   <option value="1">{getLocales('Присутствуют')}</option>
                 </select>
               </div>
-              {this.state.sub === 1
+
+              {String(this.state.sub) === '1'
                 ? (
                   <>
                     <label className="form-control-label font-m">

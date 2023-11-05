@@ -28,7 +28,9 @@ class PageChange extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     if (name === 'type') {
@@ -245,6 +247,7 @@ class PageChange extends Component {
                       </div>
                     </div>
                   )}
+
                 {this.state.type === 'text'
                   ? (
                     <div className="col-lg-12">

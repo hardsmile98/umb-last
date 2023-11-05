@@ -52,7 +52,9 @@ class CryptoWallets extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -103,7 +105,7 @@ class CryptoWallets extends Component {
     const { state } = this;
 
     state.data.wallets.forEach((item) => {
-      if (item.id === id) {
+      if (String(item.id) === String(id)) {
         this.setState({
           infoWallet: item,
         });

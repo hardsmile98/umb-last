@@ -54,7 +54,9 @@ class TelegramBots extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -155,7 +157,7 @@ class TelegramBots extends Component {
 
   toggleInfo(id) {
     this.state.data.bots.map((item) => {
-      if (item.id === id) {
+      if (String(item.id) === String(id)) {
         this.setState({
           bot: item,
         });
@@ -390,13 +392,13 @@ class TelegramBots extends Component {
         render: (e, item) => (
           <button
             type="button"
-            title={item.status === 1
+            title={String(item.status) === '1'
               ? getLocales('Отключить бота')
               : getLocales('Включить бота')}
             onClick={() => this.toggleStatus(item.id)}
-            className={`btn btn-table width-100 ${item.status === 0 ? 'btn-danger' : 'btn-primary'}`}
+            className={`btn btn-table width-100 ${String(item.status) === '0' ? 'btn-danger' : 'btn-primary'}`}
           >
-            <FontAwesomeIcon icon={item.status === 0
+            <FontAwesomeIcon icon={String(item.status) === '0'
               ? faUnlink
               : faLink}
             />

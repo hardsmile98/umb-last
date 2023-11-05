@@ -102,14 +102,15 @@ class Promocodes extends Component {
   toggle(promo) {
     if (promo !== 0) {
       this.state.data.promocodes.map((item) => {
-        if (item.id === promo) {
+        if (String(item.id) === String(promo)) {
           const active = [];
+
           if (item.usedBy !== null) {
             item.usedBy = item.usedBy.split(',');
             if (item.usedBy.length > 0) {
               item.usedBy.map((i) => {
                 this.state.data.users.map((user) => {
-                  if (user.id === i) {
+                  if (String(user.id) === String(i)) {
                     active.push(user);
                   }
                 });
@@ -290,7 +291,9 @@ class Promocodes extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -335,7 +338,7 @@ class Promocodes extends Component {
         key: 'operations',
         render: (_e, item) => (
           <span>
-            {`${item.activations}/${item.limitActive === 0
+            {`${item.activations}/${String(item.limitActive) === '0'
               ? '~'
               : item.limitActive}`}
           </span>
@@ -356,15 +359,15 @@ class Promocodes extends Component {
         key: 'operations',
         itemClassName: 'text-center',
         headerClassName: 'text-center',
-        render: (e, item) => (
+        render: (_e, item) => (
           <div className="sparkline8">
             <button
               type="button"
               onClick={() => { this.changeStatus(item.id); }}
-              className={`btn table-button font-m ${item.status === 1 ? ' btn-primary' : ' btn-danger'}`}
+              className={`btn table-button font-m ${String(item.status) === '1' ? ' btn-primary' : ' btn-danger'}`}
             >
               {' '}
-              {item.status === 1
+              {String(item.status) === '1'
                 ? getLocales('Активен')
                 : getLocales('Отключен')}
             </button>

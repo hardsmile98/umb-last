@@ -216,9 +216,9 @@ class Dashboard extends Component {
                             alt="umbrella"
                             className="logotype-dash"
                             src={localStorage.getItem('theme') === 'dark'
-                              ? (state.data.user.premium === 1
+                              ? (String(state.data.user.premium) === '1'
                                 ? logoblackpremium : logoblack)
-                              : (state.data.user.premium === 1
+                              : (String(state.data.user.premium) === '1'
                                 ? logowhitepremium : logo)}
                           />
                         </div>
@@ -228,9 +228,9 @@ class Dashboard extends Component {
                             alt="umbrella"
                             className="logotype-dash"
                             src={localStorage.getItem('theme') === 'dark'
-                              ? (state.data.user.premium === 1
+                              ? (String(state.data.user.premium) === '1'
                                 ? logoblackpremium : logoblack)
-                              : (state.data.user.premium === 1
+                              : (String(state.data.user.premium) === '1'
                                 ? logowhitepremium
                                 : logo)}
                           />
@@ -357,10 +357,10 @@ class Dashboard extends Component {
                                 alt="umbrella"
                                 className="logotype-dash"
                                 src={localStorage.getItem('theme') === 'dark'
-                                  ? (state.data.user.premium === 1
+                                  ? (String(state.data.user.premium) === '1'
                                     ? logoblackpremium
                                     : logoblack)
-                                  : (state.data.user.premium === 1
+                                  : (String(state.data.user.premium) === '1'
                                     ? logowhitepremium
                                     : logo)}
                               />
@@ -371,9 +371,9 @@ class Dashboard extends Component {
                                 alt="umbrella"
                                 className="logotype-dash"
                                 src={localStorage.getItem('theme') === 'dark'
-                                  ? (state.data.user.premium === 1
+                                  ? (String(state.data.user.premium) === '1'
                                     ? logoblackpremium : logoblack)
-                                  : (state.data.user.premium === 1
+                                  : (String(state.data.user.premium) === '1'
                                     ? logowhitepremium : logo)}
                               />
                             </div>
@@ -538,7 +538,7 @@ class Dashboard extends Component {
 
               <div className="margin-15">
                 <Switch>
-                  {state.data.user.block === 1 && <Route component={Support} />}
+                  {String(state.data.user.block) === '1' && <Route component={Support} />}
                   <Route path={`${props.match.path}/home`} component={HomePage} />
                   <Route
                     path={`${props.match.path}/manage`}

@@ -63,23 +63,23 @@ function ModalOrder() {
           <b>Статус</b>
           :
           {' '}
-          {props.order.deposit.status === -1
+          {String(props.order.deposit.status) === '-1'
             ? 'Отменен'
-            : (props.order.deposit.status === 0
+            : (String(props.order.deposit.status) === '0'
               ? 'Ожидает оплаты'
-              : (props.order.deposit.status === 1
+              : (String(props.order.deposit.status) === '1'
                 ? 'Ожидает подтверждений'
                 : 'Оплачен'))}
           <br />
           <b>Дата</b>
           :
           {' '}
-          {props.order.deposit.status === 2
+          {String(props.order.deposit.status) === '2'
             ? moment.unix(props.order.deposit.closed / 1000).format('LLL')
             : moment.unix(props.order.deposit.created / 1000).format('LLL')}
         </div>
 
-        {props.order.deposit.status !== 2 && (
+        {String(props.order.deposit.status) !== '2' && (
           <>
             <div className="form-group">
               <label htmlFor="password" className="form-control-label font-m">

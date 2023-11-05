@@ -31,7 +31,7 @@ class StatisticModal extends Component {
     const sellers = [];
 
     this.props.data.purchases.map((item) => {
-      if (item.notfound === 1) {
+      if (String(item.notfound) === '1') {
         sellers.push(item);
       }
     });
@@ -63,18 +63,20 @@ class StatisticModal extends Component {
 
     sellers.map((item) => {
       if (status === 'check') {
-        if (item.status === 2 || item.status === 3) {
+        if (String(item.status) === '2' || String(item.status) === '3') {
           num += 1;
         }
-      } else if (item.status === status) {
+      } else if (String(item.status) === String(status)) {
         num += 1;
       }
     });
+
     return num;
   }
 
   getSale(type, purchases) {
     let res = [];
+
     purchases.map((item) => {
       if (+item.closed > +new Date(this.state.dateFrom)
        && +item.closed < +new Date(this.state.dateTo)) {
@@ -91,7 +93,7 @@ class StatisticModal extends Component {
         break;
       case 'notfounded':
         purchases.map((item) => {
-          if (item.notfound === 1) {
+          if (String(item.notfound) === '1') {
             res += 1;
           }
         });
@@ -99,10 +101,11 @@ class StatisticModal extends Component {
       case 'coeff':
         if (purchases.length > 0) {
           purchases.map((item) => {
-            if (item.notfound === 1) {
+            if (String(item.notfound) === '1') {
               res += 1;
             }
           });
+
           res = Math.round((res / purchases.length) * 100);
         }
         break;
@@ -113,6 +116,7 @@ class StatisticModal extends Component {
   getProducts() {
     let res = [];
     let { purchases } = this.props.data;
+
     purchases.map((item) => {
       if (+item.closed > +new Date(this.state.dateFrom)
        && +item.closed < +new Date(this.state.dateTo)) {
@@ -126,19 +130,21 @@ class StatisticModal extends Component {
     purchases.map((item) => {
       if (res[item.product]) {
         res[item.product].sales += 1;
-        if (item.notfound === 1) {
+
+        if (+item.notfound === 1) {
           res[item.product].notfound += 1;
         }
         if (res[item.product].subproducts[item.subproduct]) {
           res[item.product].subproducts[item.subproduct].sales += 1;
-          if (item.notfound === 1) {
+
+          if (+item.notfound === 1) {
             res[item.product].subproducts[item.subproduct].notfound += 1;
           }
         } else {
           res[item.product].subproducts[item.subproduct] = {
             sales: 1,
           };
-          if (item.notfound === 1) {
+          if (+item.notfound === 1) {
             res[item.product].subproducts[item.subproduct].notfound = 1;
           } else {
             res[item.product].subproducts[item.subproduct].notfound = 0;
@@ -147,10 +153,10 @@ class StatisticModal extends Component {
       } else {
         res[item.product] = {
           sales: 1,
-          notfound: item.notfound === 1 ? 1 : 0,
+          notfound: +item.notfound === 1 ? 1 : 0,
           subproducts: {
             [item.subproduct]: {
-              notfound: item.notfound === 1 ? 1 : 0,
+              notfound: +item.notfound === 1 ? 1 : 0,
               sales: 1,
             },
           },

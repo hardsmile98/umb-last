@@ -265,10 +265,10 @@ class PageEdit extends Component {
                         </label>
 
                         <div className="avatar-block">
-                          {!!links.length === 0 && (
-                          <div className="text-center">
-                            <span className="font-m">{getLocales('Ссылки отсутствуют')}</span>
-                          </div>
+                          {links.length === 0 && (
+                            <div className="text-center">
+                              <span className="font-m">{getLocales('Ссылки отсутствуют')}</span>
+                            </div>
                           )}
 
                           {this.state.links.map((item, key) => (

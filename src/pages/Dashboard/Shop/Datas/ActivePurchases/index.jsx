@@ -48,29 +48,33 @@ class ActivePurchases extends Component {
 
     this.state.data.purchases.reverse().map((item) => {
       this.state.data.categories.map((category) => {
-        if (item.category === category.id) {
+        if (String(item.category) === String(category.id)) {
           data.category = category.name;
-          if (category.sub === 1) {
+
+          if (String(category.sub) === '1') {
             this.state.data.subcategories.map((subcategory) => {
-              if (subcategory.id === item.subcategory) {
+              if (String(subcategory.id) === String(item.subcategory)) {
                 data.category += ` / ${subcategory.name}`;
               }
             });
           }
         }
       });
+
       this.state.data.products.map((product) => {
-        if (item.product === product.id) {
+        if (String(item.product) === String(product.id)) {
           data.product = product.name;
-          if (product.sub === 1) {
+
+          if (String(product.sub) === '1') {
             this.state.data.subproducts.map((subproduct) => {
-              if (subproduct.id === item.subproduct) {
+              if (String(subproduct.id) === String(item.subproduct)) {
                 data.product += ` / ${subproduct.name}`;
               }
             });
           }
         }
       });
+
       const itemModified = {
         id: item.id,
         category: data.category,
@@ -198,7 +202,7 @@ class ActivePurchases extends Component {
         key: 'operations',
         itemClassName: 'text-center',
         headerClassName: 'text-center',
-        render: (e, item) => (item.user === 0
+        render: (_e, item) => (String(item.user) === '0'
           ? 'Anonym'
           : (
             <div className="sparkline8">
@@ -230,9 +234,7 @@ class ActivePurchases extends Component {
           <div className="row">
             <div className="col-lg-12">
               <h3 className="font-m">
-                {
-              getLocales('Активные заказы')
-}
+                {getLocales('Активные заказы')}
               </h3>
 
               {this.state.data.purchases <= 0

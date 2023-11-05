@@ -57,10 +57,12 @@ class SellersAdd extends Component {
     if (this.state.category !== '0' && this.state.product !== '0'
       && (this.state.sellers.length > 0 || this.state.seller.length > 0)) {
       let addresses = [];
+
       if (this.state.method === 'one') {
         addresses = this.state.sellers;
       } else {
         const sels = this.state.seller.split('\n\n');
+
         sels.map((sel) => {
           addresses.push({
             value: sel,
@@ -196,8 +198,8 @@ class SellersAdd extends Component {
 
     if (name === 'category') {
       this.state.data.categories.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === '1') {
             this.setState({
               subcategories: item.subcategories,
               subcategory: '0',
@@ -208,6 +210,7 @@ class SellersAdd extends Component {
               subcategory: '0',
             });
           }
+
           this.setState({
             [name]: value,
           });
@@ -215,8 +218,8 @@ class SellersAdd extends Component {
       });
     } else if (name === 'product') {
       this.state.data.products.map((item) => {
-        if (item.id === value) {
-          if (item.sub === 1) {
+        if (String(item.id) === String(value)) {
+          if (String(item.sub) === '1') {
             this.setState({
               subproducts: item.subproducts,
               subproduct: '0',
@@ -227,6 +230,7 @@ class SellersAdd extends Component {
               subproduct: '0',
             });
           }
+
           this.setState({
             [name]: value,
           });

@@ -342,11 +342,13 @@ class UserProfile extends Component {
       if (response.status === 200) {
         if (response.data.success) {
           let notFounded = 0;
+
           response.data.data.user.purchasesList.map((item) => {
             if (item.notfound === 1) {
               notFounded += 1;
             }
           });
+
           this.setState({
             data: response.data.data,
             loading: false,
@@ -666,7 +668,7 @@ class UserProfile extends Component {
                   onClick={this.blockAction}
                   className={`btn font-m right block-for-block-button ${this.state.data.user.block === 0 ? 'btn-danger' : 'btn-success'}`}
                 >
-                  {getLocales(this.state.data.user.block === 0
+                  {getLocales(String(this.state.data.user.block) === '0'
                     ? 'Заблокировать'
                     : 'Разблокировать')}
                 </button>

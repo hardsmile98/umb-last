@@ -37,7 +37,7 @@ class DataUsers extends Component {
       const result = [];
       this.state.data.users.map((item) => {
         if (this.state.sortPlatform === 'site') {
-          if (item.chatid === 0) {
+          if (+item.chatid === 0) {
             result.push(item);
           }
         } else if (this.state.sortPlatform === 'telegram') {
@@ -66,7 +66,7 @@ class DataUsers extends Component {
         purchases: item.purchases,
         purchasesSum: item.purchasesSum,
         balance: `${item.balance} ${this.state.data.currency}`,
-        platform: item.chatid === 0
+        platform: +item.chatid === 0
           ? getLocales('Сайт')
           : 'Telegram',
       };

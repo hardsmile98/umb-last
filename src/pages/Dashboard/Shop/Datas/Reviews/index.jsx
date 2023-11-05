@@ -33,7 +33,7 @@ class Reviews extends Component {
 
   getUserLogin(id) {
     this.state.data.users.map((user) => {
-      if (user.id === id) {
+      if (String(user.id) === String(id)) {
         return user.name;
       }
     });
@@ -46,7 +46,7 @@ class Reviews extends Component {
 
     this.state.data.reviewsAc.map((item) => {
       this.state.data.users.map((user) => {
-        if (user.id === item.user) {
+        if (String(user.id) === String(item.user)) {
           name = user.name;
         }
       });
@@ -63,10 +63,11 @@ class Reviews extends Component {
 
     this.state.data.reviewsDe.map((item) => {
       this.state.data.users.map((user) => {
-        if (user.id === item.user) {
+        if (String(user.id) === String(item.user)) {
           name = user.name;
         }
       });
+
       const itemModified = {
         loc: `${item.category} / ${item.product}`,
         message: JSON.parse(item.review).text,
@@ -75,6 +76,7 @@ class Reviews extends Component {
         userName: name,
         id: item.id,
       };
+
       items2.push(itemModified);
     });
 
@@ -197,9 +199,9 @@ class Reviews extends Component {
           <button
             type="button"
             onClick={() => this.sendData(item.id)}
-            className={`btn font-m ${item.status === 0 ? 'btn-secondary' : 'btn-danger'}`}
+            className={`btn font-m ${String(item.status) === '0' ? 'btn-secondary' : 'btn-danger'}`}
           >
-            {item.status === 0
+            {String(item.status) === '0'
               ? getLocales('Одобрить')
               : getLocales('Скрыть')}
           </button>

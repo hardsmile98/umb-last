@@ -364,7 +364,7 @@ class UserProfile extends Component {
                 Пользователь #
                 {props.match.params.id}
                 {' '}
-                {state.data.user.premium === 1 && (
+                {String(state.data.user.premium) === '1' && (
                   <FontAwesomeIcon
                     className="text-danger"
                     icon={faStar}

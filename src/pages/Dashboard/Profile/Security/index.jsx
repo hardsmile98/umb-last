@@ -45,12 +45,12 @@ const tableColumns = [
         <button
           disabled
           type="button"
-          className={`btn font-m btn-sessions auth-btn ${item.status === 1
+          className={`btn font-m btn-sessions auth-btn ${String(item.status) === '1'
             ? ' btn-primary'
             : ' btn-danger'}`}
         >
           {' '}
-          {item.status === 1
+          {String(item.status) === '1'
             ? getLocales('Текущая сессия')
             : getLocales('Сессия завершена')}
         </button>

@@ -38,16 +38,16 @@ const tableColumns = [
         <NavLink to={`/dashboard/support/ticket/${item.id}`}>
           <button
             type="button"
-            className={`btn font-m auth-btn btn-sessions ${item.status === 1
+            className={`btn font-m auth-btn btn-sessions ${String(item.status) === '1'
               ? ' btn-secondary'
-              : (item.status === -1
+              : (String(item.status) === '-1'
                 ? ' btn-danger'
                 : ' btn-primary')}`}
           >
             {' '}
-            {item.status === 1
+            {String(item.status) === '1'
               ? getLocales('Отвечен')
-              : (item.status === -1
+              : (String(item.status) === '-1'
                 ? getLocales('Закрыт')
                 : getLocales('Ожидает ответа'))}
           </button>

@@ -88,7 +88,7 @@ class PurchaseItem extends Component {
                   {' #'}
                   {this.props.match.params.purchaseId}
                   {' '}
-                  {(this.state.data.purchase.notfound === 0
+                  {(String(this.state.data.purchase.notfound) === '0'
                  && this.state.data.purchase.courier !== null) && (
                  <span
                    aria-hidden
@@ -289,35 +289,33 @@ class PurchaseItem extends Component {
                 </div>
               </div>
 
-              {this.state.data.purchase.courier === null
-                ? ''
-                : (
-                  <>
-                    <div className="col-lg-6">
-                      <div className="form-group">
-                        <label className="form-control-label font-m">
-                          {getLocales('Создатель адреса')}
-                        </label>
-                        <input disabled value={this.state.data.purchase.courier} className="form-control" />
-                      </div>
-                    </div>
+              {!!this.state.data.purchase.courier && (
+              <>
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <label className="form-control-label font-m">
+                      {getLocales('Создатель адреса')}
+                    </label>
+                    <input disabled value={this.state.data.purchase.courier} className="form-control" />
+                  </div>
+                </div>
 
-                    <div className="col-lg-6">
-                      <div className="form-group">
-                        <label className="form-control-label font-m">
-                          {getLocales('Заказ отмечен как ненаход')}
-                        </label>
-                        <input
-                          disabled
-                          value={this.state.data.purchase.notfound === 0
-                            ? getLocales('Нет')
-                            : getLocales('Да')}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                  </>
-                )}
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <label className="form-control-label font-m">
+                      {getLocales('Заказ отмечен как ненаход')}
+                    </label>
+                    <input
+                      disabled
+                      value={String(this.state.data.purchase.notfound) === '0'
+                        ? getLocales('Нет')
+                        : getLocales('Да')}
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+              </>
+              )}
             </div>
 
             <button

@@ -139,10 +139,9 @@ class Products extends Component {
                                   {getLocales('Фасовка')}
                                   :
                                   <span className="highlight">
-                                    {item.sub === 1
+                                    {String(item.sub) === '1'
                                       ? <>{getLocales('Да')}</>
                                       : <>{getLocales('Нет')}</>}
-
                                   </span>
                                   <br />
                                   {getLocales('Скидка')}

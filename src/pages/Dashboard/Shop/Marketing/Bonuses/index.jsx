@@ -94,7 +94,10 @@ class Bonuses extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
+
     const { name } = e.target;
 
     this.setState({
@@ -104,7 +107,7 @@ class Bonuses extends Component {
 
   updateData(id) {
     this.state.data.bonuses.map((item) => {
-      if (item.id === id) {
+      if (String(item.id) === String(id)) {
         const data = {
           api: 'user',
           body: {

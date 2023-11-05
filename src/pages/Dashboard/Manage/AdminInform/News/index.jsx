@@ -169,7 +169,7 @@ class News extends Component {
 
     if (id !== 0) {
       state.data.news.forEach((item) => {
-        if (item.id === id) {
+        if (String(item.id) === String(id)) {
           this.setState({
             modal: true,
             new: item,

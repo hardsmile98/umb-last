@@ -115,7 +115,7 @@ class Widgets extends Component {
   toggle(id) {
     if (id) {
       this.state.data.widgets.map((item) => {
-        if (item.id === id) {
+        if (String(item.id) === String(id)) {
           this.setState({
             activePage: item,
             modal: !this.state.modal,

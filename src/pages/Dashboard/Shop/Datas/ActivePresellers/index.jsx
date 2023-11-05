@@ -96,29 +96,33 @@ class ActivePresellers extends Component {
 
     this.state.data.presellers.map((item) => {
       this.state.data.categories.map((category) => {
-        if (item.category === category.id) {
+        if (String(item.category) === String(category.id)) {
           data.category = category.name;
-          if (category.sub === 1) {
+
+          if (String(category.sub) === '1') {
             category.subcategories.map((subcategory) => {
-              if (subcategory.id === item.subcategory) {
+              if (String(subcategory.id) === String(item.subcategory)) {
                 data.category += ` / ${subcategory.name}`;
               }
             });
           }
         }
       });
+
       this.state.data.products.map((product) => {
-        if (item.product === product.id) {
+        if (String(item.product) === String(product.id)) {
           data.product = product.name;
-          if (product.sub === 1) {
+
+          if (String(product.sub) === '1') {
             product.subproducts.map((subproduct) => {
-              if (subproduct.id === item.subproduct) {
+              if (String(subproduct.id) === String(item.subproduct)) {
                 data.product += ` / ${subproduct.name}`;
               }
             });
           }
         }
       });
+
       const itemModified = {
         id: item.id,
         category: data.category,
@@ -128,7 +132,7 @@ class ActivePresellers extends Component {
       };
 
       this.state.data.typeOfKlads.map((type) => {
-        if (type.id === item.typeofklad) {
+        if (String(type.id) === String(item.typeofklad)) {
           itemModified.typeofklad = type.name;
         }
       });

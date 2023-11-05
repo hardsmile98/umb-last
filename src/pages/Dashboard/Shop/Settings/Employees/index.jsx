@@ -250,9 +250,9 @@ class Employees extends Component {
                             {item.login}
                           </div>
                           <small>
-                            {item.notice === ''
-                              ? getLocales('Нет примечания')
-                              : item.notice}
+                            {item.notice
+                              ? item.notice
+                              : getLocales('Нет примечания')}
                           </small>
                           <div className="text-left font-m">
                             {getLocales('Доход')}

@@ -116,7 +116,7 @@ class Statistics extends Component {
       let find = false;
 
       shops = shops.map((shop) => {
-        if (shop.db === item.shop) {
+        if (String(shop.db) === String(item.shop)) {
           const newSum = shop.sum + Number(item.sum);
 
           find = true;
@@ -132,16 +132,16 @@ class Statistics extends Component {
 
       if (!find) {
         state.data.shops.forEach((shopList) => {
-          if (shopList.db === item.shop) {
+          if (String(shopList.db) === String(item.shop)) {
             state.data.users.forEach((user) => {
-              if (shopList.owner === user.id) {
+              if (String(shopList.owner) === String(user.id)) {
                 shops.push({
                   db: item.shop,
                   sum: +item.sum,
                   owner: user.id,
                   login: user.login,
                   id: shopList.uniqueId,
-                  brut: (user.ref === 'fa0f5236cd6b466585c18980e238c755'),
+                  brut: (String(user.ref) === 'fa0f5236cd6b466585c18980e238c755'),
                 });
               }
             });

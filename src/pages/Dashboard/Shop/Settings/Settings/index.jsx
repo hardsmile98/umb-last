@@ -327,7 +327,7 @@ class ShopMainSettings extends Component {
                           className="form-control"
                         />
                       </div>
-                      {this.state.data.autoDebit === 1
+                      {String(this.state.data.autoDebit) === '1'
                         ? (
                           <div
                             aria-hidden
