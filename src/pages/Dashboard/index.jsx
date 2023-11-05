@@ -206,7 +206,7 @@ class Dashboard extends Component {
               {window.innerWidth <= 800
                 ? (
                   <>
-                    <div className="navbar-header">
+                    <div className="navbar-header d-flex align-items-center justify-content-between w-100">
                       <a className="navbar-brand">
                         <div
                           className="brand-text brand-big visible text-uppercase"

@@ -1195,9 +1195,6 @@ li svg {
   }
 
   .burger {
-    position: absolute;
-    right: 25px;
-    top: 25px;
     color: black;
     font-size: 25px;
   }
