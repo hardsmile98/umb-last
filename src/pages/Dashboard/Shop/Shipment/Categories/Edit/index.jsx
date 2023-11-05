@@ -28,7 +28,7 @@ class CategoryEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.category !== nextProps.category) {
+    if (String(this.props.category) !== String(nextProps.category)) {
       this.setState({
         sub: nextProps.category.sub,
         name: nextProps.category.name,
@@ -40,7 +40,7 @@ class CategoryEdit extends Component {
   }
 
   sendData() {
-    if (this.state.name !== '') {
+    if (this.state.name) {
       this.setState({
         loading: true,
       });

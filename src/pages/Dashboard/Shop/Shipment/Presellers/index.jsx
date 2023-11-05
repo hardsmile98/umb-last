@@ -302,7 +302,7 @@ class Presellers extends Component {
       loading: true,
     });
 
-    if (this.state.category !== '0' && this.state.product !== '0') {
+    if (String(this.state.category) !== '0' && String(this.state.product) !== '0') {
       const data = {
         api: 'user',
         body: {

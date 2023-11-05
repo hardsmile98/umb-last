@@ -126,7 +126,7 @@ class Categories extends Component {
   }
 
   createCategory() {
-    if (this.state.name !== '') {
+    if (this.state.name) {
       this.setState({
         loading: true,
       });

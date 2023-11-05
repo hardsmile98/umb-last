@@ -39,7 +39,7 @@ class Bonuses extends Component {
   }
 
   toggle(id) {
-    if (id !== 0) {
+    if (String(id) !== '0') {
       this.setState({
         id,
         modal: true,

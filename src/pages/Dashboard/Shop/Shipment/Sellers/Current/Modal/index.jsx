@@ -89,7 +89,7 @@ class SellerModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.seller !== nextProps.seller) {
+    if (String(this.props.seller) !== String(nextProps.seller)) {
       this.setState({
         category: nextProps.seller.category,
         subcategory: nextProps.seller.subcategory,

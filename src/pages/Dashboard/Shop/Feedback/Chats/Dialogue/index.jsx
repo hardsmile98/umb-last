@@ -50,7 +50,7 @@ class FeedbackDialogue extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.match.params.chatId !== nextProps.match.params.chatId) {
+    if (String(this.props.match.params.chatId) !== String(nextProps.match.params.chatId)) {
       clearInterval(interval);
       this.setState({
         loading: true,

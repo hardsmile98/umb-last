@@ -515,7 +515,7 @@ class Dashboard extends Component {
                 </div>
               )}
 
-              {state.data.user.block !== 0 && (
+              {String(state.data.user.block) !== '0' && (
                 <div className="block animate__animated animate__fadeIn  margin text-center">
                   <h3 className="font-m">
                     {getLocales('Ваш аккаунт заблокирован, средства заморожены. Нейросеть')}

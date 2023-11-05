@@ -130,7 +130,7 @@ class ProductsAdd extends Component {
   }
 
   sendData() {
-    if (this.state.name !== '') {
+    if (this.state.name) {
       this.setState({
         loading: true,
       });

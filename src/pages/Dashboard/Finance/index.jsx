@@ -346,7 +346,7 @@ class Finance extends Component {
     });
 
     if (state.withdrawalSum > 0) {
-      if (state.wallet !== 0) {
+      if (String(state.wallet) !== '0') {
         const data = {
           api: 'user',
           body: {

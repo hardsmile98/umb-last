@@ -88,15 +88,14 @@ class PurchaseItem extends Component {
                   {' #'}
                   {this.props.match.params.purchaseId}
                   {' '}
-                  {(String(this.state.data.purchase.notfound) === '0'
-                 && this.state.data.purchase.courier !== null) && (
-                 <span
-                   aria-hidden
-                   className="right pointer"
-                   onClick={this.toggle}
-                 >
-                   {getLocales('Отметить как ненаход')}
-                 </span>
+                  {(String(this.state.data.purchase.notfound) === '0' && this.state.data.purchase.courier) && (
+                    <span
+                      aria-hidden
+                      className="right pointer"
+                      onClick={this.toggle}
+                    >
+                      {getLocales('Отметить как ненаход')}
+                    </span>
                   )}
                 </h3>
               </div>
@@ -140,7 +139,7 @@ class PurchaseItem extends Component {
                   </label>
                   <div className="input-group mb-3">
                     <input name="nameUser" value={this.state.data.purchase.nameUser} className="form-control" disabled />
-                    {this.state.data.purchase.user !== 0
+                    {String(this.state.data.purchase.user) !== '0'
                       ? (
                         <NavLink
                           to={`/dashboard/shops/${this.props.match.params.shopId}/datas/users/${this.state.data.purchase.user}`}
@@ -160,7 +159,7 @@ class PurchaseItem extends Component {
               </div>
 
               <div className="col-lg-12">
-                {this.state.data.purchase.seller !== null
+                {this.state.data.purchase.seller
                   ? (
                     <div className="form-group">
                       <label className="form-control-label font-m">

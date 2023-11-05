@@ -20,7 +20,7 @@ class NewsModal extends Component {
   componentWillReceiveProps(nextProps) {
     const { props } = this;
 
-    if (props.new !== nextProps.new) {
+    if (String(props.new) !== String(nextProps.new)) {
       this.setState({
         content: nextProps.new.content,
         id: nextProps.new.id,

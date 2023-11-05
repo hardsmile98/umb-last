@@ -96,7 +96,7 @@ class News extends Component {
   }
 
   deleteModal(id) {
-    if (id !== 0) {
+    if (String(id) !== '0') {
       this.setState({
         confirmModal: true,
         deleteId: id,
@@ -167,7 +167,7 @@ class News extends Component {
   change(id) {
     const { state } = this;
 
-    if (id !== 0) {
+    if (String(id) !== '0') {
       state.data.news.forEach((item) => {
         if (String(item.id) === String(id)) {
           this.setState({

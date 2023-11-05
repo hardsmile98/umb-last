@@ -100,13 +100,14 @@ class Promocodes extends Component {
   }
 
   toggle(promo) {
-    if (promo !== 0) {
+    if (String(promo) !== '0') {
       this.state.data.promocodes.map((item) => {
         if (String(item.id) === String(promo)) {
           const active = [];
 
-          if (item.usedBy !== null) {
+          if (item.usedBy) {
             item.usedBy = item.usedBy.split(',');
+
             if (item.usedBy.length > 0) {
               item.usedBy.map((i) => {
                 this.state.data.users.map((user) => {

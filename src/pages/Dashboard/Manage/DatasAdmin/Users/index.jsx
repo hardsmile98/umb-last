@@ -75,7 +75,7 @@ class UsersAdmin extends Component {
   change(id) {
     const { state } = this;
 
-    if (id !== 0) {
+    if (String(id) !== '0') {
       state.data.users.forEach((user) => {
         if (String(user.id) === String(id)) {
           this.setState({

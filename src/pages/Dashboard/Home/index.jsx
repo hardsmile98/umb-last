@@ -213,7 +213,7 @@ class HomePage extends Component {
 
     return (
       <div className="row">
-        {state.data.adv !== '' && (
+        {state.data.adv && (
           <div className="col-lg-12">
             <div className="block font-m block-top not-block-main">
               <div className="text-center logoforblockicon">

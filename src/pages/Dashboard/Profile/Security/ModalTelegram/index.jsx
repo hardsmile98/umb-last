@@ -34,51 +34,47 @@ class ModalTelegram extends Component {
       loading: true,
     });
 
-    if (state.secret !== '') {
-      if (state.secret !== '') {
-        const data = {
-          api: 'user',
-          body: {
-            data: {
-              section: 'security',
-              type: 'connect2Auth',
-              secret: state.secret,
-              code: state.code,
-            },
-            action: 'profile',
+    if (state.secret) {
+      const data = {
+        api: 'user',
+        body: {
+          data: {
+            section: 'security',
+            type: 'connect2Auth',
+            secret: state.secret,
+            code: state.code,
           },
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        };
+          action: 'profile',
+        },
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      };
 
-        request(data, (response) => {
-          if (response.status === 200) {
-            if (response.data.success) {
-              toast.success(response.data.message);
-              this.setState({
-                loading: false,
-                secret: '',
-                code: '',
-              });
+      request(data, (response) => {
+        if (response.status === 200) {
+          if (response.data.success) {
+            toast.success(response.data.message);
+            this.setState({
+              loading: false,
+              secret: '',
+              code: '',
+            });
 
-              props.getData();
+            props.getData();
 
-              props.toggle();
-            } else {
-              this.setState({
-                loading: false,
-              });
-
-              toast.error(response.data.message);
-            }
+            props.toggle();
           } else {
-            toast.error('Сервер недоступен');
+            this.setState({
+              loading: false,
+            });
+
+            toast.error(response.data.message);
           }
-        });
-      } else {
-        toast.error(getLocales('Секретный код не введен'));
-      }
+        } else {
+          toast.error('Сервер недоступен');
+        }
+      });
     } else {
       toast.error(getLocales('Секретная фраза не введена'));
     }
