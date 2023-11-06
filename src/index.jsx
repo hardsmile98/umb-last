@@ -6,8 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'animate.css';
 
 import 'assets/styles/bootstrap.css';
-import 'assets/styles/fonts.css';
 import 'assets/styles/style.default.css';
+import 'assets/styles/fonts.css';
 import 'assets/styles/index.css';
 
 import moment from 'moment';

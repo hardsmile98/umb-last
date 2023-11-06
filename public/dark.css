@@ -476,3 +476,7 @@ select.form-control {
   position: relative;
   color: white;
 }
+
+.table>:not(caption)>*>* {
+  background-color: inherit;
+}
