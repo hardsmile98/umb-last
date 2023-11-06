@@ -184,7 +184,7 @@ class Table extends React.Component {
           <div className="search-wrapper">
             <label className="font-m">
               {getLocales('Поиск')}
-              {'( '}
+              {' ('}
               {getLocales('Всего')}
               {': '}
               {this.props.items.length}

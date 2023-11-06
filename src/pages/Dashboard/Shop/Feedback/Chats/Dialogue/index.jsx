@@ -305,7 +305,7 @@ class FeedbackDialogue extends Component {
                   {' '}
                   {String(this.state.data.chat.readed) === '0' ? (
                     <span>
-                      |
+                      {'| '}
                       <a aria-hidden onClick={this.readed}>
                         {getLocales('Отметить прочитанным')}
                       </a>
