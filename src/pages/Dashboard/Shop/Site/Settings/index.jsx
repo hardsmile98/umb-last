@@ -128,7 +128,7 @@ function Settings() {
               {getLocales('Настройки')}
             </h3>
 
-            <div className="avatar-block notice font-m margin-15">
+            <div className="avatar-block notice font-m margin-15 text-center">
               {getLocales('Для изображений')}
               {' '}
               <b>{getLocales('необходимо')}</b>
@@ -187,7 +187,7 @@ function Settings() {
                             <div className="input-group-append">
                               <button
                                 onClick={() => sendData(keyName)}
-                                className="btn btn-primary font-m auth-btn"
+                                className="input-group-text"
                                 type="button"
                                 disabled={!data.settings[keyName]}
                               >

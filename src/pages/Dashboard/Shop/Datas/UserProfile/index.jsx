@@ -502,6 +502,7 @@ class UserProfile extends Component {
                   <label className="form-control-label font-m">
                     {getLocales('Персональная скидка')}
                   </label>
+
                   <div className="input-group">
                     <input
                       name="persDisc"
