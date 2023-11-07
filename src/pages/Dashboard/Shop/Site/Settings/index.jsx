@@ -57,7 +57,7 @@ function Settings() {
     });
   }, [shopId]);
 
-  const sendData = (name) => {
+  const sendData = (name, value) => {
     setLoading(true);
 
     const body = {
@@ -70,7 +70,7 @@ function Settings() {
           shop: shopId,
           action: 'change',
           name,
-          value: data.settings[name],
+          value: value || data.settings[name],
         },
         action: 'shops',
       },
@@ -106,6 +106,13 @@ function Settings() {
         [name]: value,
       },
     }));
+  };
+
+  const onChangeSelect = (e) => {
+    const { name, value } = e.target;
+
+    onChange(e);
+    sendData(name, value);
   };
 
   useEffect(() => {
@@ -144,33 +151,19 @@ function Settings() {
                     {data.available[keyName].type === 'select'
                       ? (
                         <>
-                          <div className="input-group">
-                            <select
-                              onChange={onChange}
-                              value={data.settings[keyName]}
-                              name={data.available[keyName].name}
-                              className="form-control"
-                            >
-                              {data.available[keyName].values.split(',')
-                                .map((value, key) => (
-                                  <option value={value} key={value}>
-                                    {getLocales(data.available[keyName].valuesNames.split(',')[key])}
-                                  </option>
-                                ))}
-                            </select>
-
-                            <div className="input-group-append">
-                              <button
-                                onClick={() => sendData(keyName)}
-                                className="btn btn-primary font-m auth-btn"
-                                type="button"
-                              >
-                                {isLoading
-                                  ? getLocales('Загрузка...')
-                                  : getLocales('Сохранить')}
-                              </button>
-                            </div>
-                          </div>
+                          <select
+                            onChange={onChangeSelect}
+                            value={data.settings[keyName]}
+                            name={data.available[keyName].name}
+                            className="form-control"
+                          >
+                            {data.available[keyName].values.split(',')
+                              .map((value, key) => (
+                                <option value={value} key={value}>
+                                  {getLocales(data.available[keyName].valuesNames.split(',')[key])}
+                                </option>
+                              ))}
+                          </select>
 
                           {data.available[keyName].tip && (
                             <small dangerouslySetInnerHTML={{
