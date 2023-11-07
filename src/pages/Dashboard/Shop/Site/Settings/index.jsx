@@ -1,36 +1,26 @@
 /* eslint-disable react/no-danger */
-/* eslint-disable react/destructuring-assignment */
-import React, { Component } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getLocales, request } from 'utils';
 
-class WebsiteSettings extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      data: {
-        available: {},
-        settings: {},
-      },
-    };
-    this.getData = this.getData.bind(this);
-    this.sendData = this.sendData.bind(this);
-  }
+function Settings() {
+  const [isLoading, setLoading] = useState(false);
+  const [data, setData] = useState({});
 
-  componentDidMount() {
-    this.getData();
-  }
+  const { shopId } = useParams();
 
-  getData() {
-    const data = {
+  const getData = useCallback(() => {
+    setLoading(true);
+
+    const body = {
       api: 'user',
       body: {
         data: {
           section: 'shop',
           type: 'site',
           subtype: 'settings',
-          shop: this.props.match.params.shopId,
+          shop: shopId,
           action: 'get',
         },
         action: 'shops',
@@ -40,40 +30,37 @@ class WebsiteSettings extends Component {
       },
     };
 
-    request(data, (response) => {
-      if (response.status === 200) {
-        if (response.data.success) {
-          this.setState({
-            data: response.data.data,
-            loading: false,
-          });
-        } else {
-          this.setState({
-            loading: false,
-          });
-          toast.error(response.data.message);
-        }
-      } else {
+    request(body, (response) => {
+      if (response.status !== 200) {
         toast.error('Сервер недоступен');
+        return;
       }
-    });
-  }
 
-  sendData(e) {
-    this.setState({
-      loading: true,
+      if (!response.data.success) {
+        setLoading(false);
+        toast.error(response.data.message);
+        return;
+      }
+
+      setLoading(false);
+      setData(response.data.data);
     });
-    const data = {
+  }, [shopId]);
+
+  const sendData = (name) => {
+    setLoading(true);
+
+    const body = {
       api: 'user',
       body: {
         data: {
           section: 'shop',
           type: 'site',
           subtype: 'settings',
-          shop: this.props.match.params.shopId,
+          shop: shopId,
           action: 'change',
-          name: e.target.name,
-          value: e.target.value.toString(),
+          name,
+          value: data.settings[name] || data.available[name].default,
         },
         action: 'shops',
       },
@@ -82,115 +69,149 @@ class WebsiteSettings extends Component {
       },
     };
 
-    request(data, (response) => {
-      if (response.status === 200) {
-        if (response.data.success) {
-          this.getData();
-        } else {
-          this.setState({
-            loading: false,
-          });
-          toast.error(response.data.message);
-        }
-      } else {
+    request(body, (response) => {
+      if (response.status !== 200) {
+        setLoading(false);
         toast.error('Сервер недоступен');
+        return;
       }
+
+      setLoading(false);
+      toast.error(response.data.message);
     });
-  }
+  };
 
-  render() {
-    return (
-      <div className={`block animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
-        <div className="block-body">
-          <div className="row">
-            <div className="col-lg-12">
-              <h3 className="font-m">
-                {getLocales('Настройки')}
-              </h3>
+  const onChange = (e) => {
+    const { name, value } = e.target;
 
-              <div className="avatar-block notice font-m text-center margin-15">
-                {getLocales('Для изображений')}
-                {' '}
-                <b>{getLocales('необходимо')}</b>
-                {' '}
-                {getLocales('указывать прямую ссылку, прямая ссылка')}
-                {' '}
-                <b>{getLocales('всегда')}</b>
-                {' '}
-                {getLocales('оканчивается на формат изображения (png, jpg, jpeg и т.д.).')}
-              </div>
+    setData((prev) => ({
+      ...prev,
+      settings: {
+        ...prev.settings,
+        [name]: value,
+      },
+    }));
+  };
 
-              <div className="row matgin-15">
-                {Object.keys(this.state.data.available).map((keyName) => (
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label className="form-control-label font-m">
-                        {getLocales(this.state.data.available[keyName].title)}
-                      </label>
+  useEffect(() => {
+    getData();
+  }, [getData]);
 
-                      {this.state.data.available[keyName].type === 'select'
-                        ? (
-                          <>
+  return (
+    <div className={`block animate__animated animate__fadeIn ${isLoading ? 'blur' : ''}`}>
+      <div className="block-body">
+        <div className="row">
+          <div className="col-lg-12">
+            <h3 className="font-m">
+              {getLocales('Настройки')}
+            </h3>
+
+            <div className="avatar-block notice font-m margin-15">
+              {getLocales('Для изображений')}
+              {' '}
+              <b>{getLocales('необходимо')}</b>
+              {' '}
+              {getLocales('указывать прямую ссылку, прямая ссылка')}
+              {' '}
+              <b>{getLocales('всегда')}</b>
+              {' '}
+              {getLocales('оканчивается на формат изображения (png, jpg, jpeg и т.д.).')}
+            </div>
+
+            <div className="row matgin-15">
+              {Object.keys(data.available || {}).map((keyName) => (
+                <div className="col-lg-6" key={keyName}>
+                  <div className="form-group">
+                    <label className="form-control-label font-m">
+                      {getLocales(data.available[keyName].title)}
+                    </label>
+
+                    {data.available[keyName].type === 'select'
+                      ? (
+                        <>
+                          <div className="input-group">
                             <select
-                              onChange={this.sendData}
-                              value={this.state.data.settings[keyName]
-                                ? this.state.data.settings[keyName]
-                                : this.state.data.available[keyName].default}
-                              name={this.state.data.available[keyName].name}
+                              onChange={onChange}
+                              value={data.settings[keyName]
+                                ? data.settings[keyName]
+                                : data.available[keyName].default}
+                              name={data.available[keyName].name}
                               className="form-control"
                             >
-                              {this.state.data.available[keyName].values.split(',')
+                              {data.available[keyName].values.split(',')
                                 .map((value, key) => (
-                                  <option
-                                    value={value}
-                                  >
-                                    {getLocales(this.state.data.available[keyName].valuesNames.split(',')[key])}
+                                  <option value={value} key={value}>
+                                    {getLocales(data.available[keyName].valuesNames.split(',')[key])}
                                   </option>
                                 ))}
                             </select>
 
-                            {this.state.data.available[keyName].tip
-                              ? (
-                                <small dangerouslySetInnerHTML={{
-                                  __html:
-                                   getLocales(this.state.data.available[keyName].tip.replace(/"/g, "'")),
-                                }}
-                                />
-                              ) : ''}
-                          </>
-                        )
-                        : (
-                          <>
+                            <div className="input-group-append">
+                              <button
+                                onClick={() => sendData(keyName)}
+                                className="btn btn-primary font-m auth-btn"
+                                type="button"
+                              >
+                                {isLoading
+                                  ? getLocales('Загрузка...')
+                                  : getLocales('Сохранить')}
+                              </button>
+                            </div>
+                          </div>
+
+                          {data.available[keyName].tip && (
+                            <small dangerouslySetInnerHTML={{
+                              __html:
+                                getLocales(data.available[keyName].tip.replace(/"/g, "'")),
+                            }}
+                            />
+                          )}
+                        </>
+                      )
+                      : (
+                        <>
+                          <div className="input-group">
                             <input
-                              name={this.state.data.available[keyName].name}
-                              onChange={this.sendData}
+                              onChange={onChange}
+                              name={data.available[keyName].name}
                               className="form-control"
-                              value={this.state.data.settings[keyName]
-                                ? this.state.data.settings[keyName]
-                                : this.state.data.available[keyName].default}
+                              value={data.settings[keyName]
+                                ? data.settings[keyName]
+                                : data.available[keyName].default}
                             />
 
-                            {this.state.data.available[keyName].tip
-                              ? (
-                                <small
-                                  dangerouslySetInnerHTML={{
-                                    __html:
-                                     getLocales(this.state.data.available[keyName].tip.replace(/"/g, "'")),
-                                  }}
-                                />
-                              ) : ''}
-                          </>
-                        )}
-                    </div>
+                            <div className="input-group-append">
+                              <button
+                                onClick={() => sendData(keyName)}
+                                className="btn btn-primary font-m auth-btn"
+                                type="button"
+                              >
+                                {isLoading
+                                  ? getLocales('Загрузка...')
+                                  : getLocales('Сохранить')}
+                              </button>
+                            </div>
+                          </div>
+
+                          {data.available[keyName].tip && (
+                            <small
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                 getLocales(data.available[keyName].tip.replace(/"/g, "'")),
+                              }}
+                            />
+                          )}
+                        </>
+                      )}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-export default WebsiteSettings;
+export default Settings;

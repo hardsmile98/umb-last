@@ -1,4 +1,15 @@
-/* eslint-disable */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-shadow */
+/* eslint-disable no-loop-func */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-param-reassign */
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable react/no-unused-state */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable array-callback-return */
+/* eslint-disable react/sort-comp */
+/* eslint-disable camelcase */
 import React, { Component } from 'react';
 import moment from 'moment';
 import { toast } from 'react-toastify';
@@ -9,7 +20,7 @@ import am4themes_dark from '@amcharts/amcharts4/themes/dark';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Table } from 'components';
 import { request, getLocales } from 'utils';
-import ProfitModal from './ProfitModal'
+import ProfitModal from './ProfitModal';
 
 am4core.useTheme(am4themes_animated);
 
@@ -58,10 +69,10 @@ class Statistics extends Component {
       const prods = [];
 
       this.state.data.purchases.map((item) => {
-        if (cats.indexOf(item.category) == -1) {
+        if (cats.indexOf(item.category) === -1) {
           cats.push(item.category);
         }
-        if (prods.indexOf(item.product) == -1) {
+        if (prods.indexOf(item.product) === -1) {
           prods.push(item.product);
         }
       });
@@ -386,9 +397,8 @@ class Statistics extends Component {
         let count = 0;
         // add items
         for (const itemName in providerData) {
-          if (itemName != 'quantity') {
-            count++;
-            // we generate unique category for each column (providerName + "_" + itemName) and store realName
+          if (itemName !== 'quantity') {
+            count += 1;
             tempArray.push({
               category: `${providerName}_${itemName}`, realName: itemName, value: providerData[itemName], provider: providerName,
             });
@@ -518,7 +528,11 @@ class Statistics extends Component {
                 <h4 className="font-m">
                   {getLocales('Статистика магазина')}
                   {' '}
-                  <span className="text-right right"><a onClick={this.toggle}>{getLocales('Рассчитать прибыль')}</a></span>
+                  <span className="text-right right">
+                    <a onClick={this.toggle} aria-hidden>
+                      {getLocales('Рассчитать прибыль')}
+                    </a>
+                  </span>
                 </h4>
 
                 <div className="row">
@@ -565,31 +579,37 @@ class Statistics extends Component {
                   </div>
 
                   <div className="col-lg-12">
-                    <h4 className="font-m">{getLocales('График оборота')}</h4>
+                    <h4 className="font-m">
+                      {getLocales('График оборота')}
+                    </h4>
                     <div id="prefer" style={{ width: '100%', height: '50vh' }} />
                   </div>
 
                   <div className="col-lg-12">
-                    <h4 className="font-m">{getLocales('График продаж по районам')}</h4>
+                    <h4 className="font-m">
+                      {getLocales('График продаж по районам')}
+                    </h4>
                     <div id="areas" style={{ width: '100%', height: '50vh' }} />
                   </div>
 
                   <div className="col-lg-12 margin-15">
-                    <h4 className="font-m">{getLocales('График продаж товаров')}</h4>
+                    <h4 className="font-m">
+                      {getLocales('График продаж товаров')}
+                    </h4>
                     <div id="productsgraph" style={{ width: '100%', height: '50vh' }} />
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
+
           <div className="col-lg-4">
             <div className={`income font-m animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
               <h4>
                 <span>{getLocales('Сумма адресов в наличии')}</span>
                 {' '}
                 <span className="text-right right">
-                  <a onClick={this.toggle}>
+                  <a onClick={this.toggle} aria-hidden>
                     {getLocales('Подробнее')}
                   </a>
                 </span>
@@ -608,6 +628,7 @@ class Statistics extends Component {
                 <h4 className="font-m">
                   {getLocales('Топ продаж')}
                 </h4>
+
                 {this.state.data.products.length > 0
                   ? (
                     <Table
@@ -622,7 +643,6 @@ class Statistics extends Component {
                       {getLocales('Товары отсутствуют')}
                     </div>
                   )}
-
               </div>
             </div>
           </div>

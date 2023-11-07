@@ -43,9 +43,9 @@ class ProfitModal extends Component {
       if (+purchase.closed >= +new Date(this.state.dateFrom)
       && +purchase.closed < +new Date(this.state.dateTo)) {
         if (purchase.data && typeof purchase.data === 'string') {
-          if (JSON.parse(purchase.data).subproduct === '0') {
+          if (purchase.data.subproduct === '0') {
             this.props.products.map((item) => {
-              if (String(item.id) === JSON.parse(purchase.data).product) {
+              if (item.id === purchase.data.product) {
                 if (res[purchase.category]) {
                   res[purchase.category].turnover += +purchase.sum;
                   res[purchase.category].courier += +item.bonus;
@@ -63,7 +63,7 @@ class ProfitModal extends Component {
             });
           } else {
             this.props.subproducts.map((item) => {
-              if (String(item.id) === JSON.parse(purchase.data).subproduct) {
+              if (item.id === purchase.data.subproduct) {
                 if (res[purchase.category]) {
                   res[purchase.category].turnover += +purchase.sum;
                   res[purchase.category].courier += +item.bonus;
@@ -91,134 +91,136 @@ class ProfitModal extends Component {
 
   render() {
     return (
-      <div>
-        <Modal size="xl" isOpen={this.props.modal} toggle={this.props.toggle}>
-          <div className="modal-header text-center">
-            <h4 className="modal-title font-m">
-              {getLocales('Рассчет прибыли')}
-            </h4>
-          </div>
+      <Modal
+        size="xl"
+        isOpen={this.props.modal}
+        toggle={this.props.toggle}
+      >
+        <div className="modal-header text-center">
+          <h4 className="modal-title font-m">
+            {getLocales('Рассчет прибыли')}
+          </h4>
+        </div>
 
-          <ModalBody>
-            <div className="row">
-              <div className="col-lg-6">
-                <div className="form-group">
-                  <label className="form-control-label font-m">
-                    {getLocales('От')}
-                  </label>
-                  <input
-                    type="date"
-                    onChange={this.handleChange}
-                    value={this.state.dateFrom}
-                    name="dateFrom"
-                    className="form-control"
-                  />
-                </div>
+        <ModalBody>
+          <div className="row">
+            <div className="col-lg-6">
+              <div className="form-group">
+                <label className="form-control-label font-m">
+                  {getLocales('От')}
+                </label>
+                <input
+                  type="date"
+                  onChange={this.handleChange}
+                  value={this.state.dateFrom}
+                  name="dateFrom"
+                  className="form-control"
+                />
               </div>
+            </div>
 
-              <div className="col-lg-6">
-                <div className="form-group">
-                  <label className="form-control-label font-m">
-                    {getLocales('До')}
-                  </label>
-                  <input
-                    type="date"
-                    onChange={this.handleChange}
-                    value={this.state.dateTo}
-                    name="dateTo"
-                    className="form-control"
-                  />
-                </div>
+            <div className="col-lg-6">
+              <div className="form-group">
+                <label className="form-control-label font-m">
+                  {getLocales('До')}
+                </label>
+                <input
+                  type="date"
+                  onChange={this.handleChange}
+                  value={this.state.dateTo}
+                  name="dateTo"
+                  className="form-control"
+                />
               </div>
+            </div>
 
-              <div className="col-lg-12">
-                <div className="avatar-block notice no-margin">
-                  <h3 className="font-m">
-                    {getLocales('Статистика по городам')}
-                  </h3>
+            <div className="col-lg-12">
+              <div className="avatar-block notice no-margin">
+                <h3 className="font-m">
+                  {getLocales('Статистика по городам')}
+                </h3>
 
-                  {Object.keys(this.state.profit).length > 0
-                    ? (
-                      <>
+                {Object.keys(this.state.profit).length > 0
+                  ? (
+                    <>
+                      <div className="avatar-block font-m">
+                        <div className="row">
+                          <div className="col-lg-2">
+                            <b>Город</b>
+                          </div>
+                          <div className="col-lg-2 text-center">
+                            <b>Оборот</b>
+                          </div>
+                          <div className="col-lg-2 text-center">
+                            <b>З/п курьерам</b>
+                          </div>
+                          <div className="col-lg-3 text-center">
+                            <b>Себестоимость товара</b>
+                          </div>
+                          <div className="col-lg-2 text-center">
+                            <b>Чистая прибыль</b>
+                          </div>
+                        </div>
+                      </div>
+
+                      {Object.keys(this.state.profit).map((key) => (
                         <div className="avatar-block font-m">
                           <div className="row">
                             <div className="col-lg-2">
-                              <b>Город</b>
+                              {key}
                             </div>
                             <div className="col-lg-2 text-center">
-                              <b>Оборот</b>
+                              {Math.round(this.state.profit[key].turnover)}
+                              {' '}
+                              {this.props.currency}
                             </div>
                             <div className="col-lg-2 text-center">
-                              <b>З/п курьерам</b>
+                              {Math.round(this.state.profit[key].courier)}
+                              {' '}
+                              {this.props.currency}
                             </div>
                             <div className="col-lg-3 text-center">
-                              <b>Себестоимость товара</b>
+                              {Math.round(this.state.profit[key].seb)}
+                              {' '}
+                              {this.props.currency}
                             </div>
                             <div className="col-lg-2 text-center">
-                              <b>Чистая прибыль</b>
+                              {Math.round(this.state.profit[key].prefer)}
+                              {' '}
+                              {this.props.currency}
                             </div>
                           </div>
                         </div>
-
-                        {Object.keys(this.state.profit).map((key) => (
-                          <div className="avatar-block font-m">
-                            <div className="row">
-                              <div className="col-lg-2">
-                                {key}
-                              </div>
-                              <div className="col-lg-2 text-center">
-                                {Math.round(this.state.profit[key].turnover)}
-                                {' '}
-                                {this.props.currency}
-                              </div>
-                              <div className="col-lg-2 text-center">
-                                {Math.round(this.state.profit[key].courier)}
-                                {' '}
-                                {this.props.currency}
-                              </div>
-                              <div className="col-lg-3 text-center">
-                                {Math.round(this.state.profit[key].seb)}
-                                {' '}
-                                {this.props.currency}
-                              </div>
-                              <div className="col-lg-2 text-center">
-                                {Math.round(this.state.profit[key].prefer)}
-                                {' '}
-                                {this.props.currency}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </>
-                    )
-                    : (
-                      <div className="text-center font-m">
-                        Не найдено
-                      </div>
-                    )}
-                </div>
+                      ))}
+                    </>
+                  )
+                  : (
+                    <div className="text-center font-m">
+                      Не найдено
+                    </div>
+                  )}
               </div>
             </div>
-          </ModalBody>
+          </div>
+        </ModalBody>
 
-          <ModalFooter>
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-lg-12">
-                  <button
-                    type="button"
-                    value={getLocales('Закрыть')}
-                    className="btn btn-secondary font-m auth-btn"
-                    onClick={this.props.toggle}
-                  >
-                    {getLocales('Закрыть')}
-                  </button>
-                </div>
+        <ModalFooter>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-lg-12">
+                <button
+                  type="button"
+                  value={getLocales('Закрыть')}
+                  className="btn btn-secondary font-m auth-btn"
+                  onClick={this.props.toggle}
+                >
+                  {getLocales('Закрыть')}
+                </button>
               </div>
             </div>
-          </ModalFooter>
-        </Modal>
-      </div>
+          </div>
+        </ModalFooter>
+      </Modal>
     );
   }
 }
