@@ -42,44 +42,42 @@ class ProfitModal extends Component {
     this.props.purchases.map((purchase) => {
       if (+purchase.closed >= +new Date(this.state.dateFrom)
        && +purchase.closed < +new Date(this.state.dateTo)) {
-        if (purchase.data && typeof purchase.data === 'string') {
-          if (JSON.parse(purchase.data).subproduct === '0') {
-            this.props.products.map((item) => {
-              if (item.id === JSON.parse(purchase.data).product) {
-                if (res[purchase.category]) {
-                  res[purchase.category].turnover += +purchase.sum;
-                  res[purchase.category].courier += +item.bonus;
-                  res[purchase.category].seb += 0;
-                  res[purchase.category].prefer += (+purchase.sum - +item.bonus - 0);
-                } else {
-                  res[purchase.category] = {
-                    turnover: +purchase.sum,
-                    courier: +item.bonus,
-                    seb: 0,
-                    prefer: (+purchase.sum - +item.bonus - 0),
-                  };
-                }
+        if (!purchase.subproduct) {
+          this.props.products.map((item) => {
+            if (item.name === purchase.product) {
+              if (res[purchase.category]) {
+                res[purchase.category].turnover += +purchase.sum;
+                res[purchase.category].courier += +item.bonus;
+                res[purchase.category].seb += 0;
+                res[purchase.category].prefer += (+purchase.sum - +item.bonus - 0);
+              } else {
+                res[purchase.category] = {
+                  turnover: +purchase.sum,
+                  courier: +item.bonus,
+                  seb: 0,
+                  prefer: (+purchase.sum - +item.bonus - 0),
+                };
               }
-            });
-          } else {
-            this.props.subproducts.map((item) => {
-              if (item.id === JSON.parse(purchase.data).subproduct) {
-                if (res[purchase.category]) {
-                  res[purchase.category].turnover += +purchase.sum;
-                  res[purchase.category].courier += +item.bonus;
-                  res[purchase.category].seb += +item.sum;
-                  res[purchase.category].prefer += (+purchase.sum - +item.bonus - +item.sum);
-                } else {
-                  res[purchase.category] = {
-                    turnover: +purchase.sum,
-                    courier: +item.bonus,
-                    seb: +item.sum,
-                    prefer: (+purchase.sum - +item.bonus - +item.sum),
-                  };
-                }
+            }
+          });
+        } else {
+          this.props.subproducts.map((item) => {
+            if (item.name === purchase.subproduct) {
+              if (res[purchase.category]) {
+                res[purchase.category].turnover += +purchase.sum;
+                res[purchase.category].courier += +item.bonus;
+                res[purchase.category].seb += +item.sum;
+                res[purchase.category].prefer += (+purchase.sum - +item.bonus - +item.sum);
+              } else {
+                res[purchase.category] = {
+                  turnover: +purchase.sum,
+                  courier: +item.bonus,
+                  seb: +item.sum,
+                  prefer: (+purchase.sum - +item.bonus - +item.sum),
+                };
               }
-            });
-          }
+            }
+          });
         }
       }
     });
