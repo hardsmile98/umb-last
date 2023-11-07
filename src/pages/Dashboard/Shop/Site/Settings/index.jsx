@@ -42,8 +42,18 @@ function Settings() {
         return;
       }
 
+      const responseData = response.data.data;
+
+      const formattedData = {
+        ...responseData,
+        settings: Object.keys(responseData.available).reduce((acc, cur) => ({
+          ...acc,
+          [cur]: responseData.settings[cur] || responseData.available[cur].default,
+        }), {}),
+      };
+
       setLoading(false);
-      setData(response.data.data);
+      setData(formattedData);
     });
   }, [shopId]);
 
@@ -60,7 +70,7 @@ function Settings() {
           shop: shopId,
           action: 'change',
           name,
-          value: data.settings[name] || data.available[name].default,
+          value: data.settings[name],
         },
         action: 'shops',
       },
@@ -76,8 +86,13 @@ function Settings() {
         return;
       }
 
+      if (response.data.success) {
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+
       setLoading(false);
-      toast.error(response.data.message);
     });
   };
 
@@ -132,9 +147,7 @@ function Settings() {
                           <div className="input-group">
                             <select
                               onChange={onChange}
-                              value={data.settings[keyName]
-                                ? data.settings[keyName]
-                                : data.available[keyName].default}
+                              value={data.settings[keyName]}
                               name={data.available[keyName].name}
                               className="form-control"
                             >
@@ -175,9 +188,7 @@ function Settings() {
                               onChange={onChange}
                               name={data.available[keyName].name}
                               className="form-control"
-                              value={data.settings[keyName]
-                                ? data.settings[keyName]
-                                : data.available[keyName].default}
+                              value={data.settings[keyName]}
                             />
 
                             <div className="input-group-append">
@@ -185,6 +196,7 @@ function Settings() {
                                 onClick={() => sendData(keyName)}
                                 className="btn btn-primary font-m auth-btn"
                                 type="button"
+                                disabled={!data.settings[keyName]}
                               >
                                 {isLoading
                                   ? getLocales('Загрузка...')
