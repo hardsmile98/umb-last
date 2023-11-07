@@ -41,11 +41,11 @@ class ProfitModal extends Component {
 
     this.props.purchases.map((purchase) => {
       if (+purchase.closed >= +new Date(this.state.dateFrom)
-      && +purchase.closed < +new Date(this.state.dateTo)) {
+       && +purchase.closed < +new Date(this.state.dateTo)) {
         if (purchase.data && typeof purchase.data === 'string') {
-          if (purchase.data.subproduct === '0') {
+          if (JSON.parse(purchase.data).subproduct === '0') {
             this.props.products.map((item) => {
-              if (item.id === purchase.data.product) {
+              if (item.id === JSON.parse(purchase.data).product) {
                 if (res[purchase.category]) {
                   res[purchase.category].turnover += +purchase.sum;
                   res[purchase.category].courier += +item.bonus;
@@ -63,7 +63,7 @@ class ProfitModal extends Component {
             });
           } else {
             this.props.subproducts.map((item) => {
-              if (item.id === purchase.data.subproduct) {
+              if (item.id === JSON.parse(purchase.data).subproduct) {
                 if (res[purchase.category]) {
                   res[purchase.category].turnover += +purchase.sum;
                   res[purchase.category].courier += +item.bonus;
