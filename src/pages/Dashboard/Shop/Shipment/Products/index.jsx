@@ -137,7 +137,7 @@ class Products extends Component {
                                 <h4 className="font-m">{item.name}</h4>
                                 <div className="text-left font-m">
                                   {getLocales('Фасовка')}
-                                  :
+                                  {': '}
                                   <span className="highlight">
                                     {String(item.sub) === '1'
                                       ? <>{getLocales('Да')}</>
@@ -145,14 +145,14 @@ class Products extends Component {
                                   </span>
                                   <br />
                                   {getLocales('Скидка')}
-                                  :
+                                  {': '}
                                   <span className="highlight">
                                     {item.discount}
                                     %
                                   </span>
                                   <br />
                                   {getLocales('Адресов в наличии')}
-                                  :
+                                  {': '}
                                   <span className="highlight">
                                     {item.sellers}
                                     {' '}
@@ -160,7 +160,7 @@ class Products extends Component {
                                   </span>
                                   <br />
                                   {getLocales('Продаж')}
-                                  :
+                                  {': '}
                                   <span className="highlight">
                                     {item.sales}
                                     {' '}
@@ -168,7 +168,7 @@ class Products extends Component {
                                   </span>
                                   <br />
                                   {getLocales('Сумма продаж')}
-                                  :
+                                  {': '}
                                   <span className="highlight">
                                     {item.salessum.toFixed(2)}
                                     {' '}

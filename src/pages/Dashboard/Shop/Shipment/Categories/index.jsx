@@ -369,7 +369,7 @@ class Categories extends Component {
                             <br />
                             <p className="font-m">
                               {getLocales('Районов')}
-                              :
+                              {': '}
                               <span className="highlight">
                                 {item.subcategories.length}
                                 {' '}
@@ -377,7 +377,7 @@ class Categories extends Component {
                               </span>
                               <br />
                               {getLocales('Адресов в наличии')}
-                              :
+                              {': '}
                               <span className="highlight">
                                 {item.sellers}
                                 {' '}
@@ -385,7 +385,7 @@ class Categories extends Component {
                               </span>
                               <br />
                               {getLocales('Продаж')}
-                              :
+                              {': '}
                               <span className="highlight">
                                 {item.sales}
                                 {' '}
@@ -393,7 +393,7 @@ class Categories extends Component {
                               </span>
                               <br />
                               {getLocales('Сумма продаж')}
-                              :
+                              {': '}
                               <span className="highlight">
                                 {item.salessum.toFixed(2)}
                                 {' '}

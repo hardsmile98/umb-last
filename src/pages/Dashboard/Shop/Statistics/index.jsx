@@ -12,6 +12,7 @@ import am4themes_dark from '@amcharts/amcharts4/themes/dark';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Table } from 'components';
 import ProfitModal from './ProfitModal';
+import AddressesModal from './AddressesModal';
 
 am4core.useTheme(am4themes_animated);
 
@@ -45,8 +46,10 @@ function Statistics() {
   });
   const [items, setItems] = useState([]);
   const [isProfitModalOpen, setProfitModalOpen] = useState(false);
+  const [isAddressesModalOpen, setAddressesModalOpen] = useState(false);
 
   const toggleProfitModal = () => setProfitModalOpen((prev) => !prev);
+  const toggleAddressesModal = () => setAddressesModalOpen((prev) => !prev);
 
   const updateItems = (newItems) => setItems(newItems);
 
@@ -540,7 +543,7 @@ function Statistics() {
               </span>
               {' '}
               <span className="text-right right">
-                <a onClick={toggleProfitModal} aria-hidden>
+                <a onClick={toggleAddressesModal} aria-hidden>
                   {getLocales('Подробнее')}
                 </a>
               </span>
@@ -586,6 +589,11 @@ function Statistics() {
         subproducts={data.subproducts}
         toggle={toggleProfitModal}
         modal={isProfitModalOpen}
+      />
+
+      <AddressesModal
+        toggle={toggleAddressesModal}
+        modal={isAddressesModalOpen}
       />
     </>
   );
