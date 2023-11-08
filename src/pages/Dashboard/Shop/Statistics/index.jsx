@@ -34,6 +34,7 @@ function Statistics() {
       .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
     dateTo: moment.unix(new Date(Date.now() + 86400000)
       .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
+    product: null,
   });
   const [data, setData] = useState({
     purchases: [],
@@ -403,6 +404,10 @@ function Statistics() {
     }
 
     getData();
+
+    return () => {
+      am4core.disposeAllCharts();
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -453,18 +458,47 @@ function Statistics() {
                   </div>
                 </div>
 
-                <div className="col-lg-8" />
-                <div className="col-lg-4">
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <label className="form-control-label font-m">
+                      {getLocales('Город')}
+                    </label>
+                    <input
+                      type="date"
+                      onChange={onChangeFilter}
+                      value={filter.dateTo}
+                      name="dateTo"
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <label className="form-control-label font-m">
+                      {getLocales('Товар')}
+                    </label>
+                    <input
+                      type="date"
+                      onChange={onChangeFilter}
+                      value={filter.dateTo}
+                      name="dateTo"
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-lg-12">
                   <button
                     type="button"
                     onClick={getData}
-                    className="btn btn-primary auth-btn font-m margin-15"
+                    className="btn btn-primary auth-btn font-m"
                   >
                     {getLocales('Применить')}
                   </button>
                 </div>
 
-                <div className="col-lg-12">
+                <div className="col-lg-12 margin-15">
                   <h4 className="font-m">
                     {getLocales('График оборота')}
                   </h4>
