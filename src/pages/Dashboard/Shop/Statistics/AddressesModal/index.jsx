@@ -14,7 +14,7 @@ function AddressesModal({
     >
       <div className="modal-header text-center">
         <h4 className="modal-title font-m">
-          {getLocales('Сумма адресов в наличии')}
+          {getLocales('Количество адресов в наличии')}
         </h4>
       </div>
 
@@ -23,28 +23,33 @@ function AddressesModal({
           <div className="col-lg-12">
             <ul className="avatar-block font-m">
               <li>
-                <li>Москва - 35 адресов</li>
+                <li>
+                  <b>Москва</b>
+                  {' - 35 адресов'}
+                </li>
                 <ul>
                   <li>
                     <li>
-                      Арбат - 25 адресов
+                      <b>Арбат</b>
+                      {' - 25 адресов'}
                     </li>
                     <ul>
                       <li>
-                        Яблоки - 10 адресов
+                        <b>Яблоки</b>
+                        {' - 10 адресов'}
                       </li>
                       <li>
-                        Груши - 15 адресов
+                        <b>Груши</b>
+                        {' - 15 адресов'}
                       </li>
                     </ul>
                   </li>
-                  <li>
-                    Китай-город - 10 адресов
-                  </li>
                 </ul>
               </li>
-              <li>Саратов - 15 адресов</li>
-              <li>Питер - 10 адресов</li>
+              <li>
+                <b>Саратов</b>
+                {' - 10 адресов'}
+              </li>
             </ul>
           </div>
         </div>
