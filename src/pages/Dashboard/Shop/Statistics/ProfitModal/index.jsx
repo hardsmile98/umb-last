@@ -10,10 +10,10 @@ class ProfitModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dateFrom: moment.unix(Date.now() / 1000).subtract(1, 'days')
-        .format('YYYY-MM-DD'),
-      dateTo: moment.unix((+Date.now() + 200000000) / 1000).subtract(1, 'days')
-        .format('YYYY-MM-DD'),
+      dateFrom: moment.unix(new Date(Date.now() - 2592000000)
+        .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
+      dateTo: moment.unix(new Date(Date.now() + 86400000)
+        .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
       profit: {},
     };
     this.handleChange = this.handleChange.bind(this);
@@ -140,7 +140,7 @@ class ProfitModal extends Component {
 
                 {Object.keys(this.state.profit).length > 0
                   ? (
-                    <>
+                    <div>
                       <div className="avatar-block font-m">
                         <div className="row">
                           <div className="col-lg-2">
@@ -162,7 +162,7 @@ class ProfitModal extends Component {
                       </div>
 
                       {Object.keys(this.state.profit).map((key) => (
-                        <div className="avatar-block font-m">
+                        <div className="avatar-block font-m" key={key}>
                           <div className="row">
                             <div className="col-lg-2">
                               {key}
@@ -190,7 +190,7 @@ class ProfitModal extends Component {
                           </div>
                         </div>
                       ))}
-                    </>
+                    </div>
                   )
                   : (
                     <div className="text-center font-m">

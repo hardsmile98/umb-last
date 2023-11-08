@@ -1,16 +1,9 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-shadow */
-/* eslint-disable no-loop-func */
-/* eslint-disable guard-for-in */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-param-reassign */
-/* eslint-disable react/no-access-state-in-setstate */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/sort-comp */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable camelcase */
-import React, { Component } from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { getLocales, request } from 'utils';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import * as am4core from '@amcharts/amcharts4/core';
@@ -19,281 +12,64 @@ import am4lang_ru_RU from '@amcharts/amcharts4/lang/ru_RU';
 import am4themes_dark from '@amcharts/amcharts4/themes/dark';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Table } from 'components';
-import { request, getLocales } from 'utils';
 import ProfitModal from './ProfitModal';
 
 am4core.useTheme(am4themes_animated);
 
-class Statistics extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      data: {
-        purchases: [],
-        products: [],
-        sellersSum: 0,
-        subproducts: [],
-      },
-      graphData: [],
-      dateFrom: moment.unix(new Date(Date.now() - 2592000000)
-        .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
-      dateTo: moment.unix(new Date(Date.now() + 86400000)
-        .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
-      items: [],
-      modal: false,
-      productGraph: [],
-      date2: +new Date(Date.now()).setHours(0, 0, 0, 0),
-    };
+const tableColumns = [
+  {
+    title: getLocales('Товар'), dataIndex: 'name', key: 'name', sort: true,
+  },
+  {
+    title: getLocales('Кол-во продаж'), dataIndex: 'sales', key: 'sales', sort: true,
+  },
+];
 
-    this.getData = this.getData.bind(this);
-    this.prepareDataForDays = this.prepareDataForDays.bind(this);
-    this.prepareForProducts = this.prepareForProducts.bind(this);
-    this.prepareProducts = this.prepareProducts.bind(this);
-    this.prepareForDaysProd = this.prepareForDaysProd.bind(this);
-    this.prepareAreas = this.prepareAreas.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.loadSortings = this.loadSortings.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
+function Statistics() {
+  const { shopId } = useParams();
 
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  }
+  const [isLoading, setLoading] = useState(false);
+  const [isSuccess, setSuccess] = useState(false);
+  const [filter, setFilter] = useState({
+    dateFrom: moment.unix(new Date(Date.now() - 2592000000)
+      .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
+    dateTo: moment.unix(new Date(Date.now() + 86400000)
+      .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
+  });
+  const [data, setData] = useState({
+    purchases: [],
+    products: [],
+    sellersSum: 0,
+    subproducts: [],
+    currency: '',
+  });
+  const [items, setItems] = useState([]);
+  const [isProfitModalOpen, setProfitModalOpen] = useState(false);
 
-  loadSortings() {
-    if (this.state.data.purchases.length > 0) {
-      const cats = [];
-      const prods = [];
+  const toggleProfitModal = () => setProfitModalOpen((prev) => !prev);
 
-      this.state.data.purchases.map((item) => {
-        if (cats.indexOf(item.category) === -1) {
-          cats.push(item.category);
-        }
-        if (prods.indexOf(item.product) === -1) {
-          prods.push(item.product);
-        }
-      });
+  const updateItems = (newItems) => setItems(newItems);
 
-      this.setState({
-        categories: cats,
-        products: prods,
-      });
-    }
-  }
+  const onChangeFilter = (e) => {
+    const { name, value } = e.target;
 
-  toggle() {
-    this.setState({
-      modal: !this.state.modal,
-    });
-  }
+    setFilter((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-  componentDidMount() {
-    am4core.addLicense('ch-custom-attribution');
+  const prepareTable = useCallback(() => {
+    const newItems = data.products.map((item) => ({
+      name: item.name,
+      sales: `${item.sales} ${getLocales('шт.')}`,
+    }));
 
-    if (localStorage.getItem('theme') !== 'default') {
-      am4core.useTheme(am4themes_dark);
-    }
+    setItems(newItems);
+  }, [data.products]);
 
-    this.getData();
-  }
-
-  prepareForProducts(callback) {
-    const datas = [];
-
-    this.state.data.purchases.map((item) => {
-      if (datas.length > 0) {
-        let check = false;
-        datas.map((data) => {
-          if (data.name === (`${item.product} ${item.subproduct}`)) {
-            data.value += 1;
-            check = true;
-          }
-        });
-        if (!check) {
-          datas.push({
-            value: 1,
-            name: (`${item.product} ${item.subproduct}`),
-          });
-        }
-      } else {
-        datas.push({
-          value: 1,
-          name: (`${item.product} ${item.subproduct}`),
-        });
-      }
-    });
-
-    this.setState({
-      productGraph: datas,
-    }, () => {
-      callback(true);
-    });
-  }
-
-  prepareDataForDays(callback) {
-    const newData = [];
-    this.state.data.purchases.map((item) => {
-      if (newData.length > 0) {
-        let check = false;
-        newData.map((data) => {
-          if (+data.date === +new Date(+item.closed).setHours(0, 0, 0, 0)) {
-            data.value += item.sum;
-            check = true;
-          }
-        });
-        if (!check) {
-          newData.push({
-            value: +item.sum,
-            date: new Date(+new Date(+item.closed).setHours(0, 0, 0, 0)),
-          });
-        }
-      } else {
-        newData.push({
-          value: +item.sum,
-          date: new Date(+new Date(+item.closed).setHours(0, 0, 0, 0)),
-        });
-      }
-    });
-    this.setState({
-      graphData: newData,
-    }, () => {
-      callback(true);
-    });
-  }
-
-  getData() {
-    this.setState({
-      loading: true,
-    });
-    const data = {
-      api: 'user',
-      body: {
-        data: {
-          section: 'shop',
-          type: 'statistic',
-          subtype: 'getnew',
-          dateFrom: +new Date(this.state.dateFrom),
-          dateTo: +new Date(this.state.dateTo),
-          shop: this.props.match.params.shopId,
-        },
-        action: 'shops',
-      },
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    };
-
-    request(data, (response) => {
-      if (response.status === 200) {
-        if (response.data.success) {
-          this.setState({
-            data: response.data.data,
-            loading: false,
-          }, () => {
-            this.loadSortings();
-            this.prepareDataForDays(() => {
-              this.prepareTableData();
-              this.prepateChart();
-
-              this.prepareForProducts(() => {
-                this.prepareProducts();
-                this.prepareForDaysProd();
-
-                if (this.state.data.purchases.length > 0) {
-                  this.prepareAreas();
-                }
-              });
-            });
-          });
-        } else {
-          this.setState({
-            loading: false,
-          });
-
-          toast.error(response.data.message);
-        }
-      } else {
-        toast.error('Сервер недоступен');
-      }
-    });
-  }
-
-  prepareForDaysProd() {
-    const chart = am4core.create('graph2', am4charts.PieChart);
-
-    const dat = [];
-
-    this.state.data.purchases.map((item) => {
-      if (+item.closed >= +this.state.date2) {
-        if (dat.length > 0) {
-          let check = false;
-
-          dat.map((data) => {
-            if (data.name === (`${item.product} ${item.subproduct}`)) {
-              data.value += 1;
-              check = true;
-            }
-          });
-          if (!check) {
-            dat.push({
-              value: 1,
-              name: (`${item.product} ${item.subproduct}`),
-            });
-          }
-        } else {
-          dat.push({
-            value: 1,
-            name: (`${item.product} ${item.subproduct}`),
-          });
-        }
-      }
-    });
-
-    chart.data = dat;
-    chart.language.locale = am4lang_ru_RU;
-    const pieSeries = chart.series.push(new am4charts.PieSeries());
-
-    pieSeries.dataFields.value = 'value';
-    pieSeries.dataFields.category = 'name';
-
-    pieSeries.slices.template.stroke = am4core.color('#d3190a');
-    pieSeries.slices.template.strokeWidth = 2;
-    pieSeries.slices.template.strokeOpacity = 0.5;
-
-    pieSeries.labels.template.disabled = true;
-
-    pieSeries.slices.template.fillOpacity = 0.2;
-
-    pieSeries.slices.template.tooltipText = `{category}: {value.value} ${getLocales('распродано')}`;
-  }
-
-  prepareProducts() {
-    const chart = am4core.create('productsgraph', am4charts.PieChart);
-
-    chart.data = this.state.productGraph;
-
-    chart.language.locale = am4lang_ru_RU;
-
-    const pieSeries = chart.series.push(new am4charts.PieSeries());
-
-    pieSeries.dataFields.value = 'value';
-    pieSeries.dataFields.category = 'name';
-
-    pieSeries.slices.template.stroke = am4core.color('#d3190a');
-    pieSeries.slices.template.strokeWidth = 2;
-    pieSeries.slices.template.strokeOpacity = 0.5;
-
-    pieSeries.labels.template.disabled = true;
-
-    pieSeries.slices.template.fillOpacity = 0.2;
-
-    pieSeries.slices.template.tooltipText = `{category}: {value.value} ${getLocales('распродано')}`;
-  }
-
-  prepareAreas() {
+  // График продаж по районам
+  const prepareAreas = useCallback(() => {
     const chart = am4core.create('areas', am4charts.XYChart);
 
     chart.cursor = new am4charts.XYCursor();
@@ -360,72 +136,79 @@ class Statistics extends Component {
     rangeTemplate.label.tooltip.dy = -10;
     rangeTemplate.label.cloneTooltip = false;
 
-    let chartData = [];
+    const chartData = [];
 
-    const data = {};
-
-    if (this.state.data.purchases.length > 0) {
-      this.state.data.purchases.map((item) => {
-        if (data[item.category]) {
-          if (data[item.category][item.subcategory]) {
-            data[item.category][item.subcategory] += 1;
-            data[item.category].quantity += 1;
-          } else if (item.subcategory) {
-            data[item.category][item.subcategory] = 1;
-            data[item.category].quantity += 1;
-          } else {
-            data[item.category]['Город'] += 1;
-            data[item.category].quantity += 1;
+    if (data.purchases.length > 0) {
+      const formattedData = data.purchases.reduce((acc, cur) => {
+        if (acc[cur.category]) {
+          if (acc[cur.category][cur.subcategory]) {
+            return {
+              ...acc,
+              [cur.category]: {
+                [cur.subcategory]: acc[cur.category][cur.subcategory] + 1,
+                quantity: acc[cur.category].quantity + 1,
+              },
+            };
           }
-        } else if (item.subcategory) {
-          data[item.category] = {};
-          data[item.category][item.subcategory] = 1;
-          data[item.category].quantity = 1;
-        } else {
-          data[item.category] = {};
-          data[item.category]['Город'] = 1;
-          data[item.category].quantity = 1;
+
+          return {
+            ...acc,
+            ...acc,
+            [cur.category]: {
+              [cur.subcategory]: 1,
+              quantity: acc[cur.category].quantity
+                ? acc[cur.category].quantity + 1
+                : 1,
+            },
+          };
         }
-      });
 
-      // process data ant prepare it for the chart
-      for (const providerName in data) {
-        const providerData = data[providerName];
+        if (cur.subcategory) {
+          return {
+            ...acc,
+            [cur.category]: {
+              [cur.subcategory]: 1,
+              quantity: 1,
+            },
+          };
+        }
 
-        // add data of one provider to temp array
+        return {
+          ...acc,
+          [cur.category]: {
+            Город: 1,
+            quantity: 1,
+          },
+        };
+      }, {});
+
+      Object.keys(formattedData).forEach((providerName) => {
+        const providerData = formattedData[providerName];
+
         const tempArray = [];
+
         let count = 0;
-        // add items
-        for (const itemName in providerData) {
+
+        Object.keys(providerData).forEach((itemName) => {
           if (itemName !== 'quantity') {
             count += 1;
             tempArray.push({
-              category: `${providerName}_${itemName}`, realName: itemName, value: providerData[itemName], provider: providerName,
+              category: `${providerName}_${itemName}`,
+              realName: itemName,
+              value: providerData[itemName],
+              provider: providerName,
             });
           }
-        }
-        // sort temp array
-        tempArray.sort((a, b) => {
-          if (a.value > b.value) {
-            return 1;
-          }
-          if (a.value < b.value) {
-            return -1;
-          }
-
-          return 0;
         });
 
-        // add quantity and count to middle data item (line series uses it)
         const lineSeriesDataIndex = Math.floor(count / 2);
         tempArray[lineSeriesDataIndex].quantity = providerData.quantity;
         tempArray[lineSeriesDataIndex].count = count;
-        // push to the final data
+
         am4core.array.each(tempArray, (item) => {
           chartData.push(item);
         });
 
-        // create range (the additional label at the bottom)
         const range = categoryAxis.axisRanges.create();
         range.category = tempArray[0].category;
         range.endCategory = tempArray[tempArray.length - 1].category;
@@ -435,36 +218,60 @@ class Statistics extends Component {
         range.label.fontWeight = 'bold';
         range.label.tooltipText = tempArray[0].provider;
 
-        range.label.adapter.add('maxWidth', (maxWidth, target) => {
-          const range = target.dataItem;
-          const startPosition = categoryAxis.categoryToPosition(range.category, 0);
-          const endPosition = categoryAxis.categoryToPosition(range.endCategory, 1);
+        range.label.adapter.add('maxWidth', (_maxWidth, target) => {
+          const rangeCategory = target.dataItem;
+          const startPosition = categoryAxis.categoryToPosition(rangeCategory.category, 0);
+          const endPosition = categoryAxis.categoryToPosition(rangeCategory.endCategory, 1);
           const startX = categoryAxis.positionToCoordinate(startPosition);
           const endX = categoryAxis.positionToCoordinate(endPosition);
           return endX - startX;
         });
-      }
-    } else {
-      chartData = [];
+      });
     }
 
     chart.data = chartData;
 
     const range = categoryAxis.axisRanges.create();
-    range.category = chart.data[chart.data.length - 1].category;
+    range.category = chart.data[chart.data.length - 1]?.category;
     range.label.disabled = true;
     range.tick.location = 1;
     range.grid.location = 1;
-  }
+  }, [data.purchases]);
 
-  prepateChart() {
+  // График оборота
+  const prepateTurnover = useCallback(() => {
     const chart = am4core.create('prefer', am4charts.XYChart);
-
-    const data = this.state.graphData;
 
     chart.language.locale = am4lang_ru_RU;
 
-    chart.data = data;
+    const statistics = data.purchases.reduce((acc, cur) => {
+      const date = new Date(+new Date(+cur.closed).setHours(0, 0, 0, 0));
+
+      if (!acc[date]) {
+        return {
+          ...acc,
+          [date]: {
+            value: +cur.sum,
+            date: new Date(+new Date(+cur.closed).setHours(0, 0, 0, 0)),
+          },
+        };
+      }
+
+      return {
+        ...acc,
+        [date]: {
+          ...acc[date],
+          value: acc[date].value + (+cur.sum),
+        },
+      };
+    }, {});
+
+    const turnover = Object.keys(statistics).map((date) => ({
+      date: new Date(date),
+      value: statistics[date].value,
+    }));
+
+    chart.data = turnover;
 
     const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.renderer.grid.template.location = 0;
@@ -477,7 +284,7 @@ class Statistics extends Component {
     series.dataFields.dateX = 'date';
     series.dataFields.valueY = 'value';
 
-    series.tooltipText = `{valueY.value} ${this.state.data.currency}`;
+    series.tooltipText = `{valueY.value} ${data.currency}`;
     chart.cursor = new am4charts.XYCursor();
 
     series.bullets.push(new am4charts.CircleBullet());
@@ -485,180 +292,269 @@ class Statistics extends Component {
     const scrollbarX = new am4charts.XYChartScrollbar();
     scrollbarX.series.push(series);
     chart.scrollbarX = scrollbarX;
-  }
+  }, [data.currency, data.purchases]);
 
-  prepareTableData() {
-    const items = [];
+  // График продаж товаров
+  const prepareProducts = useCallback(() => {
+    const chart = am4core.create('productsgraph', am4charts.PieChart);
 
-    this.state.data.products.map((item) => {
-      const itemModified = {
-        name: item.name,
-        sales: `${item.sales} ${getLocales('шт.')}`,
+    chart.language.locale = am4lang_ru_RU;
+
+    const statistics = data.purchases.reduce((acc, cur) => {
+      const name = `${cur.product} ${cur.subproduct}`;
+
+      if (!acc[name]) {
+        return {
+          ...acc,
+          [name]: 1,
+        };
+      }
+
+      return {
+        ...acc,
+        [name]: acc[name] + 1,
       };
-      items.push(itemModified);
-    });
+    }, {});
 
-    this.setState({
-      items,
-    });
-  }
+    const products = Object.keys(statistics).map((name) => ({
+      name,
+      value: statistics[name],
+    }));
 
-  updateItems(items) {
-    this.setState({
-      items,
-    });
-  }
+    chart.data = products;
 
-  render() {
-    const tableColumns = [
-      {
-        title: getLocales('Товар'), dataIndex: 'name', key: 'name', sort: true,
+    const pieSeries = chart.series.push(new am4charts.PieSeries());
+
+    pieSeries.dataFields.value = 'value';
+    pieSeries.dataFields.category = 'name';
+
+    pieSeries.slices.template.stroke = am4core.color('#d3190a');
+    pieSeries.slices.template.strokeWidth = 2;
+    pieSeries.slices.template.strokeOpacity = 0.5;
+
+    pieSeries.labels.template.disabled = true;
+
+    pieSeries.slices.template.fillOpacity = 0.2;
+
+    pieSeries.slices.template.tooltipText = `{category}: {value.value} ${getLocales('распродано')}`;
+  }, [data.purchases]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      prepareTable();
+      prepareAreas();
+      prepateTurnover();
+      prepareProducts();
+    }
+  }, [
+    isSuccess,
+    prepareTable,
+    prepareAreas,
+    prepateTurnover,
+    prepareProducts,
+  ]);
+
+  const getData = useCallback(() => {
+    setLoading(true);
+    setSuccess(false);
+
+    const body = {
+      api: 'user',
+      body: {
+        data: {
+          section: 'shop',
+          type: 'statistic',
+          subtype: 'getnew',
+          dateFrom: +new Date(filter.dateFrom),
+          dateTo: +new Date(filter.dateTo),
+          shop: shopId,
+        },
+        action: 'shops',
       },
-      {
-        title: getLocales('Кол-во продаж'), dataIndex: 'sales', key: 'sales', sort: true,
+      headers: {
+        authorization: localStorage.getItem('token'),
       },
-    ];
+    };
 
-    return (
-      <>
-        <div className="row margin-15">
-          <div className="col-lg-8">
-            <div className={`block animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
-              <div className="block-body">
-                <h4 className="font-m">
-                  {getLocales('Статистика магазина')}
-                  {' '}
-                  <span className="text-right right">
-                    <a onClick={this.toggle} aria-hidden>
-                      {getLocales('Рассчитать прибыль')}
-                    </a>
-                  </span>
-                </h4>
+    request(body, (response) => {
+      if (response.status !== 200) {
+        setSuccess(false);
+        toast.error('Сервер недоступен');
+        return;
+      }
 
-                <div className="row">
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label className="form-control-label font-m">
-                        {getLocales('От')}
-                      </label>
-                      <input
-                        type="date"
-                        onChange={this.handleChange}
-                        value={this.state.dateFrom}
-                        name="dateFrom"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
+      if (!response.data.success) {
+        setLoading(false);
+        setSuccess(false);
+        toast.error(response.data.message);
+        return;
+      }
 
-                  <div className="col-lg-6">
-                    <div className="form-group">
-                      <label className="form-control-label font-m">
-                        {getLocales('До')}
-                      </label>
-                      <input
-                        type="date"
-                        onChange={this.handleChange}
-                        value={this.state.dateTo}
-                        name="dateTo"
-                        className="form-control"
-                      />
-                    </div>
-                  </div>
+      setData(response.data.data);
+      setLoading(false);
+      setSuccess(true);
+    });
+  }, [shopId, filter]);
 
-                  <div className="col-lg-8" />
+  useEffect(() => {
+    am4core.addLicense('ch-custom-attribution');
 
-                  <div className="col-lg-4">
-                    <button
-                      type="button"
-                      onClick={this.getData}
-                      className="btn btn-primary auth-btn font-m margin-15"
-                    >
-                      {getLocales('Применить')}
-                    </button>
-                  </div>
+    if (localStorage.getItem('theme') !== 'default') {
+      am4core.useTheme(am4themes_dark);
+    }
 
-                  <div className="col-lg-12">
-                    <h4 className="font-m">
-                      {getLocales('График оборота')}
-                    </h4>
-                    <div id="prefer" style={{ width: '100%', height: '50vh' }} />
-                  </div>
+    getData();
+  }, []);
 
-                  <div className="col-lg-12">
-                    <h4 className="font-m">
-                      {getLocales('График продаж по районам')}
-                    </h4>
-                    <div id="areas" style={{ width: '100%', height: '50vh' }} />
-                  </div>
-
-                  <div className="col-lg-12 margin-15">
-                    <h4 className="font-m">
-                      {getLocales('График продаж товаров')}
-                    </h4>
-                    <div id="productsgraph" style={{ width: '100%', height: '50vh' }} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-lg-4">
-            <div className={`income font-m animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
-              <h4>
-                <span>{getLocales('Сумма адресов в наличии')}</span>
+  return (
+    <>
+      <div className="row margin-15">
+        <div className="col-lg-8">
+          <div className={`block animate__animated animate__fadeIn ${isLoading ? 'blur' : ''}`}>
+            <div className="block-body">
+              <h4 className="font-m">
+                {getLocales('Статистика магазина')}
                 {' '}
                 <span className="text-right right">
-                  <a onClick={this.toggle} aria-hidden>
-                    {getLocales('Подробнее')}
+                  <a onClick={toggleProfitModal} aria-hidden>
+                    {getLocales('Рассчитать прибыль')}
                   </a>
                 </span>
               </h4>
-              <h2>
-                <span>
-                  {this.state.data.sellersSum}
-                  {' '}
-                  {this.state.data.currency}
-                </span>
-              </h2>
-            </div>
 
-            <div className={`block animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
-              <div className="block-body">
-                <h4 className="font-m">
-                  {getLocales('Топ продаж')}
-                </h4>
-
-                {this.state.data.products.length > 0
-                  ? (
-                    <Table
-                      columns={tableColumns}
-                      items={this.state.items}
-                      updateItems={this.updateItems}
-                      rowsPerPage="5"
+              <div className="row">
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <label className="form-control-label font-m">
+                      {getLocales('От')}
+                    </label>
+                    <input
+                      type="date"
+                      onChange={onChangeFilter}
+                      value={filter.dateFrom}
+                      name="dateFrom"
+                      className="form-control"
                     />
-                  )
-                  : (
-                    <div className="text-center font-m">
-                      {getLocales('Товары отсутствуют')}
-                    </div>
-                  )}
+                  </div>
+                </div>
+
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <label className="form-control-label font-m">
+                      {getLocales('До')}
+                    </label>
+                    <input
+                      type="date"
+                      onChange={onChangeFilter}
+                      value={filter.dateTo}
+                      name="dateTo"
+                      className="form-control"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-lg-8" />
+                <div className="col-lg-4">
+                  <button
+                    type="button"
+                    onClick={getData}
+                    className="btn btn-primary auth-btn font-m margin-15"
+                  >
+                    {getLocales('Применить')}
+                  </button>
+                </div>
+
+                <div className="col-lg-12">
+                  <h4 className="font-m">
+                    {getLocales('График оборота')}
+                  </h4>
+                  <div
+                    id="prefer"
+                    style={{ width: '100%', height: '50vh' }}
+                  />
+                </div>
+
+                <div className="col-lg-12">
+                  <h4 className="font-m">
+                    {getLocales('График продаж по районам')}
+                  </h4>
+                  <div
+                    id="areas"
+                    style={{ width: '100%', height: '50vh' }}
+                  />
+                </div>
+
+                <div className="col-lg-12 margin-15">
+                  <h4 className="font-m">
+                    {getLocales('График продаж товаров')}
+                  </h4>
+                  <div
+                    id="productsgraph"
+                    style={{ width: '100%', height: '50vh' }}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <ProfitModal
-          products={this.state.data.products}
-          currency={this.state.data.currency}
-          purchases={this.state.data.purchases}
-          subproducts={this.state.data.subproducts}
-          toggle={this.toggle}
-          modal={this.state.modal}
-        />
-      </>
-    );
-  }
+        <div className="col-lg-4">
+          <div className={`income font-m animate__animated animate__fadeIn ${isLoading ? 'blur' : ''}`}>
+            <h4>
+              <span>
+                {getLocales('Сумма адресов в наличии')}
+              </span>
+              {' '}
+              <span className="text-right right">
+                <a onClick={toggleProfitModal} aria-hidden>
+                  {getLocales('Подробнее')}
+                </a>
+              </span>
+            </h4>
+            <h2>
+              <span>
+                {data.sellersSum}
+                {' '}
+                {data.currency}
+              </span>
+            </h2>
+          </div>
+
+          <div className={`block animate__animated animate__fadeIn ${isLoading ? 'blur' : ''}`}>
+            <div className="block-body">
+              <h4 className="font-m">
+                {getLocales('Топ продаж')}
+              </h4>
+
+              {data.products.length > 0
+                ? (
+                  <Table
+                    columns={tableColumns}
+                    items={items}
+                    updateItems={updateItems}
+                    rowsPerPage="5"
+                  />
+                )
+                : (
+                  <div className="text-center font-m">
+                    {getLocales('Товары отсутствуют')}
+                  </div>
+                )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ProfitModal
+        products={data.products}
+        currency={data.currency}
+        purchases={data.purchases}
+        subproducts={data.subproducts}
+        toggle={toggleProfitModal}
+        modal={isProfitModalOpen}
+      />
+    </>
+  );
 }
 
 export default Statistics;
