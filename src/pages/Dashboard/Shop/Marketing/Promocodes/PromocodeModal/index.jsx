@@ -42,7 +42,9 @@ class PromocodeModal extends Component {
   }
 
   handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
     const { name } = e.target;
 
     this.setState({
@@ -111,229 +113,230 @@ class PromocodeModal extends Component {
 
   render() {
     return (
-      <div>
-        <Modal
-          size="md"
-          isOpen={this.props.modal}
-          toggle={this.props.toggle}
-        >
-          <div className="modal-header text-center">
-            <h4 className="modal-title font-m">
+      <Modal
+        size="md"
+        isOpen={this.props.modal}
+        toggle={this.props.toggle}
+      >
+        <div className="modal-header text-center">
+          <h4 className="modal-title font-m">
+            {getLocales('Промокод')}
+            {' #'}
+            {this.state.id}
+          </h4>
+        </div>
+
+        <ModalBody>
+          <div className="form-group">
+            <label className="form-control-label font-m">
               {getLocales('Промокод')}
-              {' #'}
-              {this.state.id}
-            </h4>
+            </label>
+            <input
+              placeholder={getLocales('Введите промокод')}
+              disabled
+              value={this.state.value}
+              onChange={this.handleChange}
+              name="value"
+              className="form-control"
+            />
           </div>
 
-          <ModalBody>
-            <div className="form-group">
-              <label className="form-control-label font-m">
-                {getLocales('Промокод')}
-              </label>
-              <input
-                placeholder={getLocales('Введите промокод')}
-                disabled
-                value={this.state.value}
-                onChange={this.handleChange}
-                name="value"
-                className="form-control"
-              />
-            </div>
-
-            <div className="row">
-              <div className="col-lg-6">
-                <div className="form-group">
-                  <label className="form-control-label font-m">
-                    {getLocales('Скидка в')}
-                    {' '}
-                    %
-                  </label>
-                  <div className="input-group">
-                    <input
-                      placeholder={getLocales('Введите процент скидки')}
-                      disabled={this.state.loading}
-                      value={this.state.percent}
-                      onChange={this.handleChange}
-                      name="percent"
-                      className="form-control"
-                    />
-                    <span className="input-group-text">%</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-6">
-                <div className="form-group">
-                  <label className="form-control-label font-m">
-                    {getLocales('Скидка в')}
-                    {' '}
-                    {this.props.currency}
-                  </label>
-                  <div className="input-group">
-                    <input
-                      placeholder={getLocales('Введите сумму скидки')}
-                      disabled={this.state.loading}
-                      value={this.state.sum}
-                      onChange={this.handleChange}
-                      name="sum"
-                      className="form-control"
-                    />
-                    <span className="input-group-text">{this.props.currency}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <h3 className="font-m">
-              {getLocales('Время действия промокода')}
-            </h3>
-
-            <div className="row">
-              <div className="col-lg-6">
-                <div className="form-group">
-                  <label className="form-control-label font-m">
-                    {getLocales('От')}
-                  </label>
-                  <input
-                    type="date"
-                    placeholder={getLocales('Выберите дату действия от')}
-                    disabled={this.state.loading}
-                    value={this.state.fromDate}
-                    onChange={this.handleChange}
-                    name="fromDate"
-                    className="form-control"
-                  />
-                </div>
-              </div>
-
-              <div className="col-lg-6">
-                <div className="form-group">
-                  <label className="form-control-label font-m">
-                    {getLocales('До')}
-                  </label>
-                  <input
-                    type="date"
-                    placeholder={getLocales('Выберите дату действия до')}
-                    disabled={this.state.loading}
-                    value={this.state.toDate}
-                    onChange={this.handleChange}
-                    name="toDate"
-                    className="form-control"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label className="form-control-label font-m">
-                {getLocales('Максимальное кол-во активаций')}
-              </label>
-              <input
-                placeholder={getLocales('Введите максимальное кол-во активаций')}
-                disabled={this.state.loading}
-                value={this.state.limitActive}
-                onChange={this.handleChange}
-                name="limitActive"
-                className="form-control"
-              />
-              <small>
-                {getLocales('Оставьте 0, если хотите сделать бесконечное кол-во активаций')}
-              </small>
-            </div>
-
-            <div className="avatar-block no-margin">
-              <div className="i-checks">
-                <input
-                  name="onlyone"
-                  checked={this.state.onlyone}
-                  onClick={this.handleChange}
-                  id="oneone"
-                  type="checkbox"
-                  className="checkbox-template"
-                />
-                <label
-                  htmlFor="onlyone"
-                  className="checkbox-label font-m promocode"
-                >
-                  {getLocales('Единичная активация (1 пользователь = 1 активация)')}
+          <div className="row">
+            <div className="col-lg-6">
+              <div className="form-group">
+                <label className="form-control-label font-m">
+                  {getLocales('Скидка в')}
+                  {' '}
+                  %
                 </label>
+                <div className="input-group">
+                  <input
+                    placeholder={getLocales('Введите процент скидки')}
+                    disabled={this.state.loading}
+                    value={this.state.percent}
+                    onChange={this.handleChange}
+                    name="percent"
+                    className="form-control"
+                  />
+                  <span className="input-group-text">%</span>
+                </div>
               </div>
             </div>
 
-            <div className="form-group">
-              <label className="form-control-label font-m">
-                {getLocales('Заметка')}
-              </label>
-              <input
-                placeholder={getLocales('Введите заметку о промокоде')}
-                disabled={this.state.loading}
-                value={this.state.note}
-                onChange={this.handleChange}
-                name="note"
-                className="form-control"
-              />
+            <div className="col-lg-6">
+              <div className="form-group">
+                <label className="form-control-label font-m">
+                  {getLocales('Скидка в')}
+                  {' '}
+                  {this.props.currency}
+                </label>
+                <div className="input-group">
+                  <input
+                    placeholder={getLocales('Введите сумму скидки')}
+                    disabled={this.state.loading}
+                    value={this.state.sum}
+                    onChange={this.handleChange}
+                    name="sum"
+                    className="form-control"
+                  />
+                  <span className="input-group-text">{this.props.currency}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h3 className="font-m">
+            {getLocales('Время действия промокода')}
+          </h3>
+
+          <div className="row">
+            <div className="col-lg-6">
+              <div className="form-group">
+                <label className="form-control-label font-m">
+                  {getLocales('От')}
+                </label>
+                <input
+                  type="date"
+                  placeholder={getLocales('Выберите дату действия от')}
+                  disabled={this.state.loading}
+                  value={this.state.fromDate}
+                  onChange={this.handleChange}
+                  name="fromDate"
+                  className="form-control"
+                />
+              </div>
             </div>
 
-            <h4 className="modal-title font-m">
-              {getLocales('История активаций')}
-            </h4>
+            <div className="col-lg-6">
+              <div className="form-group">
+                <label className="form-control-label font-m">
+                  {getLocales('До')}
+                </label>
+                <input
+                  type="date"
+                  placeholder={getLocales('Выберите дату действия до')}
+                  disabled={this.state.loading}
+                  value={this.state.toDate}
+                  onChange={this.handleChange}
+                  name="toDate"
+                  className="form-control"
+                />
+              </div>
+            </div>
+          </div>
 
-            {this.props.active.length > 0
-              ? this.props.active.map((item) => (
-                <div className="form-group">
-                  <div className="input-group">
-                    <input disabled className="form-control" value={item.name} />
+          <div className="form-group">
+            <label className="form-control-label font-m">
+              {getLocales('Максимальное кол-во активаций')}
+            </label>
+            <input
+              placeholder={getLocales('Введите максимальное кол-во активаций')}
+              disabled={this.state.loading}
+              value={this.state.limitActive}
+              onChange={this.handleChange}
+              name="limitActive"
+              className="form-control"
+            />
+            <small>
+              {getLocales('Оставьте 0, если хотите сделать бесконечное кол-во активаций')}
+            </small>
+          </div>
 
-                    <NavLink to={`/dashboard/shops/${this.props.shopId}/datas/users/${item.id}`}>
-                      <span className="input-group-text">
-                        {getLocales('Перейти в профиль')}
-                      </span>
+          <div className="avatar-block no-margin">
+            <div className="i-checks">
+              <input
+                name="onlyone"
+                checked={this.state.onlyone}
+                onChange={this.handleChange}
+                id="oneone"
+                type="checkbox"
+                className="checkbox-template"
+              />
+              <label
+                htmlFor="onlyone"
+                className="checkbox-label font-m promocode"
+              >
+                {getLocales('Единичная активация (1 пользователь = 1 активация)')}
+              </label>
+            </div>
+          </div>
 
-                    </NavLink>
-                  </div>
+          <div className="form-group">
+            <label className="form-control-label font-m">
+              {getLocales('Заметка')}
+            </label>
+            <input
+              placeholder={getLocales('Введите заметку о промокоде')}
+              disabled={this.state.loading}
+              value={this.state.note}
+              onChange={this.handleChange}
+              name="note"
+              className="form-control"
+            />
+          </div>
+
+          <h4 className="modal-title font-m">
+            {getLocales('История активаций')}
+          </h4>
+
+          {this.props.active.length > 0
+            ? this.props.active.map((item) => (
+              <div className="form-group">
+                <div className="input-group">
+                  <input
+                    disabled
+                    className="form-control"
+                    value={item.name}
+                  />
+
+                  <NavLink to={`/dashboard/shops/${this.props.shopId}/datas/users/${item.id}`}>
+                    <span className="input-group-text">
+                      {getLocales('Перейти в профиль')}
+                    </span>
+                  </NavLink>
                 </div>
-              ))
-              : (
-                <div className="text-center font-m">
-                  {getLocales('История отсутствует')}
-                </div>
-              )}
-          </ModalBody>
+              </div>
+            ))
+            : (
+              <div className="text-center font-m">
+                {getLocales('История отсутствует')}
+              </div>
+            )}
+        </ModalBody>
 
-          <ModalFooter>
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-lg-4">
-                  <div className="mr-auto">
-                    <button
-                      type="button"
-                      value="Закрыть"
-                      className="btn btn-secondary font-m auth-btn"
-                      onClick={this.props.toggle}
-                    >
-                      {getLocales('Закрыть')}
-
-                    </button>
-                  </div>
-                </div>
-
-                <div className="col-lg-8">
+        <ModalFooter>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-lg-4">
+                <div className="mr-auto">
                   <button
                     type="button"
-                    disabled={this.state.loading}
-                    onClick={this.sendData}
-                    className="btn btn-primary font-m auth-btn"
+                    value="Закрыть"
+                    className="btn btn-secondary font-m auth-btn"
+                    onClick={this.props.toggle}
                   >
-                    {this.state.loading
-                      ? getLocales('Загрузка...')
-                      : getLocales('Сохранить')}
+                    {getLocales('Закрыть')}
+
                   </button>
                 </div>
               </div>
+
+              <div className="col-lg-8">
+                <button
+                  type="button"
+                  disabled={this.state.loading}
+                  onClick={this.sendData}
+                  className="btn btn-primary font-m auth-btn"
+                >
+                  {this.state.loading
+                    ? getLocales('Загрузка...')
+                    : getLocales('Сохранить')}
+                </button>
+              </div>
             </div>
-          </ModalFooter>
-        </Modal>
-      </div>
+          </div>
+        </ModalFooter>
+      </Modal>
     );
   }
 }

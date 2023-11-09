@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-state */
 /* eslint-disable react/sort-comp */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable react/no-danger */
@@ -192,7 +193,6 @@ class Bonuses extends Component {
     bonuses[id][name] = content;
 
     this.setState({
-      // eslint-disable-next-line react/no-unused-state
       bonuses,
     });
   }

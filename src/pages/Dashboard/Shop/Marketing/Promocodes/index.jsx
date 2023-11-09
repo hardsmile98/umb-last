@@ -1,8 +1,7 @@
 /* eslint-disable react/no-access-state-in-setstate */
-/* eslint-disable react/sort-comp */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable array-callback-return */
 /* eslint-disable no-param-reassign */
+/* eslint-disable array-callback-return */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import moment from 'moment';
@@ -40,6 +39,7 @@ class Promocodes extends Component {
       modalconf: false,
       deleteid: 0,
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.getData = this.getData.bind(this);
     this.prepareTableData = this.prepareTableData.bind(this);
@@ -51,17 +51,75 @@ class Promocodes extends Component {
     this.deleteReal = this.deleteReal.bind(this);
   }
 
-  delete(id) {
+  componentDidMount() {
+    this.getData();
+  }
+
+  handleChange(e) {
+    const value = e.target[e.target.type === 'checkbox'
+      ? 'checked'
+      : 'value'];
+    const { name } = e.target;
+
     this.setState({
-      modalconf: !this.state.modalconf,
-      deleteid: id,
+      [name]: value,
     });
+  }
+
+  getData() {
+    this.setState({
+      loading: true,
+    });
+    const data = {
+      api: 'user',
+      body: {
+        data: {
+          section: 'shop',
+          type: 'settings',
+          subtype: 'promocodes',
+          shop: this.props.match.params.shopId,
+          action: 'get',
+        },
+        action: 'shops',
+      },
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    };
+
+    request(data, (response) => {
+      if (response.status === 200) {
+        if (response.data.success) {
+          this.prepareTableData(response.data.data.promocodes);
+          this.setState({
+            data: response.data.data,
+            loading: false,
+          });
+        } else {
+          this.setState({
+            loading: false,
+          });
+          toast.error(response.data.message);
+        }
+      } else {
+        toast.error('Сервер недоступен');
+      }
+    });
+  }
+
+  delete(id) {
+    this.setState((prev) => ({
+      ...prev,
+      modalconf: !prev.modalconf,
+      deleteid: id,
+    }));
   }
 
   deleteReal() {
     this.setState({
       loading: true,
     });
+
     const data = {
       api: 'user',
       body: {
@@ -99,31 +157,18 @@ class Promocodes extends Component {
   }
 
   toggle(promo) {
-    if (String(promo) !== '0') {
-      this.state.data.promocodes.map((item) => {
-        if (String(item.id) === String(promo)) {
-          const active = [];
+    if (promo !== 0) {
+      const findedPrimocode = this.state.data.promocodes
+        .find((promocode) => promocode.id === promo);
 
-          if (item.usedBy) {
-            item.usedBy = item.usedBy.split(',');
+      const arrayUsed = findedPrimocode?.usedBy?.split(',') || [];
 
-            if (item.usedBy.length > 0) {
-              item.usedBy.map((i) => {
-                this.state.data.users.map((user) => {
-                  if (String(user.id) === String(i)) {
-                    active.push(user);
-                  }
-                });
-              });
-            }
-          }
+      const active = arrayUsed.map((id) => this.state.data.users.find((u) => +u.id === +id));
 
-          this.setState({
-            promocode: item,
-            modal: true,
-            active,
-          });
-        }
+      this.setState({
+        promocode: findedPrimocode,
+        modal: true,
+        active,
       });
     } else {
       this.setState({
@@ -132,28 +177,19 @@ class Promocodes extends Component {
     }
   }
 
-  componentDidMount() {
-    this.getData();
-  }
-
-  prepareTableData() {
-    const items = [];
-
-    this.state.data.promocodes.map((item) => {
-      const itemModified = {
-        id: item.id,
-        value: item.value,
-        fromDate: moment.unix(item.fromDate / 1000).format('LLL'),
-        toDate: moment.unix(item.toDate / 1000).format('LLL'),
-        activations: item.activations,
-        status: item.status,
-        limitActive: item.limitActive,
-      };
-      items.push(itemModified);
-    });
+  prepareTableData(promocodes) {
+    const formatted = promocodes.map((item) => ({
+      id: item.id,
+      value: item.value,
+      fromDate: moment.unix(item.fromDate / 1000).format('LLL'),
+      toDate: moment.unix(item.toDate / 1000).format('LLL'),
+      activations: item.activations,
+      status: item.status,
+      limitActive: item.limitActive,
+    }));
 
     this.setState({
-      items,
+      items: formatted,
     });
   }
 
@@ -248,59 +284,6 @@ class Promocodes extends Component {
     });
   }
 
-  getData() {
-    this.setState({
-      loading: true,
-    });
-    const data = {
-      api: 'user',
-      body: {
-        data: {
-          section: 'shop',
-          type: 'settings',
-          subtype: 'promocodes',
-          shop: this.props.match.params.shopId,
-          action: 'get',
-        },
-        action: 'shops',
-      },
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    };
-
-    request(data, (response) => {
-      if (response.status === 200) {
-        if (response.data.success) {
-          this.setState({
-            data: response.data.data,
-            loading: false,
-          }, () => {
-            this.prepareTableData();
-          });
-        } else {
-          this.setState({
-            loading: false,
-          });
-          toast.error(response.data.message);
-        }
-      } else {
-        toast.error('Сервер недоступен');
-      }
-    });
-  }
-
-  handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox'
-      ? 'checked'
-      : 'value'];
-    const { name } = e.target;
-
-    this.setState({
-      [name]: value,
-    });
-  }
-
   render() {
     const tableColumns = [
       {
@@ -364,7 +347,9 @@ class Promocodes extends Component {
             <button
               type="button"
               onClick={() => { this.changeStatus(item.id); }}
-              className={`btn table-button font-m ${String(item.status) === '1' ? ' btn-primary' : ' btn-danger'}`}
+              className={`btn table-button font-m ${String(item.status) === '1'
+                ? ' btn-primary'
+                : ' btn-danger'}`}
             >
               {' '}
               {String(item.status) === '1'
@@ -384,7 +369,7 @@ class Promocodes extends Component {
           <div className="sparkline8">
             <button
               type="button"
-              onClick={() => { this.delete(item.id); }}
+              onClick={() => this.delete(item.id)}
               className="btn table-button font-m btn-danger"
             >
               {' '}
@@ -394,6 +379,7 @@ class Promocodes extends Component {
         ),
       },
     ];
+
     return (
       <>
         <div className="row">
@@ -541,7 +527,7 @@ class Promocodes extends Component {
                     <input
                       name="onlyone"
                       checked={this.state.onlyone}
-                      onClick={this.handleChange}
+                      onChange={this.handleChange}
                       id="oneone"
                       type="checkbox"
                       className="checkbox-template"
@@ -614,7 +600,7 @@ class Promocodes extends Component {
         <ModalConfirm
           action={getLocales('Вы действительно хотите удалить данный промокод?')}
           modal={this.state.modalconf}
-          toggle={() => { this.delete(0); }}
+          toggle={() => this.delete(0)}
           loading={this.state.loading}
           sendData={this.deleteReal}
         />
@@ -623,10 +609,9 @@ class Promocodes extends Component {
           shopId={this.props.match.params.shopId}
           active={this.state.active}
           currency={this.state.data.currency}
-          {...this.props}
           promocode={this.state.promocode}
           modal={this.state.modal}
-          toggle={() => { this.toggle(0); }}
+          toggle={() => this.toggle(0)}
           getData={this.getData}
         />
       </>
