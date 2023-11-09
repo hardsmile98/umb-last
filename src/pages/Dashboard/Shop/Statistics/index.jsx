@@ -35,7 +35,8 @@ function Statistics() {
       .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
     dateTo: moment.unix(new Date(Date.now() + 86400000)
       .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
-    product: null,
+    product: 'all',
+    category: 'all',
   });
   const [data, setData] = useState({
     purchases: [],
@@ -117,10 +118,8 @@ function Statistics() {
     lineSeries.strokeWidth = 5;
     lineSeries.snapTooltip = true;
 
-    // when data validated, adjust location of data item based on count
     lineSeries.events.on('datavalidated', () => {
       lineSeries.dataItems.each((dataItem) => {
-        // if count divides by two, location is 0 (on the grid)
         if (dataItem.dataContext.count / 2 === Math.round(dataItem.dataContext.count / 2)) {
           dataItem.setLocation('categoryX', 0);
         } else {
@@ -370,6 +369,8 @@ function Statistics() {
           subtype: 'getnew',
           dateFrom: +new Date(filter.dateFrom),
           dateTo: +new Date(filter.dateTo),
+          product: filter.product !== 'all' ? filter.product : undefined,
+          category: filter.category !== 'all' ? filter.category : undefined,
           shop: shopId,
         },
         action: 'shops',
@@ -439,6 +440,7 @@ function Statistics() {
                     <input
                       type="date"
                       onChange={onChangeFilter}
+                      disabled={isLoading}
                       value={filter.dateFrom}
                       name="dateFrom"
                       className="form-control"
@@ -454,6 +456,7 @@ function Statistics() {
                     <input
                       type="date"
                       onChange={onChangeFilter}
+                      disabled={isLoading}
                       value={filter.dateTo}
                       name="dateTo"
                       className="form-control"
@@ -466,13 +469,14 @@ function Statistics() {
                     <label className="form-control-label font-m">
                       {getLocales('Город')}
                     </label>
-                    <input
-                      type="date"
+                    <select
                       onChange={onChangeFilter}
-                      value={filter.dateTo}
-                      name="dateTo"
+                      name="category"
+                      disabled={isLoading}
                       className="form-control"
-                    />
+                    >
+                      <option value="all">{getLocales('Все')}</option>
+                    </select>
                   </div>
                 </div>
 
@@ -481,13 +485,19 @@ function Statistics() {
                     <label className="form-control-label font-m">
                       {getLocales('Товар')}
                     </label>
-                    <input
-                      type="date"
+                    <select
                       onChange={onChangeFilter}
-                      value={filter.dateTo}
-                      name="dateTo"
+                      name="product"
+                      disabled={isLoading}
                       className="form-control"
-                    />
+                    >
+                      <option value="all">{getLocales('Все')}</option>
+                      {data.products.map((product) => (
+                        <option key={product.id} value={product.id}>
+                          {product.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
@@ -495,9 +505,12 @@ function Statistics() {
                   <button
                     type="button"
                     onClick={getData}
+                    disabled={isLoading}
                     className="btn btn-primary auth-btn font-m"
                   >
-                    {getLocales('Применить')}
+                    {isLoading
+                      ? getLocales('Загрузка...')
+                      : getLocales('Применить')}
                   </button>
                 </div>
 

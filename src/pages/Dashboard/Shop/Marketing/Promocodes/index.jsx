@@ -712,7 +712,6 @@ class Promocodes extends Component {
                   {this.state.loading
                     ? getLocales('Загрузка...')
                     : getLocales('Создать промокод')}
-
                 </button>
               </div>
             </div>
