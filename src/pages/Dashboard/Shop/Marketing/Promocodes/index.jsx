@@ -55,7 +55,6 @@ class Promocodes extends Component {
     this.delete = this.delete.bind(this);
     this.deleteReal = this.deleteReal.bind(this);
     this.generatePromocode = this.generatePromocode.bind(this);
-    this.handleChangeStartPromocode = this.handleChangeStartPromocode.bind(this);
   }
 
   componentDidMount() {
@@ -81,6 +80,12 @@ class Promocodes extends Component {
             value: promocodes.map((el) => `${this.state.startPromocode}${el}`),
             arrayPromocodes: promocodes,
           }));
+        } else {
+          this.setState((prev) => ({
+            ...prev,
+            value: [],
+            arrayPromocodes: [],
+          }));
         }
       }
     }
@@ -101,16 +106,17 @@ class Promocodes extends Component {
     const value = e.target[e.target.type === 'checkbox'
       ? 'checked'
       : 'value'];
-    const { name } = e.target;
+    const { name, min, max } = e.target;
 
-    this.setState({
-      [name]: value,
-    });
-  }
+    let formatted = value;
 
-  handleChangeStartPromocode(e) {
-    const { name, value } = e.target;
-    const formatted = value.replace(/[,/.]/g, '');
+    if (name === 'startPromocode') {
+      formatted = value.replace(/[,/.]/g, '');
+    }
+
+    if (name === 'count') {
+      formatted = value ? Math.max(min, Math.min(max, +value)) : '';
+    }
 
     this.setState({
       [name]: formatted,
@@ -524,7 +530,7 @@ class Promocodes extends Component {
                       <input
                         disabled={this.state.loading}
                         value={this.state.startPromocode}
-                        onChange={this.handleChangeStartPromocode}
+                        onChange={this.handleChange}
                         autoComplete="off"
                         placeholder={getLocales('Введите начало промокодов')}
                         name="startPromocode"
