@@ -139,7 +139,7 @@ function AddressesModal({
             <div className="row">
               <div className="col-lg-12">
                 <ul
-                  className="avatar-block font-m"
+                  className="avatar-block font-l"
                   style={{ marginTop: 0 }}
                 >
                   {Object.values(data).map(({
@@ -149,7 +149,10 @@ function AddressesModal({
                   }) => (
                     <li key={categoryName} className="avatar-block">
                       <b>{categoryName}</b>
-                      {` — ${categoryValue} ${getLocales('шт.')}`}
+                      {' — '}
+                      <span className="badge badge-light">
+                        {`${categoryValue} ${getLocales('шт.')}`}
+                      </span>
 
                       <ul>
                         {Object.values(subCategory).map(({
@@ -159,7 +162,10 @@ function AddressesModal({
                         }) => (
                           <li key={subCategoryName}>
                             <b>{subCategoryName}</b>
-                            {` — ${subCategoryValue} ${getLocales('шт.')}`}
+                            {' — '}
+                            <span className="badge badge-light">
+                              {`${subCategoryValue} ${getLocales('шт.')}`}
+                            </span>
                             <ul>
                               {Object.values(products || {})
                                 .filter(Boolean)
@@ -170,7 +176,10 @@ function AddressesModal({
                                 }) => (
                                   <li key={productName}>
                                     <b>{productName}</b>
-                                    {` — ${productValue} ${getLocales('шт.')}`}
+                                    {' — '}
+                                    <span className="badge badge-light">
+                                      {`${productValue} ${getLocales('шт.')}`}
+                                    </span>
 
                                     <ul>
                                       {Object.values(subProducts || {})
@@ -181,7 +190,10 @@ function AddressesModal({
                                         }) => (
                                           <li key={subProductName}>
                                             <b>{subProductName}</b>
-                                            {` — ${subProductValue} ${getLocales('шт.')}`}
+                                            {' — '}
+                                            <span className="badge badge-light">
+                                              {`${subProductValue} ${getLocales('шт.')}`}
+                                            </span>
                                           </li>
                                         ))}
                                     </ul>

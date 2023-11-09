@@ -11,6 +11,13 @@ td {
   font-size: 20px;
 }
 
+.font-l {
+  font-family: 'Muller Narrow';
+  color: black;
+  font-size: 24px;
+}
+
+
 .Toastify__toast {
   background: #f6f6f6 !important;
   border-radius: 10px !important;

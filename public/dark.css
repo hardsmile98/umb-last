@@ -480,3 +480,8 @@ select.form-control {
 .table>:not(caption)>*>* {
   background-color: inherit;
 }
+
+.badge-light {
+  color: #fff;
+  background-color: #343a40;
+}
