@@ -7,6 +7,7 @@ import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 function AddressesModal({
   modal,
   toggle,
+  currency,
 }) {
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState({});
@@ -52,6 +53,10 @@ function AddressesModal({
         const product = responseData.products.find((p) => p.id === cur.product);
         const subproduct = responseData.subproducts.find((s) => s.id === cur.subproduct);
 
+        const price = subproduct
+          ? +subproduct.price
+          : +product.price;
+
         if (!subcategory) {
           return {
             ...acc,
@@ -60,18 +65,27 @@ function AddressesModal({
               value: acc[category.id]?.value
                 ? acc[category.id].value + 1
                 : 1,
+              price: acc[category.id]?.price
+                ? acc[category.id].price + price
+                : +price,
               name: category.name,
               [product.id]: {
                 ...acc[category.id]?.[product.id],
                 value: acc[category.id]?.[product.id]?.value
                   ? acc[category.id][product.id].value + 1
                   : 1,
+                price: acc[category.id]?.[product.id]?.price
+                  ? acc[category.id][product.id].price + price
+                  : price,
                 name: product.name,
                 [subproduct ? subproduct?.id : 0]: subproduct
                   ? {
                     value: acc[category.id]?.[product.id]?.[subproduct.id]?.value
                       ? acc[category.id][product.id][[subproduct.id]].value + 1
                       : 1,
+                    price: acc[category.id]?.[product.id]?.[subproduct.id]?.price
+                      ? acc[category.id][product.id][[subproduct.id]].price + price
+                      : price,
                     name: subproduct.name,
                   } : null,
               },
@@ -86,24 +100,36 @@ function AddressesModal({
             value: acc[category.id]?.value
               ? acc[category.id].value + 1
               : 1,
+            price: acc[category.id]?.price
+              ? acc[category.id].price + price
+              : price,
             name: category.name,
             [subcategory.id]: {
               ...acc[category.id]?.[subcategory.id],
               value: acc[category.id]?.[subcategory.id]?.value
                 ? acc[category.id][subcategory.id].value + 1
                 : 1,
+              price: acc[category.id]?.[subcategory.id]?.price
+                ? acc[category.id][subcategory.id].price + price
+                : price,
               name: subcategory.name,
               [product.id]: {
                 ...acc[category.id]?.[subcategory.id]?.[product.id],
                 value: acc[category.id]?.[subcategory.id]?.[product.id]?.value
                   ? acc[category.id][subcategory.id][product.id].value + 1
                   : 1,
+                price: acc[category.id]?.[subcategory.id]?.[product.id]?.price
+                  ? acc[category.id][subcategory.id][product.id].price + price
+                  : price,
                 name: product.name,
                 [subproduct ? subproduct?.id : 0]: subproduct
                   ? {
                     value: acc[category.id]?.[subcategory.id]?.[product.id]?.[subproduct.id]?.value
                       ? acc[category.id][subcategory.id][product.id][[subproduct.id]].value + 1
                       : 1,
+                    price: acc[category.id]?.[subcategory.id]?.[product.id]?.[subproduct.id]?.price
+                      ? acc[category.id][subcategory.id][product.id][[subproduct.id]].price + price
+                      : price,
                     name: subproduct.name,
                   } : null,
               },
@@ -145,6 +171,7 @@ function AddressesModal({
                   {Object.values(data).map(({
                     name: categoryName,
                     value: categoryValue,
+                    price: categoryPrice,
                     ...subCategory
                   }) => (
                     <li key={categoryName} className="avatar-block">
@@ -153,11 +180,16 @@ function AddressesModal({
                       <span className="badge badge-light">
                         {`${categoryValue} ${getLocales('шт.')}`}
                       </span>
+                      {' '}
+                      <span className="badge badge-light">
+                        {`${categoryPrice} ${currency}`}
+                      </span>
 
                       <ul>
                         {Object.values(subCategory).map(({
                           name: subCategoryName,
                           value: subCategoryValue,
+                          price: subCategoryPrice,
                           ...products
                         }) => (
                           <li key={subCategoryName}>
@@ -166,12 +198,18 @@ function AddressesModal({
                             <span className="badge badge-light">
                               {`${subCategoryValue} ${getLocales('шт.')}`}
                             </span>
+                            {' '}
+                            <span className="badge badge-light">
+                              {`${subCategoryPrice} ${currency}`}
+                            </span>
+
                             <ul>
                               {Object.values(products || {})
                                 .filter(Boolean)
                                 .map(({
                                   name: productName,
                                   value: productValue,
+                                  price: productPrice,
                                   ...subProducts
                                 }) => (
                                   <li key={productName}>
@@ -180,6 +218,10 @@ function AddressesModal({
                                     <span className="badge badge-light">
                                       {`${productValue} ${getLocales('шт.')}`}
                                     </span>
+                                    {' '}
+                                    <span className="badge badge-light">
+                                      {`${productPrice} ${currency}`}
+                                    </span>
 
                                     <ul>
                                       {Object.values(subProducts || {})
@@ -187,12 +229,17 @@ function AddressesModal({
                                         .map(({
                                           name: subProductName,
                                           value: subProductValue,
+                                          price: subProductPrice,
                                         }) => (
                                           <li key={subProductName}>
                                             <b>{subProductName}</b>
                                             {' — '}
                                             <span className="badge badge-light">
                                               {`${subProductValue} ${getLocales('шт.')}`}
+                                            </span>
+                                            {' '}
+                                            <span className="badge badge-light">
+                                              {`${subProductPrice} ${currency}`}
                                             </span>
                                           </li>
                                         ))}

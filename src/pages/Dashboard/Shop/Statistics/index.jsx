@@ -594,6 +594,7 @@ function Statistics() {
       <AddressesModal
         toggle={toggleAddressesModal}
         modal={isAddressesModalOpen}
+        currency={data.currency}
       />
     </>
   );
