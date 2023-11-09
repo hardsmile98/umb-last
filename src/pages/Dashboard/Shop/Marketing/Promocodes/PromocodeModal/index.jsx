@@ -281,7 +281,7 @@ class PromocodeModal extends Component {
 
           {this.props.active.length > 0
             ? this.props.active.map((item) => (
-              <div className="form-group">
+              <div className="form-group" key={item.id}>
                 <div className="input-group">
                   <input
                     disabled
