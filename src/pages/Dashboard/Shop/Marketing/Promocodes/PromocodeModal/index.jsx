@@ -64,7 +64,7 @@ class PromocodeModal extends Component {
           section: 'shop',
           type: 'settings',
           subtype: 'promocodes',
-          shop: this.props.match.params.shopId,
+          shop: this.props.shopId,
           id: this.state.id,
           percent: this.state.percent,
           sum: this.state.sum,
