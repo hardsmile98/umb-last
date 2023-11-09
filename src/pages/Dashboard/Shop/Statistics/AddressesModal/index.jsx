@@ -149,7 +149,7 @@ function AddressesModal({
 
   return (
     <Modal
-      size="md"
+      size="lg"
       isOpen={modal}
       toggle={toggle}
     >
