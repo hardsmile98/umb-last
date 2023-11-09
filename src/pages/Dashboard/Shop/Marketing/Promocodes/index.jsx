@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCopy, faTrash, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import uniqueString from 'unique-string';
 import { Table, ModalConfirm } from 'components';
 import { request, getLocales } from 'utils';
@@ -55,6 +55,7 @@ class Promocodes extends Component {
     this.delete = this.delete.bind(this);
     this.deleteReal = this.deleteReal.bind(this);
     this.generatePromocode = this.generatePromocode.bind(this);
+    this.handleChangeStartPromocode = this.handleChangeStartPromocode.bind(this);
   }
 
   componentDidMount() {
@@ -62,6 +63,28 @@ class Promocodes extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
+    if (this.state.subtype === 'createMass') {
+      if (this.state.startPromocode !== prevState.startPromocode) {
+        this.setState((prev) => ({
+          ...prev,
+          value: this.state.arrayPromocodes.map((el) => `${this.state.startPromocode}${el}`),
+        }));
+      }
+
+      if (this.state.count !== prevState.count) {
+        if (this.state.count >= 1) {
+          const promocodes = new Array(+this.state.count).fill(0)
+            .map(() => uniqueString().slice(0, 15));
+
+          this.setState((prev) => ({
+            ...prev,
+            value: promocodes.map((el) => `${this.state.startPromocode}${el}`),
+            arrayPromocodes: promocodes,
+          }));
+        }
+      }
+    }
+
     if (this.state.subtype !== prevState.subtype) {
       this.setState((prev) => ({
         ...prev,
@@ -71,26 +94,6 @@ class Promocodes extends Component {
           ? 1
           : 0,
       }));
-    }
-
-    if (this.state.startPromocode !== prevState.startPromocode) {
-      this.setState((prev) => ({
-        ...prev,
-        value: this.state.arrayPromocodes.map((el) => `${this.state.startPromocode}${el}`),
-      }));
-    }
-
-    if (this.state.count !== prevState.count) {
-      if (this.state.count >= 1) {
-        const promocodes = new Array(+this.state.count).fill(0)
-          .map(() => uniqueString().slice(0, 15));
-
-        this.setState((prev) => ({
-          ...prev,
-          value: promocodes.map((el) => `${this.state.startPromocode}${el}`),
-          arrayPromocodes: promocodes,
-        }));
-      }
     }
   }
 
@@ -102,6 +105,15 @@ class Promocodes extends Component {
 
     this.setState({
       [name]: value,
+    });
+  }
+
+  handleChangeStartPromocode(e) {
+    const { name, value } = e.target;
+    const formatted = value.replace(/[,/.]/g, '');
+
+    this.setState({
+      [name]: formatted,
     });
   }
 
@@ -496,13 +508,23 @@ class Promocodes extends Component {
                     </div>
 
                     <div className="form-group">
-                      <label className="form-control-label font-m">
+                      <label
+                        className="form-control-label font-m"
+                        title={getLocales('Текст, на который будет начинаться каждый из промокодов')}
+                      >
                         {getLocales('Начало промокода')}
+                        {' '}
+                        <span
+                          className="icon-secondary"
+                          data-toggle="tooltip"
+                        >
+                          <FontAwesomeIcon icon={faInfoCircle} />
+                        </span>
                       </label>
                       <input
                         disabled={this.state.loading}
                         value={this.state.startPromocode}
-                        onChange={this.handleChange}
+                        onChange={this.handleChangeStartPromocode}
                         autoComplete="off"
                         placeholder={getLocales('Введите начало промокодов')}
                         name="startPromocode"
@@ -513,6 +535,18 @@ class Promocodes extends Component {
                     <div className="form-group">
                       <label className="form-control-label font-m">
                         {getLocales('Промокоды')}
+                        {' '}
+                        <span
+                          aria-hidden
+                          className="icon-secondary icon-button"
+                          data-toggle="tooltip"
+                          onClick={() => {
+                            navigator.clipboard.writeText((this.state.value || []).join('\n'));
+                            toast.success(getLocales('Скопировано'));
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faCopy} />
+                        </span>
                       </label>
                       <textarea
                         disabled
@@ -630,7 +664,7 @@ class Promocodes extends Component {
                 </div>
 
                 <div className="avatar-block no-margin">
-                  <div className="i-checks">
+                  <div className="i-checks d-flex align-items-center">
                     <input
                       name="onlyone"
                       checked={this.state.onlyone}
@@ -641,7 +675,7 @@ class Promocodes extends Component {
                     />
                     <label
                       htmlFor="onlyone"
-                      className="checkbox-label font-m promocode"
+                      className="checkbox-label font-m promocode-checkbox-label"
                     >
                       {getLocales('Единичная активация (1 пользователь = 1 активация)')}
 

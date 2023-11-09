@@ -254,7 +254,7 @@ class PromocodeModal extends Component {
               />
               <label
                 htmlFor="onlyone"
-                className="checkbox-label font-m promocode"
+                className="checkbox-label font-m promocode-checkbox-label"
               >
                 {getLocales('Единичная активация (1 пользователь = 1 активация)')}
               </label>

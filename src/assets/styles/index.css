@@ -1462,3 +1462,20 @@ td .btn {
 .block-for-block-button {
   margin-left: 10px;
 }
+
+.icon-secondary {
+  color: #8a8d93;
+}
+
+.icon-button {
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  color: #bb414d; 
+}
+
+.promocode-checkbox-label {
+  margin-bottom: 0;
+  margin-left: 20px !important;
+}
