@@ -1,3 +1,4 @@
+/* eslint-disable react/no-deprecated */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable no-param-reassign */
 /* eslint-disable array-callback-return */
@@ -20,7 +21,11 @@ class Promocodes extends Component {
       loading: true,
       value: '',
       percent: 0,
+      subtype: 'promocodes',
       sum: 0,
+      startPromocode: '',
+      arrayPromocodes: [],
+      count: 0,
       fromDate: moment.unix(new Date(Date.now())
         .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
       toDate: '',
@@ -49,10 +54,44 @@ class Promocodes extends Component {
     this.changeStatus = this.changeStatus.bind(this);
     this.delete = this.delete.bind(this);
     this.deleteReal = this.deleteReal.bind(this);
+    this.generatePromocode = this.generatePromocode.bind(this);
   }
 
   componentDidMount() {
     this.getData();
+  }
+
+  componentDidUpdate(_prevProps, prevState) {
+    if (this.state.subtype !== prevState.subtype) {
+      this.setState((prev) => ({
+        ...prev,
+        value: '',
+        startPromocode: '',
+        count: this.state.subtype === 'createMass'
+          ? 1
+          : 0,
+      }));
+    }
+
+    if (this.state.startPromocode !== prevState.startPromocode) {
+      this.setState((prev) => ({
+        ...prev,
+        value: this.state.arrayPromocodes.map((el) => `${this.state.startPromocode}${el}`),
+      }));
+    }
+
+    if (this.state.count !== prevState.count) {
+      if (this.state.count >= 1) {
+        const promocodes = new Array(+this.state.count).fill(0)
+          .map(() => uniqueString().slice(0, 15));
+
+        this.setState((prev) => ({
+          ...prev,
+          value: promocodes.map((el) => `${this.state.startPromocode}${el}`),
+          arrayPromocodes: promocodes,
+        }));
+      }
+    }
   }
 
   handleChange(e) {
@@ -209,7 +248,7 @@ class Promocodes extends Component {
         data: {
           section: 'shop',
           type: 'settings',
-          subtype: 'promocodes',
+          subtype: this.state.subtype,
           shop: this.props.match.params.shopId,
           action: 'create',
           value: this.state.value,
@@ -242,6 +281,12 @@ class Promocodes extends Component {
       } else {
         toast.error('Сервер недоступен');
       }
+    });
+  }
+
+  generatePromocode() {
+    this.setState({
+      value: uniqueString().slice(0, 15),
     });
   }
 
@@ -290,7 +335,7 @@ class Promocodes extends Component {
         title: getLocales('Промокод'),
         dataIndex: 'value',
         key: 'operations',
-        render: (e, item) => (
+        render: (_e, item) => (
           <>
             <a
               aria-hidden
@@ -392,32 +437,92 @@ class Promocodes extends Component {
 
                 <div className="form-group">
                   <label className="form-control-label font-m">
-                    {getLocales('Промокод')}
+                    {getLocales('Способ добавления')}
                   </label>
-                  <div className="input-group">
-                    <input
-                      placeholder={getLocales('Введите промокод')}
-                      disabled={this.state.loading}
-                      value={this.state.value}
-                      onChange={this.handleChange}
-                      name="value"
-                      className="form-control"
-                    />
-                    <div className="input-group-append">
-                      <button
-                        onClick={() => {
-                          this.setState({
-                            value: uniqueString().slice(0, 15),
-                          });
-                        }}
-                        className="btn btn-secondary font-m"
-                        type="button"
-                      >
-                        {getLocales('Сгенерировать')}
-                      </button>
+                  <select
+                    onChange={this.handleChange}
+                    name="subtype"
+                    disabled={this.state.loading}
+                    className="form-control"
+                  >
+                    <option value="promocodes">{getLocales('По одному')}</option>
+                    <option value="createMass">{getLocales('Массово')}</option>
+                  </select>
+                </div>
+
+                {this.state.subtype === 'promocodes' ? (
+                  <div className="form-group">
+                    <label className="form-control-label font-m">
+                      {getLocales('Промокод')}
+                    </label>
+                    <div className="input-group">
+                      <input
+                        placeholder={getLocales('Введите промокод')}
+                        disabled={this.state.loading}
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        name="value"
+                        className="form-control"
+                      />
+                      <div className="input-group-append">
+                        <button
+                          onClick={this.generatePromocode}
+                          className="btn btn-secondary font-m"
+                          type="button"
+                        >
+                          {getLocales('Сгенерировать')}
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div>
+                    <div className="form-group">
+                      <label className="form-control-label font-m">
+                        {getLocales('Количество промокодов')}
+                      </label>
+                      <input
+                        disabled={this.state.loading}
+                        value={this.state.count}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        type="number"
+                        max={250}
+                        min={1}
+                        placeholder={getLocales('Введите количество промокодов')}
+                        name="count"
+                        className="form-control"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-control-label font-m">
+                        {getLocales('Начало промокода')}
+                      </label>
+                      <input
+                        disabled={this.state.loading}
+                        value={this.state.startPromocode}
+                        onChange={this.handleChange}
+                        autoComplete="off"
+                        placeholder={getLocales('Введите начало промокодов')}
+                        name="startPromocode"
+                        className="form-control"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-control-label font-m">
+                        {getLocales('Промокоды')}
+                      </label>
+                      <textarea
+                        disabled
+                        value={(this.state.value || []).join('\n')}
+                        autoComplete="off"
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <div className="row">
                   <div className="col-lg-6">
@@ -433,6 +538,7 @@ class Promocodes extends Component {
                           disabled={this.state.loading}
                           value={this.state.percent}
                           onChange={this.handleChange}
+                          type="number"
                           name="percent"
                           className="form-control"
                         />
@@ -454,6 +560,7 @@ class Promocodes extends Component {
                           disabled={this.state.loading}
                           value={this.state.sum}
                           onChange={this.handleChange}
+                          type="number"
                           name="sum"
                           className="form-control"
                         />
