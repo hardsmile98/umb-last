@@ -1,78 +1,72 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/no-deprecated */
-import React, { Component } from 'react';
-import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
+import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { NavLink } from 'react-router-dom';
 import { getLocales, request } from 'utils';
 
-class PromocodeModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false,
-      value: '',
-      fromDate: '',
-      toDate: '',
-      percent: '',
-      sum: '',
-      limitActive: 0,
-      onlyone: 1,
-      note: '',
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.sendData = this.sendData.bind(this);
-  }
+const initialState = {
+  value: '',
+  fromDate: '',
+  toDate: '',
+  percent: '',
+  sum: '',
+  limitActive: 0,
+  onlyone: 1,
+  note: '',
+};
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.promocode !== nextProps.promocode) {
-      this.setState({
-        value: nextProps.promocode.value,
-        fromDate: moment.unix(nextProps.promocode.fromDate / 1000).format('YYYY-MM-DD'),
-        toDate: moment.unix(nextProps.promocode.toDate / 1000).format('YYYY-MM-DD'),
-        percent: nextProps.promocode.percent,
-        sum: nextProps.promocode.sum,
-        limitActive: nextProps.promocode.limitActive,
-        onlyone: nextProps.promocode.onlyone,
-        note: nextProps.promocode.note,
-        id: nextProps.promocode.id,
-      });
-    }
-  }
+function PromocodeModal({
+  modal,
+  toggle,
+  getData,
+  currency,
+  shopId,
+  active,
+  promocode,
+}) {
+  const [isLoading, setLoading] = useState(false);
+  const [data, setData] = useState(initialState);
 
-  handleChange(e) {
+  const handleChange = (e) => {
     const value = e.target[e.target.type === 'checkbox'
       ? 'checked'
       : 'value'];
     const { name } = e.target;
 
-    this.setState({
+    setData((prev) => ({
+      ...prev,
       [name]: value,
-    });
-  }
+    }));
+  };
 
-  sendData() {
-    this.setState({
-      loading: true,
+  useEffect(() => {
+    setData({
+      ...promocode,
+      fromDate: moment.unix(promocode.fromDate / 1000).format('YYYY-MM-DD'),
+      toDate: moment.unix(promocode.toDate / 1000).format('YYYY-MM-DD'),
     });
+  }, [promocode]);
 
-    const data = {
+  const sendData = () => {
+    setLoading(true);
+
+    const body = {
       api: 'user',
       body: {
         data: {
           section: 'shop',
           type: 'settings',
           subtype: 'promocodes',
-          shop: this.props.shopId,
-          id: this.state.id,
-          percent: this.state.percent,
-          sum: this.state.sum,
-          fromDate: +new Date(this.state.fromDate),
-          toDate: +new Date(this.state.toDate),
-          limitActive: this.state.limitActive,
-          onlyone: this.state.onlyone,
-          note: this.state.note,
+          shop: shopId,
+          id: data.id,
+          percent: data.percent,
+          sum: data.sum,
+          fromDate: +new Date(data.fromDate),
+          toDate: +new Date(data.toDate),
+          limitActive: data.limitActive,
+          onlyone: data.onlyone,
+          note: data.note,
           action: 'update',
         },
         action: 'shops',
@@ -82,263 +76,253 @@ class PromocodeModal extends Component {
       },
     };
 
-    request(data, (response) => {
+    request(body, (response) => {
       if (response.status === 200) {
         if (response.data.success) {
-          this.setState({
-            loading: false,
-            value: '',
-            fromDate: '',
-            toDate: '',
-            percent: '',
-            sum: '',
-            limitActive: 0,
-            onlyone: 1,
-            note: '',
-          });
+          setLoading(false);
+          sendData(initialState);
           toast.success(response.data.message);
-          this.props.toggle();
-          this.props.getData();
+          toggle();
+          getData();
         } else {
-          this.setState({
-            loading: false,
-          });
+          setLoading(false);
           toast.error(response.data.message);
         }
       } else {
         toast.error('Сервер недоступен');
       }
     });
-  }
+  };
 
-  render() {
-    return (
-      <Modal
-        size="md"
-        isOpen={this.props.modal}
-        toggle={this.props.toggle}
-      >
-        <div className="modal-header text-center">
-          <h4 className="modal-title font-m">
+  return (
+    <Modal
+      size="md"
+      isOpen={modal}
+      toggle={toggle}
+    >
+      <div className="modal-header text-center">
+        <h4 className="modal-title font-m">
+          {getLocales('Промокод')}
+          {' #'}
+          {data.id}
+        </h4>
+      </div>
+
+      <ModalBody>
+        <div className="form-group">
+          <label className="form-control-label font-m">
             {getLocales('Промокод')}
-            {' #'}
-            {this.state.id}
-          </h4>
+          </label>
+          <input
+            placeholder={getLocales('Введите промокод')}
+            disabled={isLoading}
+            value={data.value}
+            onChange={handleChange}
+            name="value"
+            className="form-control"
+          />
         </div>
 
-        <ModalBody>
-          <div className="form-group">
-            <label className="form-control-label font-m">
-              {getLocales('Промокод')}
-            </label>
-            <input
-              placeholder={getLocales('Введите промокод')}
-              disabled
-              value={this.state.value}
-              onChange={this.handleChange}
-              name="value"
-              className="form-control"
-            />
-          </div>
-
-          <div className="row">
-            <div className="col-lg-6">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('Скидка в')}
-                  {' '}
-                  %
-                </label>
-                <div className="input-group">
-                  <input
-                    placeholder={getLocales('Введите процент скидки')}
-                    disabled={this.state.loading}
-                    value={this.state.percent}
-                    onChange={this.handleChange}
-                    name="percent"
-                    className="form-control"
-                  />
-                  <span className="input-group-text">%</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-lg-6">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('Скидка в')}
-                  {' '}
-                  {this.props.currency}
-                </label>
-                <div className="input-group">
-                  <input
-                    placeholder={getLocales('Введите сумму скидки')}
-                    disabled={this.state.loading}
-                    value={this.state.sum}
-                    onChange={this.handleChange}
-                    name="sum"
-                    className="form-control"
-                  />
-                  <span className="input-group-text">{this.props.currency}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <h3 className="font-m">
-            {getLocales('Время действия промокода')}
-          </h3>
-
-          <div className="row">
-            <div className="col-lg-6">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('От')}
-                </label>
-                <input
-                  type="date"
-                  placeholder={getLocales('Выберите дату действия от')}
-                  disabled={this.state.loading}
-                  value={this.state.fromDate}
-                  onChange={this.handleChange}
-                  name="fromDate"
-                  className="form-control"
-                />
-              </div>
-            </div>
-
-            <div className="col-lg-6">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('До')}
-                </label>
-                <input
-                  type="date"
-                  placeholder={getLocales('Выберите дату действия до')}
-                  disabled={this.state.loading}
-                  value={this.state.toDate}
-                  onChange={this.handleChange}
-                  name="toDate"
-                  className="form-control"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label className="form-control-label font-m">
-              {getLocales('Максимальное кол-во активаций')}
-            </label>
-            <input
-              placeholder={getLocales('Введите максимальное кол-во активаций')}
-              disabled={this.state.loading}
-              value={this.state.limitActive}
-              onChange={this.handleChange}
-              name="limitActive"
-              className="form-control"
-            />
-            <small>
-              {getLocales('Оставьте 0, если хотите сделать бесконечное кол-во активаций')}
-            </small>
-          </div>
-
-          <div className="avatar-block no-margin">
-            <div className="i-checks">
-              <input
-                name="onlyone"
-                checked={this.state.onlyone}
-                onChange={this.handleChange}
-                id="oneone"
-                type="checkbox"
-                className="checkbox-template"
-              />
-              <label
-                htmlFor="onlyone"
-                className="checkbox-label font-m promocode-checkbox-label"
-              >
-                {getLocales('Единичная активация (1 пользователь = 1 активация)')}
+        <div className="row">
+          <div className="col-lg-6">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('Скидка в')}
+                {' '}
+                %
               </label>
+              <div className="input-group">
+                <input
+                  placeholder={getLocales('Введите процент скидки')}
+                  disabled={isLoading}
+                  value={data.percent}
+                  onChange={handleChange}
+                  name="percent"
+                  className="form-control"
+                />
+                <span className="input-group-text">%</span>
+              </div>
             </div>
           </div>
 
-          <div className="form-group">
-            <label className="form-control-label font-m">
-              {getLocales('Заметка')}
-            </label>
-            <input
-              placeholder={getLocales('Введите заметку о промокоде')}
-              disabled={this.state.loading}
-              value={this.state.note}
-              onChange={this.handleChange}
-              name="note"
-              className="form-control"
-            />
+          <div className="col-lg-6">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('Скидка в')}
+                {' '}
+                {currency}
+              </label>
+              <div className="input-group">
+                <input
+                  placeholder={getLocales('Введите сумму скидки')}
+                  disabled={isLoading}
+                  value={data.sum}
+                  onChange={handleChange}
+                  name="sum"
+                  className="form-control"
+                />
+                <span className="input-group-text">
+                  {currency}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3 className="font-m">
+          {getLocales('Время действия промокода')}
+        </h3>
+
+        <div className="row">
+          <div className="col-lg-6">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('От')}
+              </label>
+              <input
+                type="date"
+                placeholder={getLocales('Выберите дату действия от')}
+                disabled={isLoading}
+                value={data.fromDate}
+                onChange={handleChange}
+                name="fromDate"
+                className="form-control"
+              />
+            </div>
           </div>
 
-          <h4 className="modal-title font-m">
-            {getLocales('История активаций')}
-          </h4>
+          <div className="col-lg-6">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('До')}
+              </label>
+              <input
+                type="date"
+                placeholder={getLocales('Выберите дату действия до')}
+                disabled={isLoading}
+                value={data.toDate}
+                onChange={handleChange}
+                name="toDate"
+                className="form-control"
+              />
+            </div>
+          </div>
+        </div>
 
-          {this.props.active.length > 0
-            ? this.props.active.map((item) => (
-              <div className="form-group" key={item.id}>
-                <div className="input-group">
-                  <input
-                    disabled
-                    className="form-control"
-                    value={item.name}
-                  />
+        <div className="form-group">
+          <label className="form-control-label font-m">
+            {getLocales('Максимальное кол-во активаций')}
+          </label>
+          <input
+            placeholder={getLocales('Введите максимальное кол-во активаций')}
+            disabled={isLoading}
+            value={data.limitActive}
+            onChange={handleChange}
+            name="limitActive"
+            className="form-control"
+          />
+          <small>
+            {getLocales('Оставьте 0, если хотите сделать бесконечное кол-во активаций')}
+          </small>
+        </div>
 
-                  <NavLink to={`/dashboard/shops/${this.props.shopId}/datas/users/${item.id}`}>
-                    <span className="input-group-text">
-                      {getLocales('Перейти в профиль')}
-                    </span>
-                  </NavLink>
-                </div>
+        <div className="avatar-block no-margin">
+          <div className="i-checks">
+            <input
+              name="onlyone"
+              checked={data.onlyone}
+              onChange={handleChange}
+              disabled={isLoading}
+              id="oneone"
+              type="checkbox"
+              className="checkbox-template"
+            />
+            <label
+              htmlFor="onlyone"
+              className="checkbox-label font-m promocode-checkbox-label"
+            >
+              {getLocales('Единичная активация (1 пользователь = 1 активация)')}
+            </label>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label className="form-control-label font-m">
+            {getLocales('Заметка')}
+          </label>
+          <input
+            placeholder={getLocales('Введите заметку о промокоде')}
+            disabled={isLoading}
+            value={data.note}
+            onChange={handleChange}
+            name="note"
+            className="form-control"
+          />
+        </div>
+
+        <h4 className="modal-title font-m">
+          {getLocales('История активаций')}
+        </h4>
+
+        {active.length > 0
+          ? active.map((item) => (
+            <div className="form-group" key={item.id}>
+              <div className="input-group">
+                <input
+                  disabled
+                  className="form-control"
+                  value={item.name}
+                />
+
+                <NavLink to={`/dashboard/shops/${shopId}/datas/users/${item.id}`}>
+                  <span className="input-group-text">
+                    {getLocales('Перейти в профиль')}
+                  </span>
+                </NavLink>
               </div>
-            ))
-            : (
-              <div className="text-center font-m">
-                {getLocales('История отсутствует')}
-              </div>
-            )}
-        </ModalBody>
+            </div>
+          ))
+          : (
+            <div className="text-center font-m">
+              {getLocales('История отсутствует')}
+            </div>
+          )}
+      </ModalBody>
 
-        <ModalFooter>
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-lg-4">
-                <div className="mr-auto">
-                  <button
-                    type="button"
-                    value="Закрыть"
-                    className="btn btn-secondary font-m auth-btn"
-                    onClick={this.props.toggle}
-                  >
-                    {getLocales('Закрыть')}
-
-                  </button>
-                </div>
-              </div>
-
-              <div className="col-lg-8">
+      <ModalFooter>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-lg-4">
+              <div className="mr-auto">
                 <button
                   type="button"
-                  disabled={this.state.loading}
-                  onClick={this.sendData}
-                  className="btn btn-primary font-m auth-btn"
+                  value="Закрыть"
+                  className="btn btn-secondary font-m auth-btn"
+                  onClick={toggle}
                 >
-                  {this.state.loading
-                    ? getLocales('Загрузка...')
-                    : getLocales('Сохранить')}
+                  {getLocales('Закрыть')}
+
                 </button>
               </div>
             </div>
+
+            <div className="col-lg-8">
+              <button
+                type="button"
+                disabled={isLoading}
+                onClick={sendData}
+                className="btn btn-primary font-m auth-btn"
+              >
+                {isLoading
+                  ? getLocales('Загрузка...')
+                  : getLocales('Сохранить')}
+              </button>
+            </div>
           </div>
-        </ModalFooter>
-      </Modal>
-    );
-  }
+        </div>
+      </ModalFooter>
+    </Modal>
+  );
 }
 
 export default PromocodeModal;
