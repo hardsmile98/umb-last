@@ -106,7 +106,7 @@ class Promocodes extends Component {
     const value = e.target[e.target.type === 'checkbox'
       ? 'checked'
       : 'value'];
-    const { name, min, max } = e.target;
+    const { name, max } = e.target;
 
     let formatted = value;
 
@@ -115,7 +115,8 @@ class Promocodes extends Component {
     }
 
     if (name === 'count') {
-      formatted = value ? Math.max(min, Math.min(max, +value)) : '';
+      const f = value.replace(/[^0-9]/g, '');
+      formatted = +f > max ? max : f;
     }
 
     this.setState({
@@ -495,47 +496,53 @@ class Promocodes extends Component {
                   </div>
                 ) : (
                   <div>
-                    <div className="form-group">
-                      <label className="form-control-label font-m">
-                        {getLocales('Количество промокодов')}
-                      </label>
-                      <input
-                        disabled={this.state.loading}
-                        value={this.state.count}
-                        onChange={this.handleChange}
-                        autoComplete="off"
-                        type="number"
-                        max={250}
-                        min={1}
-                        placeholder={getLocales('Введите количество промокодов')}
-                        name="count"
-                        className="form-control"
-                      />
-                    </div>
+                    <div className="row">
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label className="form-control-label font-m">
+                            {getLocales('Количество промокодов')}
+                          </label>
+                          <input
+                            disabled={this.state.loading}
+                            value={this.state.count}
+                            onKeyPress={(event) => event.charCode >= 48 && event.charCode <= 49}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            max={250}
+                            min={1}
+                            placeholder={getLocales('Введите количество промокодов')}
+                            name="count"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
 
-                    <div className="form-group">
-                      <label
-                        className="form-control-label font-m"
-                        title={getLocales('Текст, на который будет начинаться каждый из промокодов')}
-                      >
-                        {getLocales('Начало промокода')}
-                        {' '}
-                        <span
-                          className="icon-secondary"
-                          data-toggle="tooltip"
-                        >
-                          <FontAwesomeIcon icon={faInfoCircle} />
-                        </span>
-                      </label>
-                      <input
-                        disabled={this.state.loading}
-                        value={this.state.startPromocode}
-                        onChange={this.handleChange}
-                        autoComplete="off"
-                        placeholder={getLocales('Введите начало промокодов')}
-                        name="startPromocode"
-                        className="form-control"
-                      />
+                      <div className="col-lg-6">
+                        <div className="form-group">
+                          <label
+                            className="form-control-label font-m"
+                            title={getLocales('Текст, на который будет начинаться каждый из промокодов')}
+                          >
+                            {getLocales('Начало промокода')}
+                            {' '}
+                            <span
+                              className="icon-secondary"
+                              data-toggle="tooltip"
+                            >
+                              <FontAwesomeIcon icon={faInfoCircle} />
+                            </span>
+                          </label>
+                          <input
+                            disabled={this.state.loading}
+                            value={this.state.startPromocode}
+                            onChange={this.handleChange}
+                            autoComplete="off"
+                            placeholder={getLocales('Введите начало промокодов')}
+                            name="startPromocode"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
                     </div>
 
                     <div className="form-group">
