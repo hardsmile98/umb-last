@@ -515,7 +515,9 @@
         "Двухфакторная аутентификация": "Two-factor authentication",
         "Для получения кода от <a href='https://t.me/UmbMarket2FA_bot' target='_blank' rel='noopener noreferrer'>нашего Telegram-бота</a>, найдите <a href='https://t.me/UmbMarket2FA_bot' target='_blank' rel='noopener noreferrer'>его</a> по логину <a href='https://t.me/UmbMarket2FA_bot' target='_blank' rel='noopener noreferrer'>@UmbMarket2FA_bot</a> в месседжере Telegram и напишите <a href='https://t.me/UmbMarket2FA_bot' target='_blank' rel='noopener noreferrer'>ему</a> сообщение с текстом '/start', без кавычек.": "To get the code from <a href='https://t.me/UmbMarket2FA_bot ' target='_blank' rel='noopener noreferrer'>of our Telegram bot</a>, find <a href='https://t.me/UmbMarket2FA_bot ' target='_blank' rel='noopener noreferrer'>his</a> by login <a href='https://t.me/UmbMarket2FA_bot ' target='_blank' rel='noopener noreferrer'>@UmbMarket2FA_bot</a> in the Telegram messenger and write <a href='https://t.me/UmbMarket2FA_bot ' target='_blank' rel='noopener noreferrer'>to him</a> a message with the text '/start', without quotes.",
         "Настройки обновлены": "Settings updated",
-        "Средства спишутся единоразово и не подлежат возврату": "Средства пишутся единоразово и не возвращаются к возвращению"
+        "Средства спишутся единоразово и не подлежат возврату": "Средства пишутся единоразово и не возвращаются к возвращению",
+        "Вы действительно хотите приобрести данный шаблон?": "Are you sure you want to purchase this template?",
+        "Вы действительно хотите арендовать данный шаблон?": "Are you sure you want to rent this template?"
     },
     "ES": {
         "Главная": "Inicio",
@@ -1055,6 +1057,8 @@
         "Сумма к получению": "Importe a cobrar",
         "Отправить": "Enviar",
         "Настройки обновлены": "Ajustes actualizan",
-        "Средства спишутся единоразово и не подлежат возврату": "Los fondos se debitarán una vez y no son reembolsables"
+        "Средства спишутся единоразово и не подлежат возврату": "Los fondos se debitarán una vez y no son reembolsables",
+        "Вы действительно хотите приобрести данный шаблон?": "¿Estás seguro de que quieres comprar esta plantilla?",
+        "Вы действительно хотите арендовать данный шаблон?": "¿Estás seguro de que quieres alquilar esta plantilla?"
     }
 }

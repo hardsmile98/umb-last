@@ -6,8 +6,13 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { ModalConfirm } from 'components';
 import { getLocales, request } from 'utils';
 
+const actions = {
+  set: 'set',
+  rent: 'rent',
+};
+
 function Templates() {
-  const [isOpenModal, setOpenModal] = useState(false);
+  const [modal, setModal] = useState(null);
   const [templateSelected, setTemplateSelected] = useState('');
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState({
@@ -17,8 +22,6 @@ function Templates() {
   });
 
   const { shopId } = useParams();
-
-  const toggle = () => setOpenModal((prev) => !prev);
 
   const getData = useCallback(() => {
     setLoading(true);
@@ -61,7 +64,7 @@ function Templates() {
     getData();
   }, [getData]);
 
-  const setTemplate = (name) => {
+  const setTemplate = (name, action) => {
     setLoading(true);
 
     const body = {
@@ -72,7 +75,7 @@ function Templates() {
           type: 'site',
           subtype: 'templates',
           shop: shopId,
-          action: 'set',
+          action,
           name,
         },
         action: 'shops',
@@ -83,10 +86,6 @@ function Templates() {
     };
 
     request(body, (response) => {
-      if (isOpenModal) {
-        setOpenModal(false);
-      }
-
       if (response.status === 200) {
         if (response.data.success) {
           setData((prev) => ({
@@ -102,24 +101,16 @@ function Templates() {
       } else {
         toast.error('Сервер недоступен');
       }
+
+      if (modal) {
+        setModal(null);
+      }
     });
   };
 
-  const changeTemplate = (name, needConfirm) => {
-    if (needConfirm) {
-      const templateFinded = data.templates.find((t) => t.name === name);
-      const isBuyed = data.templatesBuyed.find((b) => b.name === name);
-
-      const isNeedBuy = templateFinded?.price !== 0 && !isBuyed;
-
-      if (isNeedBuy) {
-        setTemplateSelected(name);
-        setOpenModal(true);
-        return;
-      }
-    }
-
-    setTemplate(name);
+  const changeTemplate = (name, action) => {
+    setTemplateSelected(name);
+    setModal(action);
   };
 
   return (
@@ -131,68 +122,106 @@ function Templates() {
           </h3>
 
           <div className="row">
-            {data.templates.map((item) => (
-              <div className="col-lg-4">
-                <div className="text-center template-block">
-                  <h3 className="font-m text-center">
-                    {getLocales(item.label)}
-                  </h3>
-                  <a
-                    href={`http://${item.name}.umbrella.day`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <img
-                      src={item.img}
-                      width="100%"
-                      alt={item.name}
-                    />
-                  </a>
+            {data.templates.map((item) => {
+              const templateFinded = data.templates.find((t) => t.name === item.name);
+              const isBuyed = data.templatesBuyed.find((b) => b.name === item.name);
 
-                  <div className="row margin-15">
-                    <div className="col-lg-8">
-                      <button
-                        type="button"
-                        onClick={() => changeTemplate(item.name, true)}
-                        className="btn btn-primary auth-btn font-m"
-                        disabled={data.template === item.name}
-                      >
-                        {data.template === item.name
-                          ? getLocales('Установлен')
-                          : getLocales('Установить')}
-                      </button>
-                    </div>
+              const isNeedBuy = templateFinded?.price !== 0 && !isBuyed;
 
-                    <div className="col-lg-4">
-                      <b>
-                        {' '}
+              return (
+                <div className="col-lg-4">
+                  <div className="text-center template-block">
+                    <h3 className="font-m text-center">
+                      {getLocales(item.label)}
+                    </h3>
+                    <a
+                      href={`http://${item.name}.umbrella.day`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <img
+                        src={item.img}
+                        width="100%"
+                        alt={item.name}
+                      />
+                    </a>
+
+                    <div className="row margin-15">
+                      <div className="col-lg-12">
                         <button
                           type="button"
                           className="btn btn-secondary auth-btn font-m"
                         >
-                          {+item.price === 0
-                            ? 'FREE'
-                            : (`${item.price}$`)}
-                          {' '}
-                          {!!item.premium && <FontAwesomeIcon icon={faStar} />}
+                          <b>
+                            {+item.price === 0
+                              ? 'FREE'
+                              : (`${item.price}$`)}
+                            {' '}
+                            {!!item.premium && <FontAwesomeIcon icon={faStar} />}
+                          </b>
                         </button>
-                      </b>
+                      </div>
+
+                      {isNeedBuy ? (
+                        <>
+                          <div className="col-lg-6 margin-15">
+                            <button
+                              type="button"
+                              onClick={() => changeTemplate(item.name, actions.set)}
+                              className="btn btn-primary auth-btn font-m"
+                              disabled={data.template === item.name}
+                            >
+                              {data.template === item.name
+                                ? getLocales('Установлен')
+                                : getLocales('Купить')}
+                            </button>
+                          </div>
+
+                          <div className="col-lg-6 margin-15">
+                            <button
+                              type="button"
+                              onClick={() => changeTemplate(item.name, actions.rent)}
+                              className="btn btn-primary auth-btn font-m"
+                              disabled={data.template === item.name}
+                            >
+                              {data.template === item.name
+                                ? getLocales('Установлен')
+                                : getLocales('Арендовать')}
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="col-lg-12 margin-15">
+                          <button
+                            type="button"
+                            onClick={() => setTemplate(item.name, actions.set)}
+                            className="btn btn-primary auth-btn font-m"
+                            disabled={data.template === item.name}
+                          >
+                            {data.template === item.name
+                              ? getLocales('Установлен')
+                              : getLocales('Установить')}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
 
       <ModalConfirm
-        action={getLocales('Вы действительно хотите приобрести данный шаблон?')}
+        action={getLocales(modal === actions.set
+          ? 'Вы действительно хотите приобрести данный шаблон?'
+          : 'Вы действительно хотите арендовать данный шаблон?')}
         consequences={getLocales('Средства спишутся единоразово и не подлежат возврату')}
-        modal={isOpenModal}
-        toggle={toggle}
+        modal={!!modal}
+        toggle={() => setModal(null)}
         loading={isLoading}
-        sendData={() => changeTemplate(templateSelected, false)}
+        sendData={() => setTemplate(templateSelected, modal)}
       />
     </>
   );
