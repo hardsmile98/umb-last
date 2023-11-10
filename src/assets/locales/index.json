@@ -517,7 +517,8 @@
         "Настройки обновлены": "Settings updated",
         "Средства спишутся единоразово и не подлежат возврату": "Средства пишутся единоразово и не возвращаются к возвращению",
         "Вы действительно хотите приобрести данный шаблон?": "Are you sure you want to purchase this template?",
-        "Вы действительно хотите арендовать данный шаблон?": "Are you sure you want to rent this template?"
+        "Вы действительно хотите арендовать данный шаблон?": "Are you sure you want to rent this template?",
+        "Арендовать": "Rent"
     },
     "ES": {
         "Главная": "Inicio",
@@ -1059,6 +1060,7 @@
         "Настройки обновлены": "Ajustes actualizan",
         "Средства спишутся единоразово и не подлежат возврату": "Los fondos se debitarán una vez y no son reembolsables",
         "Вы действительно хотите приобрести данный шаблон?": "¿Estás seguro de que quieres comprar esta plantilla?",
-        "Вы действительно хотите арендовать данный шаблон?": "¿Estás seguro de que quieres alquilar esta plantilla?"
+        "Вы действительно хотите арендовать данный шаблон?": "¿Estás seguro de que quieres alquilar esta plantilla?",
+        "Арендовать": "Alquilar"
     }
 }
