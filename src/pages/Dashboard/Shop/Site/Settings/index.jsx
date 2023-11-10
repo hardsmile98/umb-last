@@ -81,7 +81,6 @@ function Settings() {
 
     request(body, (response) => {
       if (response.status !== 200) {
-        setLoading(false);
         toast.error('Сервер недоступен');
         return;
       }

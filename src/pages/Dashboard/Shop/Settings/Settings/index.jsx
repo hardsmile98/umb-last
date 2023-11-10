@@ -1,132 +1,31 @@
 /* eslint-disable react/no-danger */
-/* eslint-disable react/no-access-state-in-setstate */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/sort-comp */
-import React, { Component } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import { ModalConfirm } from 'components';
 import { request, getLocales } from 'utils';
 
-class ShopMainSettings extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      data: {
-        available: {},
-        settings: {},
-        subscription: false,
-        subscriptionPrice: 0,
-        autoDebit: 0,
-      },
-      modal: false,
-    };
-    this.getData = this.getData.bind(this);
-    this.sendData = this.sendData.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.buy = this.buy.bind(this);
-    this.debtOff = this.debtOff.bind(this);
-  }
+function ShopSettings() {
+  const [isLoading, setLoading] = useState(false);
+  const [isOpenModal, setOpenModal] = useState(false);
+  const [data, setData] = useState({});
 
-  debtOff() {
-    this.setState({
-      loading: true,
-    });
+  const { shopId } = useParams();
 
-    const data = {
+  const toggle = () => setOpenModal((prev) => !prev);
+
+  const getData = useCallback(() => {
+    setLoading(true);
+
+    const body = {
       api: 'user',
       body: {
         data: {
           section: 'shop',
           type: 'settings',
           subtype: 'settings',
-          shop: this.props.match.params.shopId,
-          action: 'debitOff',
-        },
-        action: 'shops',
-      },
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    };
-
-    request(data, (response) => {
-      if (response.status === 200) {
-        if (response.data.success) {
-          toast.success(response.data.message);
-          this.getData();
-        } else {
-          this.setState({
-            loading: false,
-          });
-          toast.error(response.data.message);
-        }
-      } else {
-        toast.error('Сервер недоступен');
-      }
-    });
-  }
-
-  toggle() {
-    this.setState({
-      modal: !this.state.modal,
-    });
-  }
-
-  buy() {
-    this.setState({
-      loading: true,
-    });
-
-    const data = {
-      api: 'user',
-      body: {
-        data: {
-          section: 'shop',
-          type: 'settings',
-          subtype: 'settings',
-          shop: this.props.match.params.shopId,
-          action: 'disableAdvert',
-        },
-        action: 'shops',
-      },
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    };
-
-    request(data, (response) => {
-      if (response.status === 200) {
-        if (response.data.success) {
-          toast.success(response.data.message);
-          this.toggle();
-          this.getData();
-        } else {
-          this.setState({
-            loading: false,
-          });
-          toast.error(response.data.message);
-        }
-      } else {
-        toast.error('Сервер недоступен');
-      }
-    });
-  }
-
-  componentDidMount() {
-    this.getData();
-  }
-
-  getData() {
-    const data = {
-      api: 'user',
-      body: {
-        data: {
-          section: 'shop',
-          type: 'settings',
-          subtype: 'settings',
-          shop: this.props.match.params.shopId,
+          shop: shopId,
           action: 'get',
         },
         action: 'shops',
@@ -136,40 +35,47 @@ class ShopMainSettings extends Component {
       },
     };
 
-    request(data, (response) => {
-      if (response.status === 200) {
-        if (response.data.success) {
-          this.setState({
-            data: response.data.data,
-            loading: false,
-          });
-        } else {
-          this.setState({
-            loading: false,
-          });
-          toast.error(response.data.message);
-        }
-      } else {
+    request(body, (response) => {
+      if (response.status !== 200) {
         toast.error('Сервер недоступен');
+        return;
       }
-    });
-  }
 
-  sendData(e) {
-    this.setState({
-      loading: true,
+      if (!response.data.success) {
+        setLoading(false);
+        toast.error(response.data.message);
+        return;
+      }
+
+      const responseData = response.data.data;
+
+      const formattedData = {
+        ...responseData,
+        settings: Object.keys(responseData.available).reduce((acc, cur) => ({
+          ...acc,
+          [cur]: responseData.settings[cur] || responseData.available[cur].default,
+        }), {}),
+      };
+
+      setLoading(false);
+      setData(formattedData);
     });
-    const data = {
+  }, [shopId]);
+
+  const sendData = (name, value) => {
+    setLoading(true);
+
+    const body = {
       api: 'user',
       body: {
         data: {
           section: 'shop',
           type: 'settings',
           subtype: 'settings',
-          shop: this.props.match.params.shopId,
+          shop: shopId,
           action: 'change',
-          name: e.target.name,
-          value: e.target.value.toString(),
+          name,
+          value: value || data.settings[name],
         },
         action: 'shops',
       },
@@ -178,192 +84,292 @@ class ShopMainSettings extends Component {
       },
     };
 
-    request(data, (response) => {
+    request(body, (response) => {
+      if (response.status !== 200) {
+        toast.error('Сервер недоступен');
+        return;
+      }
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+
+      setLoading(false);
+    });
+  };
+
+  const buy = () => {
+    setLoading(true);
+
+    const body = {
+      api: 'user',
+      body: {
+        data: {
+          section: 'shop',
+          type: 'settings',
+          subtype: 'settings',
+          shop: shopId,
+          action: 'disableAdvert',
+        },
+        action: 'shops',
+      },
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    };
+
+    request(body, (response) => {
       if (response.status === 200) {
         if (response.data.success) {
-          this.getData();
+          toast.success(response.data.message);
+          toggle();
+          getData();
         } else {
-          this.setState({
-            loading: false,
-          });
+          setLoading(false);
           toast.error(response.data.message);
         }
       } else {
         toast.error('Сервер недоступен');
       }
     });
-  }
+  };
 
-  render() {
-    return (
-      <>
-        <div className="row">
-          <div className="col-lg-8">
-            <div className={`block animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
-              <div className="block-body">
-                <h3 className="font-m">
-                  {getLocales('Настройки')}
-                </h3>
+  const debtOff = () => {
+    setLoading(false);
 
-                <div className="row">
-                  {Object.keys(this.state.data.available).map((keyName) => (
-                    <div className="col-lg-6">
-                      <div className="form-group">
-                        <label className="form-control-label font-m">
-                          {getLocales(this.state.data.available[keyName].title)}
-                        </label>
+    const body = {
+      api: 'user',
+      body: {
+        data: {
+          section: 'shop',
+          type: 'settings',
+          subtype: 'settings',
+          shop: shopId,
+          action: 'debitOff',
+        },
+        action: 'shops',
+      },
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    };
 
-                        {this.state.data.available[keyName].type === 'select'
-                          ? (
-                            <>
-                              <select
-                                onChange={this.sendData}
-                                value={this.state.data.settings[keyName]
-                                  ? this.state.data.settings[keyName]
-                                  : this.state.data.available[keyName].default}
-                                name={this.state.data.available[keyName].name}
-                                className="form-control"
-                              >
-                                {this.state.data.available[keyName].values.split(',')
-                                  .map((value, key) => (
-                                    <option value={value}>
-                                      {getLocales(this.state.data.available[keyName].valuesNames.split(',')[key])}
-                                    </option>
-                                  ))}
-                              </select>
-                              {this.state.data.available[keyName].tip
-                                ? (
-                                  <small dangerouslySetInnerHTML={{
-                                    __html:
-                                getLocales(this.state.data.available[keyName].tip),
-                                  }}
-                                  />
-                                )
-                                : ''}
-                            </>
-                          )
-                          : (
-                            <>
-                              <input
-                                name={this.state.data.available[keyName].name}
-                                onChange={this.sendData}
-                                className="form-control"
-                                value={this.state.data.settings[keyName]
-                                  ? this.state.data.settings[keyName]
-                                  : this.state.data.available[keyName].default}
-                              />
-                              {this.state.data.available[keyName].tip
-                                ? (
-                                  <small dangerouslySetInnerHTML={{
-                                    __html:
-                                    getLocales(this.state.data.available[keyName].tip),
-                                  }}
-                                  />
-                                ) : ''}
-                            </>
-                          )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+    request(body, (response) => {
+      if (response.status === 200) {
+        if (response.data.success) {
+          toast.success(response.data.message);
+          getData();
+        } else {
+          setLoading(false);
+          toast.error(response.data.message);
+        }
+      } else {
+        toast.error('Сервер недоступен');
+      }
+    });
+  };
 
-          <div className="col-lg-4">
-            <div className={`block animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
-              <div className="block-body">
-                <h3 className="font-m">
-                  {getLocales('Отключение рекламы')}
-                </h3>
+  const onChange = (e) => {
+    const { name, value } = e.target;
 
-                {this.state.data.subscription === false
-                  ? (
-                    <>
-                      <div
-                        className="avatar-block font-m notice-chat"
-                        dangerouslySetInnerHTML={{
-                          __html:
-                      getLocales('Отключение рекламы в ботах и на сайте автопродаж.<br/>Стоимость указана за 1 месяц отключения.'),
-                        }}
-                      />
+    setData((prev) => ({
+      ...prev,
+      settings: {
+        ...prev.settings,
+        [name]: value,
+      },
+    }));
+  };
 
-                      <div className="form-group">
-                        <label className="form-control-label font-m">
-                          {getLocales('Стоимость')}
-                        </label>
-                        <div className="input-group">
-                          <input
-                            disabled
-                            value={this.state.data.subscriptionPrice}
-                            className="form-control"
-                          />
-                          <span className="input-group-text">$</span>
-                        </div>
-                      </div>
+  const onChangeSelect = (e) => {
+    const { name, value } = e.target;
 
-                      <div
-                        aria-hidden
-                        className="btn btn-primary auth-btn font-m"
-                        onClick={this.toggle}
-                      >
-                        {getLocales('Подключить')}
-                      </div>
-                    </>
-                  )
-                  : (
-                    <>
-                      <div className="avatar-block font-m notice-chat">
-                        {getLocales('Подписка активна')}
-                      </div>
+    onChange(e);
+    sendData(name, value);
+  };
 
-                      <div className="form-group">
-                        <label className="form-control-label font-m">
-                          {getLocales('Активна до')}
-                        </label>
-                        <input
-                          disabled
-                          value={moment.unix(this.state.data.subscription / 1000).format('LLL')}
-                          className="form-control"
-                        />
-                      </div>
-                      {String(this.state.data.autoDebit) === '1'
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  return (
+    <>
+      <div className="row">
+        <div className="col-lg-8">
+          <div className={`block animate__animated animate__fadeIn ${isLoading ? 'blur' : ''}`}>
+            <div className="block-body">
+              <h3 className="font-m">
+                {getLocales('Настройки')}
+              </h3>
+
+              <div className="row">
+                {Object.keys(data.available || {}).map((keyName) => (
+                  <div className="col-lg-6" key={keyName}>
+                    <div className="form-group">
+                      <label className="form-control-label font-m">
+                        {getLocales(data.available[keyName].title)}
+                      </label>
+
+                      {data.available[keyName].type === 'select'
                         ? (
-                          <div
-                            aria-hidden
-                            className="btn btn-danger auth-btn font-m"
-                            onClick={this.debtOff}
-                          >
-                            {getLocales('Отключить автопродление')}
-                          </div>
+                          <>
+                            <select
+                              onChange={onChangeSelect}
+                              value={data.settings[keyName]}
+                              name={data.available[keyName].name}
+                              className="form-control"
+                            >
+                              {data.available[keyName].values.split(',')
+                                .map((value, key) => (
+                                  <option value={value}>
+                                    {getLocales(data.available[keyName].valuesNames.split(',')[key])}
+                                  </option>
+                                ))}
+                            </select>
+                            {data.available[keyName].tip && (
+                              <small dangerouslySetInnerHTML={{
+                                __html:
+                                    getLocales(data.available[keyName].tip),
+                              }}
+                              />
+                            )}
+                          </>
                         )
                         : (
-                          <div
-                            aria-hidden
-                            className="btn btn-primary auth-btn font-m"
-                            onClick={this.debtOff}
-                          >
-                            {getLocales('Включить автопродление')}
-                          </div>
+                          <>
+                            <div className="input-group">
+                              <input
+                                onChange={onChange}
+                                name={data.available[keyName].name}
+                                className="form-control"
+                                value={data.settings[keyName]}
+                              />
+
+                              <div className="input-group-append">
+                                <button
+                                  onClick={() => sendData(keyName)}
+                                  className="input-group-text"
+                                  type="button"
+                                  disabled={!data.settings[keyName]}
+                                >
+                                  {isLoading
+                                    ? getLocales('Загрузка...')
+                                    : getLocales('Сохранить')}
+                                </button>
+                              </div>
+                            </div>
+                            {data.available[keyName].tip && (
+                              <small dangerouslySetInnerHTML={{
+                                __html:
+                                    getLocales(data.available[keyName].tip),
+                              }}
+                              />
+                            )}
+                          </>
                         )}
-                    </>
-                  )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
-        <ModalConfirm
-          action={getLocales('Вы действительно хотите подключить подписку на отключение рекламы?')}
-          consequences={getLocales('Средства будут списаны с Вашего баланса, данное действие необратимо, вернуть средства не будет возможным.')}
-          modal={this.state.modal}
-          toggle={this.toggle}
-          loading={this.state.loading}
-          sendData={this.buy}
-        />
-      </>
-    );
-  }
+        <div className="col-lg-4">
+          <div className={`block animate__animated animate__fadeIn ${isLoading ? 'blur' : ''}`}>
+            <div className="block-body">
+              <h3 className="font-m">
+                {getLocales('Отключение рекламы')}
+              </h3>
+
+              {!data.subscription
+                ? (
+                  <>
+                    <div
+                      className="avatar-block font-m notice-chat"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                            getLocales('Отключение рекламы в ботах и на сайте автопродаж.<br/>Стоимость указана за 1 месяц отключения.'),
+                      }}
+                    />
+
+                    <div className="form-group">
+                      <label className="form-control-label font-m">
+                        {getLocales('Стоимость')}
+                      </label>
+                      <div className="input-group">
+                        <input
+                          disabled
+                          value={data.subscriptionPrice}
+                          className="form-control"
+                        />
+                        <span className="input-group-text">$</span>
+                      </div>
+                    </div>
+
+                    <div
+                      aria-hidden
+                      className="btn btn-primary auth-btn font-m"
+                      onClick={toggle}
+                    >
+                      {getLocales('Подключить')}
+                    </div>
+                  </>
+                )
+                : (
+                  <>
+                    <div className="avatar-block font-m notice-chat">
+                      {getLocales('Подписка активна')}
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-control-label font-m">
+                        {getLocales('Активна до')}
+                      </label>
+                      <input
+                        disabled
+                        value={moment.unix(data.subscription / 1000).format('LLL')}
+                        className="form-control"
+                      />
+                    </div>
+                    {String(data.autoDebit) === '1'
+                      ? (
+                        <div
+                          aria-hidden
+                          className="btn btn-danger auth-btn font-m"
+                          onClick={debtOff}
+                        >
+                          {getLocales('Отключить автопродление')}
+                        </div>
+                      )
+                      : (
+                        <div
+                          aria-hidden
+                          className="btn btn-primary auth-btn font-m"
+                          onClick={debtOff}
+                        >
+                          {getLocales('Включить автопродление')}
+                        </div>
+                      )}
+                  </>
+                )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ModalConfirm
+        action={getLocales('Вы действительно хотите подключить подписку на отключение рекламы?')}
+        consequences={getLocales('Средства будут списаны с Вашего баланса, данное действие необратимо, вернуть средства не будет возможным.')}
+        modal={isOpenModal}
+        toggle={toggle}
+        loading={isLoading}
+        sendData={buy}
+      />
+    </>
+  );
 }
 
-export default ShopMainSettings;
+export default ShopSettings;
