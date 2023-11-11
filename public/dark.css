@@ -483,5 +483,9 @@ select.form-control {
 
 .badge-light {
   color: #fff;
-  background-color: #343a40;
+  background-color: #222222;
+}
+
+.template-block {
+  background: #141414 !important;
 }
