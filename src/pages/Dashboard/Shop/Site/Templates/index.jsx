@@ -88,12 +88,8 @@ function Templates() {
     request(body, (response) => {
       if (response.status === 200) {
         if (response.data.success) {
-          setData((prev) => ({
-            ...prev,
-            template: name,
-          }));
           toast.success(response.data.message);
-          setLoading(false);
+          getData();
         } else {
           toast.error(response.data.message);
           setLoading(false);
