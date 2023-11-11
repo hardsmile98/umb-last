@@ -125,7 +125,7 @@ function Templates() {
               const isNeedBuy = templateFinded?.price !== 0 && !isBuyed;
 
               return (
-                <div className="col-lg-4">
+                <div className="col-lg-4" key={item.name}>
                   <div className="text-center template-block">
                     <h3 className="font-m text-center">
                       {getLocales(item.label)}
