@@ -210,16 +210,13 @@ class Table extends React.Component {
                 <th key={index} className={item.headerClassName}>
                   {item.sort
                     ? (
-                      <>
-                        <span
-                          aria-hidden
-                          className="cursor-pointer"
-                          onClick={() => this.sortColumn(item.dataIndex)}
-                        >
-                          {item.title}
-                        </span>
-                        &nbsp;
-                      </>
+                      <span
+                        aria-hidden
+                        className="cursor-pointer"
+                        onClick={() => this.sortColumn(item.dataIndex)}
+                      >
+                        {item.title}
+                      </span>
                     )
                     : item.title}
                 </th>

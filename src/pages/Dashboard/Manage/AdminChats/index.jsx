@@ -79,6 +79,7 @@ class AdminChats extends Component {
               <h3 className="font-m">
                 Чаты
               </h3>
+
               {state.data.chats.length === 0
                 ? (
                   <div className="text-center font-m">
@@ -93,7 +94,7 @@ class AdminChats extends Component {
                     <div className={`avatar-block chat-block ${chat.typeof === 'user' ? 'unreaded' : ''}`}>
                       {chat.ownerLogin}
                       {' '}
-                      {chat.premium && <FontAwesomeIcon icon={faStar} />}
+                      {!!chat.premium && <FontAwesomeIcon icon={faStar} />}
 
                       <div className="text-left">
                         <span className="font-m">

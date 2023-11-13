@@ -12,6 +12,7 @@ import Purchases from './Purchases';
 import Reviews from './Reviews';
 import UserProfile from './UserProfile';
 import DataUsers from './Users';
+import Topups from './Topups';
 
 class Datas extends Component {
   constructor(props) {
@@ -62,6 +63,14 @@ class Datas extends Component {
               </NavLink>
 
               <NavLink
+                to={`${this.props.match.url}/topups`}
+                activeClassName="active"
+                className="xtabs__item"
+              >
+                {getLocales('Пополнения')}
+              </NavLink>
+
+              <NavLink
                 to={`${this.props.match.url}/massspam`}
                 activeClassName="active"
                 className="xtabs__item"
@@ -87,6 +96,7 @@ class Datas extends Component {
             <Route exact path={`${this.props.match.path}/purchases`} component={Purchases} />
             <Route exact path={`${this.props.match.path}/activeorders`} component={ActivePurchases} />
             <Route exact path={`${this.props.match.path}/massspam`} component={Userspam} />
+            <Route exact path={`${this.props.match.path}/topups`} component={Topups} />
             <Route path={`${this.props.match.path}/purchases/:purchaseId`} component={PurchaseItem} />
             <Route exact path={`${this.props.match.path}/presellers`} component={ActivePresellers} />
             <Route exact path={`${this.props.match.path}/reviews`} component={Reviews} />
