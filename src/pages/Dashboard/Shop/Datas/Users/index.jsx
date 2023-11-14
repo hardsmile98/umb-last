@@ -195,7 +195,7 @@ class DataUsers extends Component {
                 {getLocales('Покупатели')}
               </h3>
 
-              {this.state.data.users <= 0
+              {this.state.data.users.length === 0
                 ? (
                   <div className="text-center font-m">
                     {getLocales('Покупатели отсутствуют')}

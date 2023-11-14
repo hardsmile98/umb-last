@@ -295,7 +295,7 @@ class ActivePresellers extends Component {
                 <h3 className="font-m">
                   {getLocales('Активные предзаказы')}
                 </h3>
-                {this.state.data.presellers <= 0
+                {this.state.data.presellers.length === 0
                   ? (
                     <div className="text-center font-m">
 

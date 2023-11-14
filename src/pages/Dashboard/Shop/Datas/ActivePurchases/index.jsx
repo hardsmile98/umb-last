@@ -236,7 +236,7 @@ class ActivePurchases extends Component {
                 {getLocales('Активные заказы')}
               </h3>
 
-              {this.state.data.purchases <= 0
+              {this.state.data.purchases.length === 0
                 ? (
                   <div className="text-center font-m">
                     {getLocales('Активные заказы отсутствуют')}

@@ -138,7 +138,13 @@ class PurchaseItem extends Component {
                     {getLocales('Покупатель')}
                   </label>
                   <div className="input-group mb-3">
-                    <input name="nameUser" value={this.state.data.purchase.nameUser} className="form-control" disabled />
+                    <input
+                      name="nameUser"
+                      value={this.state.data.purchase.nameUser}
+                      className="form-control"
+                      disabled
+                    />
+
                     {String(this.state.data.purchase.user) !== '0'
                       ? (
                         <NavLink
