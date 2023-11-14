@@ -13,6 +13,7 @@ import Reviews from './Reviews';
 import UserProfile from './UserProfile';
 import DataUsers from './Users';
 import Topups from './Topups';
+import TopupItem from './Topup';
 
 class Datas extends Component {
   constructor(props) {
@@ -94,10 +95,11 @@ class Datas extends Component {
             <Route exact path={`${this.props.match.path}/users`} component={DataUsers} />
             <Route path={`${this.props.match.path}/users/:userId`} component={UserProfile} />
             <Route exact path={`${this.props.match.path}/purchases`} component={Purchases} />
+            <Route path={`${this.props.match.path}/purchases/:purchaseId`} component={PurchaseItem} />
             <Route exact path={`${this.props.match.path}/activeorders`} component={ActivePurchases} />
             <Route exact path={`${this.props.match.path}/massspam`} component={Userspam} />
             <Route exact path={`${this.props.match.path}/topups`} component={Topups} />
-            <Route path={`${this.props.match.path}/purchases/:purchaseId`} component={PurchaseItem} />
+            <Route path={`${this.props.match.path}/topups/:topupId`} component={TopupItem} />
             <Route exact path={`${this.props.match.path}/presellers`} component={ActivePresellers} />
             <Route exact path={`${this.props.match.path}/reviews`} component={Reviews} />
 

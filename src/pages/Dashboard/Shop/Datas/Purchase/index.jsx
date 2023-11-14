@@ -12,7 +12,7 @@ class PurchaseItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
+      loading: false,
       data: {
         purchase: {
           exchange: {},
@@ -39,6 +39,7 @@ class PurchaseItem extends Component {
     this.setState({
       loading: true,
     });
+
     const data = {
       api: 'user',
       body: {
