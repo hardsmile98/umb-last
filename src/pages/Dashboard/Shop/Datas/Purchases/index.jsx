@@ -37,7 +37,7 @@ class Purchases extends Component {
     this.sort = this.sort.bind(this);
   }
 
-  getCAndP() {
+  getFilterData() {
     const categories = [];
     const products = [];
     const types = [];
@@ -217,7 +217,7 @@ class Purchases extends Component {
     this.setState({
       items,
     }, () => {
-      this.getCAndP();
+      this.getFilterData();
     });
   }
 
@@ -355,7 +355,7 @@ class Purchases extends Component {
                 {getLocales('Покупки')}
               </h3>
 
-              {this.state.data.purchases <= 0
+              {this.state.data.purchases.length === 0
                 ? (
                   <div className="text-center font-m">
                     {getLocales('Покупки отсутствуют')}
