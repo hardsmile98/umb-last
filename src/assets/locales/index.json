@@ -518,7 +518,9 @@
         "Средства спишутся единоразово и не подлежат возврату": "Средства пишутся единоразово и не возвращаются к возвращению",
         "Вы действительно хотите приобрести данный шаблон?": "Are you sure you want to purchase this template?",
         "Вы действительно хотите арендовать данный шаблон?": "Are you sure you want to rent this template?",
-        "Арендовать": "Rent"
+        "Арендовать": "Rent",
+        "Выберите дату действия промкода": "Select the promotional code validity date",
+        "Не все даные заполнены": "Not all data is filled in"
     },
     "ES": {
         "Главная": "Inicio",
@@ -1061,6 +1063,8 @@
         "Средства спишутся единоразово и не подлежат возврату": "Los fondos se debitarán una vez y no son reembolsables",
         "Вы действительно хотите приобрести данный шаблон?": "¿Estás seguro de que quieres comprar esta plantilla?",
         "Вы действительно хотите арендовать данный шаблон?": "¿Estás seguro de que quieres alquilar esta plantilla?",
-        "Арендовать": "Alquilar"
+        "Арендовать": "Alquilar",
+        "Выберите дату действия промкода": "Seleccione la fecha de validez del código promocional",
+        "Не все даные заполнены": "No se completan todos los datos"
     }
 }

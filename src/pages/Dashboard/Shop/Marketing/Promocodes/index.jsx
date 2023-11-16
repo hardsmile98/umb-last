@@ -12,6 +12,7 @@ import { faCopy, faTrash, faInfoCircle } from '@fortawesome/free-solid-svg-icons
 import uniqueString from 'unique-string';
 import { Table, ModalConfirm } from 'components';
 import { request, getLocales } from 'utils';
+import { isArray } from '@amcharts/amcharts4/core';
 import PromocodeModal from './PromocodeModal';
 
 class Promocodes extends Component {
@@ -21,7 +22,7 @@ class Promocodes extends Component {
       loading: true,
       value: '',
       percent: 0,
-      subtype: 'promocodes',
+      action: 'create',
       sum: 0,
       startPromocode: '',
       arrayPromocodes: [],
@@ -62,7 +63,7 @@ class Promocodes extends Component {
   }
 
   componentDidUpdate(_prevProps, prevState) {
-    if (this.state.subtype === 'createMass') {
+    if (this.state.action === 'createMass') {
       if (this.state.startPromocode !== prevState.startPromocode) {
         this.setState((prev) => ({
           ...prev,
@@ -90,12 +91,12 @@ class Promocodes extends Component {
       }
     }
 
-    if (this.state.subtype !== prevState.subtype) {
+    if (this.state.action !== prevState.action) {
       this.setState((prev) => ({
         ...prev,
         value: '',
         startPromocode: '',
-        count: this.state.subtype === 'createMass'
+        count: this.state.action === 'createMass'
           ? 1
           : 0,
       }));
@@ -115,8 +116,8 @@ class Promocodes extends Component {
     }
 
     if (name === 'count') {
-      const f = value.replace(/[^0-9]/g, '');
-      formatted = +f > max ? max : f;
+      const onlyNumber = value.replace(/[^0-9]/g, '');
+      formatted = +onlyNumber > max ? max : onlyNumber;
     }
 
     this.setState({
@@ -128,6 +129,7 @@ class Promocodes extends Component {
     this.setState({
       loading: true,
     });
+
     const data = {
       api: 'user',
       body: {
@@ -160,7 +162,7 @@ class Promocodes extends Component {
           toast.error(response.data.message);
         }
       } else {
-        toast.error('Сервер недоступен');
+        toast.error(getLocales('Сервер недоступен'));
       }
     });
   }
@@ -209,7 +211,7 @@ class Promocodes extends Component {
           toast.error(response.data.message);
         }
       } else {
-        toast.error('Сервер недоступен');
+        toast.error(getLocales('Сервер недоступен'));
       }
     });
   }
@@ -258,18 +260,29 @@ class Promocodes extends Component {
   }
 
   sendData() {
+    if (!this.state.toDate) {
+      toast.error(getLocales('Выберите дату действия промкода'));
+      return;
+    }
+
+    if (!this.state.value || this.state.limitActive === '') {
+      toast.error(getLocales('Не все даные заполнены'));
+      return;
+    }
+
     this.setState({
       loading: true,
     });
+
     const data = {
       api: 'user',
       body: {
         data: {
           section: 'shop',
           type: 'settings',
-          subtype: this.state.subtype,
+          subtype: 'promocodes',
           shop: this.props.match.params.shopId,
-          action: 'create',
+          action: this.state.action,
           value: this.state.value,
           percent: this.state.percent === '' ? 0 : this.state.percent,
           sum: this.state.sum === '' ? 0 : this.state.sum,
@@ -298,7 +311,7 @@ class Promocodes extends Component {
           toast.error(response.data.message);
         }
       } else {
-        toast.error('Сервер недоступен');
+        toast.error(getLocales('Сервер недоступен'));
       }
     });
   }
@@ -460,16 +473,16 @@ class Promocodes extends Component {
                   </label>
                   <select
                     onChange={this.handleChange}
-                    name="subtype"
+                    name="action"
                     disabled={this.state.loading}
                     className="form-control"
                   >
-                    <option value="promocodes">{getLocales('По одному')}</option>
+                    <option value="create">{getLocales('По одному')}</option>
                     <option value="createMass">{getLocales('Массово')}</option>
                   </select>
                 </div>
 
-                {this.state.subtype === 'promocodes' ? (
+                {this.state.action === 'create' ? (
                   <div className="form-group">
                     <label className="form-control-label font-m">
                       {getLocales('Промокод')}
@@ -554,7 +567,9 @@ class Promocodes extends Component {
                           className="icon-secondary icon-button"
                           data-toggle="tooltip"
                           onClick={() => {
-                            navigator.clipboard.writeText((this.state.value || []).join('\n'));
+                            navigator.clipboard.writeText(isArray(this.state.value)
+                              ? this.state.value.join('\n')
+                              : this.state.value);
                             toast.success(getLocales('Скопировано'));
                           }}
                         >
@@ -563,7 +578,9 @@ class Promocodes extends Component {
                       </label>
                       <textarea
                         disabled
-                        value={(this.state.value || []).join('\n')}
+                        value={isArray(this.state.value)
+                          ? this.state.value.join('\n')
+                          : this.state.value}
                         autoComplete="off"
                         className="form-control"
                       />
