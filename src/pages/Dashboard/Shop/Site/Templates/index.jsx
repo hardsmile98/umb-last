@@ -151,7 +151,7 @@ function Templates() {
                             <button
                               type="button"
                               onClick={() => changeTemplate(item.name, actions.set)}
-                              className={`btn btn-primary auth-btn font-m ${data.template !== item.name ? 'template-button' : ''}`}
+                              className="btn btn-primary auth-btn font-m template-button"
                               disabled={data.template === item.name}
                             >
                               {data.template === item.name
@@ -174,7 +174,7 @@ function Templates() {
                             <button
                               type="button"
                               onClick={() => changeTemplate(item.name, actions.rent)}
-                              className={`btn btn-primary auth-btn font-m ${data.template !== item.name ? 'template-button' : ''}`}
+                              className="btn btn-primary auth-btn font-m template-button"
                               disabled={data.template === item.name}
                             >
                               {data.template === item.name
@@ -198,7 +198,7 @@ function Templates() {
                           <button
                             type="button"
                             onClick={() => setTemplate(item.name, actions.set)}
-                            className="btn btn-primary auth-btn font-m"
+                            className="btn btn-primary auth-btn font-m template-button"
                             disabled={data.template === item.name}
                           >
                             {data.template === item.name
