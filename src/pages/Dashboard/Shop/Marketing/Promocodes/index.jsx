@@ -15,24 +15,28 @@ import { request, getLocales } from 'utils';
 import { isArray } from '@amcharts/amcharts4/core';
 import PromocodeModal from './PromocodeModal';
 
+const initialForm = {
+  percent: 0,
+  sum: 0,
+  startPromocode: '',
+  arrayPromocodes: [],
+  fromDate: moment.unix(new Date(Date.now())
+    .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
+  toDate: '',
+  limitActive: 0,
+  note: '',
+  onlyone: true,
+};
+
 class Promocodes extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
       value: '',
-      percent: 0,
       action: 'create',
-      sum: 0,
-      startPromocode: '',
-      arrayPromocodes: [],
       count: 0,
-      fromDate: moment.unix(new Date(Date.now())
-        .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
-      toDate: '',
-      limitActive: 0,
-      note: '',
-      onlyone: true,
+      ...initialForm,
       data: {
         promocodes: [],
         currency: '',
@@ -265,7 +269,11 @@ class Promocodes extends Component {
       return;
     }
 
-    if (!this.state.value || this.state.limitActive === '') {
+    const isValidValue = isArray(this.state.value)
+      ? this.state.value.length > 0
+      : this.state.value !== '';
+
+    if (!isValidValue || this.state.limitActive === '') {
       toast.error(getLocales('Не все даные заполнены'));
       return;
     }
@@ -304,6 +312,11 @@ class Promocodes extends Component {
         if (response.data.success) {
           toast.success(response.data.message);
           this.getData();
+          this.setState({
+            ...initialForm,
+            value: this.state.action === 'create' ? '' : [''],
+            count: this.state.action === 'create' ? 0 : 1,
+          });
         } else {
           this.setState({
             loading: false,
@@ -518,7 +531,6 @@ class Promocodes extends Component {
                           <input
                             disabled={this.state.loading}
                             value={this.state.count}
-                            onKeyPress={(event) => event.charCode >= 48 && event.charCode <= 49}
                             onChange={this.handleChange}
                             autoComplete="off"
                             max={250}
