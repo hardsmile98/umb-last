@@ -125,7 +125,7 @@ function Templates() {
               const isNeedBuy = templateFinded?.price !== 0 && !isBuyed;
 
               return (
-                <div className="col-lg-4" key={item.name}>
+                <div className="col-sm-12 col-md-6 col-xl-4" key={item.name}>
                   <div className="text-center template-block">
                     <h3 className="font-m text-center">
                       {!!item.premium && <FontAwesomeIcon icon={faStar} />}
@@ -147,7 +147,7 @@ function Templates() {
                     <div className="row margin-15">
                       {isNeedBuy ? (
                         <>
-                          <div className="col-lg-6">
+                          <div className="col-lg-6 col-sm-6">
                             <button
                               type="button"
                               onClick={() => changeTemplate(item.name, actions.set)}
@@ -170,7 +170,7 @@ function Templates() {
                             </button>
                           </div>
 
-                          <div className="col-lg-6">
+                          <div className="col-lg-6 col-sm-6">
                             <button
                               type="button"
                               onClick={() => changeTemplate(item.name, actions.rent)}
@@ -198,7 +198,7 @@ function Templates() {
                           <button
                             type="button"
                             onClick={() => setTemplate(item.name, actions.set)}
-                            className="btn btn-primary auth-btn font-m template-button"
+                            className="btn btn-primary auth-btn font-m"
                             disabled={data.template === item.name}
                           >
                             {data.template === item.name
