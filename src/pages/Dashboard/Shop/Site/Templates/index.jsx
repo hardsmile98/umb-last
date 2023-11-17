@@ -128,7 +128,9 @@ function Templates() {
                 <div className="col-lg-4" key={item.name}>
                   <div className="text-center template-block">
                     <h3 className="font-m text-center">
-                      {getLocales(item.label)}
+                      {!!item.premium && <FontAwesomeIcon icon={faStar} />}
+                      {' '}
+                      {item.label}
                     </h3>
                     <a
                       href={`http://${item.name}.umbrella.day`}
@@ -143,55 +145,60 @@ function Templates() {
                     </a>
 
                     <div className="row margin-15">
-                      <div className="col-lg-12">
-                        <button
-                          type="button"
-                          className="btn btn-secondary auth-btn font-m"
-                        >
-                          <b>
-                            {+item.price === 0
-                              ? 'FREE'
-                              : (`${item.price}$`)}
-                            {' '}
-                            {!!item.premium && <FontAwesomeIcon icon={faStar} />}
-                          </b>
-                        </button>
-                      </div>
-
                       {isNeedBuy ? (
                         <>
-                          <div className="col-lg-6 margin-15">
+                          <div className="col-lg-6">
                             <button
                               type="button"
                               onClick={() => changeTemplate(item.name, actions.set)}
-                              className="btn btn-primary auth-btn font-m"
+                              className="btn btn-primary auth-btn font-m template-button"
                               disabled={data.template === item.name}
                             >
                               {data.template === item.name
                                 ? getLocales('Установлен')
-                                : getLocales('Купить')}
+                                : (
+                                  <>
+                                    <div>
+                                      {getLocales('Купить')}
+                                    </div>
+
+                                    <div className="small">
+                                      {`${item.price}$`}
+                                    </div>
+                                  </>
+                                )}
                             </button>
                           </div>
 
-                          <div className="col-lg-6 margin-15">
+                          <div className="col-lg-6">
                             <button
                               type="button"
                               onClick={() => changeTemplate(item.name, actions.rent)}
-                              className="btn btn-primary auth-btn font-m"
+                              className="btn btn-primary auth-btn font-m template-button"
                               disabled={data.template === item.name}
                             >
                               {data.template === item.name
                                 ? getLocales('Установлен')
-                                : getLocales('Арендовать')}
+                                : (
+                                  <>
+                                    <div>
+                                      {getLocales('Арендовать')}
+                                    </div>
+
+                                    <div className="small">
+                                      {`${item.priceRent}$/${getLocales('месяц')}`}
+                                    </div>
+                                  </>
+                                )}
                             </button>
                           </div>
                         </>
                       ) : (
-                        <div className="col-lg-12 margin-15">
+                        <div className="col-lg-12">
                           <button
                             type="button"
                             onClick={() => setTemplate(item.name, actions.set)}
-                            className="btn btn-primary auth-btn font-m"
+                            className="btn btn-primary auth-btn font-m template-button"
                             disabled={data.template === item.name}
                           >
                             {data.template === item.name
