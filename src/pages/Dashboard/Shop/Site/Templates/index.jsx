@@ -144,14 +144,14 @@ function Templates() {
                       />
                     </a>
 
-                    <div className="row margin-15">
+                    <div className="row">
                       {isNeedBuy ? (
                         <>
-                          <div className="col-lg-6 col-sm-6">
+                          <div className="col-lg-6 col-sm-6 margin-15">
                             <button
                               type="button"
                               onClick={() => changeTemplate(item.name, actions.set)}
-                              className="btn btn-primary auth-btn font-m template-button"
+                              className={`btn btn-primary auth-btn font-m ${data.template !== item.name ? 'template-button' : ''}`}
                               disabled={data.template === item.name}
                             >
                               {data.template === item.name
@@ -170,11 +170,11 @@ function Templates() {
                             </button>
                           </div>
 
-                          <div className="col-lg-6 col-sm-6">
+                          <div className="col-lg-6 col-sm-6 margin-15">
                             <button
                               type="button"
                               onClick={() => changeTemplate(item.name, actions.rent)}
-                              className="btn btn-primary auth-btn font-m template-button"
+                              className={`btn btn-primary auth-btn font-m ${data.template !== item.name ? 'template-button' : ''}`}
                               disabled={data.template === item.name}
                             >
                               {data.template === item.name
@@ -194,7 +194,7 @@ function Templates() {
                           </div>
                         </>
                       ) : (
-                        <div className="col-lg-12">
+                        <div className="col-lg-12 margin-15">
                           <button
                             type="button"
                             onClick={() => setTemplate(item.name, actions.set)}
