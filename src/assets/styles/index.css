@@ -1483,3 +1483,7 @@ td .btn {
 .template-button {
   height: 75px;
 }
+
+.template-button > div {
+  white-space: nowrap;
+}
