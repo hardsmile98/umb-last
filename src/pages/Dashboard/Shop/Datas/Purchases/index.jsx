@@ -94,7 +94,7 @@ function Purchases() {
         subcategory: item.subcategory ? item.subcategory : '-',
         product: item.product,
         subproduct: item.subproduct ? item.subproduct : '-',
-        sum: `${item.sum} ${data.currency}`,
+        sum: item.sum,
         date: moment.unix(item.closed / 1000).format('LLL'),
         status: item.status,
         login: user.name || 'Anonym',
@@ -170,7 +170,17 @@ function Purchases() {
       title: getLocales('Фасовка'), dataIndex: 'subproduct', key: 'subproduct', sort: true,
     },
     {
-      title: getLocales('Сумма'), dataIndex: 'sum', key: 'sum', sort: true,
+      title: getLocales('Сумма'),
+      dataIndex: 'sum',
+      sort: true,
+      key: 'operations',
+      render: (_e, item) => (
+        <span>
+          {item.sum}
+          {' '}
+          {data.currency}
+        </span>
+      ),
     },
     {
       title: getLocales('Покупатель'),

@@ -156,6 +156,7 @@ class Userspam extends Component {
         itemClassName: 'text-left',
         headerClassName: 'text-left',
         key: 'operations',
+        sort: true,
         render: (e, item) => <p>{item.count}</p>,
       },
       {

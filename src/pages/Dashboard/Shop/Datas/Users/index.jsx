@@ -57,25 +57,21 @@ class DataUsers extends Component {
   }
 
   prepareTableData() {
-    const items = [];
+    const newItems = this.state.sorted.map((item) => ({
+      id: item.id,
+      name: item.name,
+      purchases: item.purchases,
+      purchasesSum: item.purchasesSum,
+      balance: item.balance,
+      platform: +item.chatid === 0
+        ? getLocales('Сайт')
+        : 'Telegram',
+    }));
 
-    this.state.sorted.map((item) => {
-      const itemModified = {
-        id: item.id,
-        name: item.name,
-        purchases: item.purchases,
-        purchasesSum: item.purchasesSum,
-        balance: `${item.balance} ${this.state.data.currency}`,
-        platform: +item.chatid === 0
-          ? getLocales('Сайт')
-          : 'Telegram',
-      };
-      items.push(itemModified);
-    });
-
-    this.setState({
-      items,
-    });
+    this.setState((prev) => ({
+      ...prev,
+      items: newItems,
+    }));
   }
 
   updateItems(items) {
@@ -88,6 +84,7 @@ class DataUsers extends Component {
     this.setState({
       loading: true,
     });
+
     const data = {
       api: 'user',
       body: {
@@ -147,7 +144,17 @@ class DataUsers extends Component {
         title: getLocales('Платформа'), dataIndex: 'platform', key: 'platform', sort: true,
       },
       {
-        title: getLocales('Баланс'), dataIndex: 'balance', key: 'balance', sort: true,
+        title: getLocales('Баланс'),
+        dataIndex: 'balance',
+        sort: true,
+        key: 'operations',
+        render: (e, item) => (
+          <span>
+            {item.balance}
+            {' '}
+            {this.state.data.currency}
+          </span>
+        ),
       },
       {
         title: getLocales('Кол-во покупок'), dataIndex: 'purchases', key: 'purchases', sort: true,
