@@ -192,7 +192,10 @@ class Userspam extends Component {
     ];
     return (
       <>
-        <div className={`block animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
+        <div
+          className={`block animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}
+          style={{ position: 'relative', zIndex: 1 }}
+        >
           <div className="block-body">
             <div className="row">
               <div className="col-lg-12">
