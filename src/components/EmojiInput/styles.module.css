@@ -1,0 +1,31 @@
+.emojiWrapper {
+    position: relative;
+}
+
+.iconButton {
+    position: absolute;
+    right: 20px;
+    bottom: 14px;
+    cursor: pointer;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    vertical-align: text-top;
+    opacity: 1;
+    margin: 0;
+}
+
+.pickerEmoji {
+    z-index: 9999;
+    position: absolute;
+}
+
+.pickerEmojiWithTextArea {
+    right: 60px;
+    top: 100px;
+}
+
+.pickerEmojiWithInput {
+    right: 60px;
+    top: 15px;
+}

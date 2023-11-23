@@ -707,24 +707,6 @@ td {
   color: black !important;
 }
 
-
-.icon-smile.active {
-  background-position: -10px -803px;
-}
-
-.icon-smile {
-  position: absolute;
-  right: 25px;
-  bottom: 28px;
-  cursor: pointer;
-  display: inline-block;
-  width: 22px;
-  height: 22px;
-  vertical-align: text-top;
-  opacity: 1;
-  margin: 0;
-}
-
 [contenteditable=true]:empty:before {
   content: attr(placeholder);
   display: block;
@@ -734,12 +716,6 @@ td {
 input::placeholder {
   color: #aaa !important;
 
-}
-
-.emoji-wrapper {
-  position: absolute;
-  right: -240px;
-  top: 100px;
 }
 
 .hidden {
@@ -920,10 +896,6 @@ body {
 .btn-secondary:focus {
   background-color: #868e96 !important;
   border-color: #868e96 !important;
-}
-
-.emoji-wrapper {
-  z-index: 9999999;
 }
 
 .cursor-pointer:hover {

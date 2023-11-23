@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unused-state */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
@@ -240,6 +242,7 @@ class Userspam extends Component {
                 {this.state.data.spam.length > 0
                   ? (
                     <Table
+                      search
                       columns={tableColumns}
                       items={this.state.items}
                       updateItems={this.updateItems}
