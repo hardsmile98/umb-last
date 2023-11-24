@@ -5,7 +5,7 @@ import {
   NavLink, Switch, Route, Redirect,
 } from 'react-router-dom';
 import { getLocales } from 'utils';
-import Sellers from './Current';
+import SellersList from './List';
 import SellersAdd from './Add';
 import ModerSellers from './Moder';
 import DeletedSellers from '../DeletedSellers';
@@ -79,7 +79,7 @@ class SellersNavi extends Component {
 
         <div className="col-lg-9">
           <Switch>
-            <Route exact path={`${this.props.match.path}/actual`} render={(props) => <Sellers {...props} admin={this.props.admin} />} />
+            <Route exact path={`${this.props.match.path}/actual`} render={(props) => <SellersList {...props} admin={this.props.admin} />} />
             <Route exact path={`${this.props.match.path}/add`} render={(props) => <SellersAdd {...props} admin={this.props.admin} />} />
             <Route exact path={`${this.props.match.path}/deleted`} component={DeletedSellers} />
             <Route exact path={`${this.props.match.path}/moderation`} component={ModerSellers} />

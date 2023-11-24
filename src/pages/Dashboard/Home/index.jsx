@@ -328,7 +328,7 @@ class HomePage extends Component {
         </div>
 
         <div className="col-lg-12">
-          <div className={`block font-m block-top not-block-main ${state.loading ? 'blur' : ''}`}>
+          <div className={`block font-m block-top not-block-main ${state.loading ? 'blur' : ''} overflow-auto`}>
             <div className="text-center logoforblockicon">
               <span className="text-danger h1-for-icon">
                 <FontAwesomeIcon icon={faLink} />
