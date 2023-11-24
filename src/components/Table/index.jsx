@@ -1,261 +1,171 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable array-callback-return */
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable react/jsx-closing-tag-location */
-/* eslint-disable max-len */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { getLocales } from 'utils';
+import Pagination from './Pagination';
 
-class Table extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: '',
-      items: [],
-      currentPage: 1,
-      sort: {},
-    };
+function Table({
+  items,
+  search,
+  columns,
+  rowsPerPage,
+}) {
+  const [tableItems, setTableItems] = useState(items);
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState('');
+  const [sort, setSort] = useState({});
 
-    this.resetSortAnotherColumns = this.resetSortAnotherColumns.bind(this);
-    this.sortColumn = this.sortColumn.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
-  }
-
-  handleSearch(event) {
-    const query = event.target.value;
+  // Поиск по строке
+  const handleSearch = (e) => {
     const regex = new RegExp(query, 'gi');
-    const newItems = [];
 
-    if (query.length > 0) {
-      this.props.items.map((item) => {
-        for (const k in item) {
-          if (regex.test(item[k])) {
-            newItems.push(item);
-            break;
+    const itemsFormatted = query.length
+      ? items.reduce((acc, cur) => {
+        Object.values(cur).forEach((value) => {
+          if (regex.test(value)) {
+            acc.push(cur);
           }
-        }
-      });
-    }
+        });
 
-    this.setState({
-      query,
-      items: newItems,
-      currentPage: 1,
-    });
-  }
+        return acc;
+      }, [])
+      : items;
 
-  resetSortAnotherColumns(columnName) {
-    const sort = {};
+    setTableItems(itemsFormatted);
+    setQuery(e.target.value);
+    setPage(1);
+  };
 
-    this.props.columns.map((item) => {
-      if (item.sort && item.dataIndex !== columnName) {
-        sort[item.dataIndex] = 0;
+  // Подготовливаем данные
+  const prepareItems = useCallback(() => {
+    const startPosition = (page - 1) * (+rowsPerPage);
+    const endPosition = startPosition + (+rowsPerPage);
+
+    setTableItems(tableItems.slice(startPosition, endPosition));
+  }, [tableItems, page, rowsPerPage]);
+
+  useEffect(() => {
+    prepareItems();
+  }, [prepareItems]);
+
+  // Сортировка колонок
+  const sortColumn = (columnName) => {
+    const newSort = columns.reduce((acc, cur) => {
+      if (!cur.sort) return acc;
+
+      if (cur.dataIndex !== columnName) {
+        return {
+          ...acc,
+          [cur.dataIndex]: 0,
+        };
       }
 
-      return item;
-    });
+      let newSortValue = null;
 
-    this.setState({
-      sort,
-    });
-  }
-
-  sortColumn(columnName) {
-    this.resetSortAnotherColumns(columnName);
-    const { sort } = this.state;
-
-    if (sort[columnName] === 1) {
-      sort[columnName] = -1;
-    } else if (sort[columnName] === -1) {
-      sort[columnName] = 0;
-    } else {
-      sort[columnName] = 1;
-    }
-
-    this.setState({
-      sort,
-    });
-
-    const koef = this.state.sort[columnName];
-    let sortedItems = [];
-
-    if (koef) {
-      sortedItems = this.props.items
-        .sort((a, b) => ((a[columnName] < b[columnName])
-          ? -koef
-          : (a[columnName] > b[columnName])
-            ? koef
-            : 0));
-    } else {
-      sortedItems = this.props.items
-        .sort((a, b) => ((a.id < b.id) ? -1 : (a.id > b.id)
-          ? 1
-          : 0));
-    }
-  }
-
-  clickPaginationItem(i) {
-    if (i >= 1 && i <= Math.ceil(this.props.items.length / this.props.rowsPerPage)) {
-      this.setState({
-        currentPage: i,
-      });
-    }
-  }
-
-  prepareItems() {
-    let items = [];
-
-    if (this.state.query.length > 0) {
-      items = this.state.items;
-    } else {
-      items = this.props.items;
-    }
-
-    const firstEl = (this.state.currentPage - 1) * this.props.rowsPerPage;
-    const lastEl = firstEl + +this.props.rowsPerPage;
-
-    return items.slice(firstEl, lastEl);
-  }
-
-  renderPagination() {
-    const renderPageNumbers = [];
-
-    renderPageNumbers.push(<div
-      className="btn btn-default item"
-      onClick={() => this.clickPaginationItem(+this.state.currentPage - 1)}
-    >
-      {getLocales('Назад')}
-    </div>);
-
-    for (let i = 1; i <= Math.ceil(this.props.items.length / this.props.rowsPerPage); i += 1) {
-      if (i === 1 || i === Math.ceil(this.props.items.length / this.props.rowsPerPage)
-        || (this.state.currentPage >= i && i >= this.state.currentPage - 2)
-        || (this.state.currentPage <= i && i <= this.state.currentPage + 2)) {
-        if (this.state.currentPage - 3 > 1 && i === this.state.currentPage - 2) {
-          renderPageNumbers.push(<div
-            className="btn btn-default item"
-            disabled
-          >
-            ...
-          </div>);
-        }
-
-        renderPageNumbers.push(<div
-          key={`page-${i}`}
-          id={i}
-          className={`btn btn-default item ${i === this.state.currentPage ? 'active' : ''}`}
-          onClick={() => this.clickPaginationItem(i)}
-        >
-          {i}
-        </div>);
-
-        if (this.state.currentPage + 3 < Math.ceil(this.props.items.length / this.props.rowsPerPage) && i === this.state.currentPage + 2) {
-          renderPageNumbers.push(<div
-            className="btn btn-default item"
-            disabled
-          >
-            ...
-          </div>);
-        }
+      if (sort[columnName] === 0) {
+        newSortValue = 1;
       }
-    }
 
-    renderPageNumbers.push(<div
-      className="btn btn-default item"
-      onClick={() => this.clickPaginationItem(+this.state.currentPage + 1)}
-    >
-      {getLocales('Вперед')}
-    </div>);
+      if (sort[columnName] === 1) {
+        newSortValue = -1;
+      }
 
-    return renderPageNumbers;
-  }
+      if (sort[columnName] === -1) {
+        newSortValue = 0;
+      }
 
-  render() {
-    const items = this.prepareItems();
+      if (!sort[columnName]) {
+        newSortValue = 1;
+      }
 
-    return (
-      <div className="table-wrapper">
-        {this.props.search && (
-          <div className="search-wrapper">
-            <label className="font-m">
-              {getLocales('Поиск')}
-              {' ('}
-              {getLocales('Всего')}
-              {': '}
-              {this.props.items.length}
-              {' '}
-              {getLocales('шт.')}
-              )
-            </label>
+      return {
+        ...acc,
+        [cur.dataIndex]: newSortValue,
+      };
+    }, {});
 
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.query}
-              onChange={this.handleSearch}
-              placeholder={getLocales('Поиск')}
-            />
-          </div>
-        )}
+    setSort(newSort);
+  };
 
-        <table className="table table-striped table-hover">
-          <thead>
-            <tr>
-              {this.props.columns.map((item, index) => (
-                <th key={index} className={item.headerClassName}>
-                  {item.sort
-                    ? (
-                      <span
-                        aria-hidden
-                        className="cursor-pointer"
-                        onClick={() => this.sortColumn(item.dataIndex)}
-                      >
-                        {item.title}
-                      </span>
-                    )
-                    : item.title}
-                </th>
-              ))}
-            </tr>
-          </thead>
+  return (
+    <div className="table-wrapper">
+      {search && (
+        <div className="search-wrapper">
+          <label className="font-m">
+            {getLocales('Поиск')}
+            {' ('}
+            {getLocales('Всего')}
+            {': '}
+            {items.length}
+            {' '}
+            {getLocales('шт.')}
+            )
+          </label>
 
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.id} data-id={item.id}>
-                {this.props.columns
-                  .map((field, index) => ((!field.dataIndex || field.key === 'operations')
-                    ? (
-                      <td
-                        key={index}
-                        className={field.itemClassName}
-                      >
-                        {field.render(field.id, item)}
-                      </td>
-                    )
-                    : (
-                      <td
-                        key={index}
-                        className={field.itemClassName}
-                      >
-                        {item[field.dataIndex]}
-                      </td>
-                    )))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-        <div className="pagination pull-right">
-          {this.renderPagination()}
+          <input
+            type="text"
+            className="form-control"
+            value={query}
+            onChange={handleSearch}
+            placeholder={getLocales('Поиск')}
+          />
         </div>
+      )}
+
+      <table className="table table-striped table-hover">
+        <thead>
+          <tr>
+            {columns.map((item, index) => (
+              <th
+                key={index}
+                className={item.headerClassName}
+              >
+                {item.sort
+                  ? (
+                    <span
+                      aria-hidden
+                      className="cursor-pointer"
+                      onClick={() => sortColumn(item.dataIndex)}
+                    >
+                      {item.title}
+                    </span>
+                  )
+                  : item.title}
+              </th>
+            ))}
+          </tr>
+        </thead>
+
+        <tbody>
+          {tableItems.map((item, idx) => (
+            <tr key={idx}>
+              {columns.map((field, index) => ((!field.dataIndex || field.key === 'operations')
+                ? (
+                  <td
+                    key={index}
+                    className={field.itemClassName}
+                  >
+                    {field.render(field.id, item)}
+                  </td>
+                )
+                : (
+                  <td
+                    key={index}
+                    className={field.itemClassName}
+                  >
+                    {item[field.dataIndex]}
+                  </td>
+                )))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="pagination pull-right">
+        <Pagination />
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default Table;
