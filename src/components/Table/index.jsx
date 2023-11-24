@@ -48,7 +48,7 @@ function Table({
     prepareItems();
   }, [prepareItems]);
 
-  // Сортировка колонок
+  // Сортировка
   const sortColumn = (columnName) => {
     setSort((prev) => {});
   };
