@@ -50,42 +50,16 @@ function Table({
 
   // Сортировка колонок
   const sortColumn = (columnName) => {
-    const newSort = columns.reduce((acc, cur) => {
-      if (!cur.sort) return acc;
-
-      if (cur.dataIndex !== columnName) {
-        return {
-          ...acc,
-          [cur.dataIndex]: 0,
-        };
-      }
-
-      let newSortValue = null;
-
-      if (sort[columnName] === 0) {
-        newSortValue = 1;
-      }
-
-      if (sort[columnName] === 1) {
-        newSortValue = -1;
-      }
-
-      if (sort[columnName] === -1) {
-        newSortValue = 0;
-      }
-
-      if (!sort[columnName]) {
-        newSortValue = 1;
-      }
-
-      return {
-        ...acc,
-        [cur.dataIndex]: newSortValue,
-      };
-    }, {});
-
-    setSort(newSort);
+    setSort((prev) => {});
   };
+
+  const sortItems = useCallback(() => {
+
+  }, []);
+
+  useEffect(() => {
+    sortItems();
+  }, [sortItems]);
 
   return (
     <div className="table-wrapper">
