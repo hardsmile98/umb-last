@@ -303,13 +303,13 @@ class Btemplates extends Component {
                   {' '}
                   {this.state.templateName}
                   {' '}
-                  {this.state.canRecovery ? (
+                  {this.state.canRecovery && (
                     <span className="right">
                       <a aria-hidden onClick={this.toggle}>
                         Восстановить шаблон
                       </a>
                     </span>
-                  ) : ''}
+                  )}
                 </h3>
 
                 <div className="row">

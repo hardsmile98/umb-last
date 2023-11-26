@@ -307,13 +307,13 @@ class Mtemplates extends Component {
                   {' '}
                   {this.state.templateName}
                   {' '}
-                  {this.state.canRecovery ? (
+                  {this.state.canRecovery && (
                     <span className="right">
                       <a onClick={this.toggle} aria-hidden>
                         {getLocales('Восстановить шаблон')}
                       </a>
                     </span>
-                  ) : ''}
+                  )}
                 </h3>
 
                 <div className="row">
@@ -348,7 +348,6 @@ class Mtemplates extends Component {
                       {this.state.loading
                         ? getLocales('Загрузка...')
                         : getLocales('Сохранить')}
-
                     </button>
                   </div>
                 </div>
