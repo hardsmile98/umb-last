@@ -28,7 +28,7 @@ class TelegramBots extends Component {
       username: '',
       notice: '',
       items: [],
-      modalConfirm: false,
+      actionModal: null,
       infoModal: false,
       bot: {
         type: '',
@@ -42,11 +42,13 @@ class TelegramBots extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.sendData = this.sendData.bind(this);
     this.toggleStatus = this.toggleStatus.bind(this);
-    this.toggleConfirm = this.toggleConfirm.bind(this);
+    this.openConfirmModal = this.openConfirmModal.bind(this);
+    this.closeConfirmModal = this.closeConfirmModal.bind(this);
     this.delete = this.delete.bind(this);
     this.toggleInfo = this.toggleInfo.bind(this);
     this.getData = this.getData.bind(this);
     this.sendDataAuto = this.sendDataAuto.bind(this);
+    this.openConfirmAutoBot = this.openConfirmAutoBot.bind(this);
   }
 
   componentDidMount() {
@@ -129,10 +131,16 @@ class TelegramBots extends Component {
     });
   }
 
-  toggleConfirm(id) {
+  openConfirmModal({ id, action }) {
     this.setState({
       deleteId: id,
-      modalConfirm: !this.state.modalConfirm,
+      actionModal: action,
+    });
+  }
+
+  closeConfirmModal() {
+    this.setState({
+      actionModal: null,
     });
   }
 
@@ -195,7 +203,7 @@ class TelegramBots extends Component {
       if (response.status === 200) {
         if (response.data.success) {
           toast.success(response.data.message);
-          this.toggleConfirm();
+          this.closeConfirmModal();
           this.getData();
         } else {
           this.setState({
@@ -248,59 +256,69 @@ class TelegramBots extends Component {
     });
   }
 
+  openConfirmAutoBot() {
+    if (!this.state.nameauto) {
+      toast.error('Заполните имя бота');
+      return;
+    }
+
+    if (!this.state.usernameauto) {
+      toast.error('Заполните юзернейм бота');
+      return;
+    }
+
+    this.openConfirmModal({ action: 'sendAuto' });
+  }
+
   sendDataAuto() {
     this.setState({
       loading: true,
     });
-    if (this.state.usernameauto && this.state.nameauto) {
-      const data = {
-        api: 'user',
-        body: {
-          data: {
-            section: 'shop',
-            type: 'bots',
-            subtype: 'telegram',
-            shop: this.props.match.params.shopId,
-            name: this.state.nameauto,
-            username: `${this.state.usernameauto}_bot`,
-            action: 'createauto',
-          },
-          action: 'shops',
-        },
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      };
 
-      request(data, (response) => {
-        if (response.status === 200) {
-          if (response.data.success) {
-            this.setState({
-              username: '',
-              token: '',
-              notice: '',
-              loading: false,
-              nameauto: '',
-              usernameauto: '',
-            });
-            toast.success(response.data.message);
-            this.getData();
-          } else {
-            this.setState({
-              loading: false,
-            });
-            toast.error(response.data.message);
-          }
+    const body = {
+      api: 'user',
+      body: {
+        data: {
+          section: 'shop',
+          type: 'bots',
+          subtype: 'telegram',
+          shop: this.props.match.params.shopId,
+          name: this.state.nameauto,
+          username: `${this.state.usernameauto}_bot`,
+          action: 'createauto',
+        },
+        action: 'shops',
+      },
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    };
+
+    request(body, (response) => {
+      if (response.status === 200) {
+        if (response.data.success) {
+          this.setState({
+            username: '',
+            token: '',
+            notice: '',
+            loading: false,
+            actionModal: null,
+            nameauto: '',
+            usernameauto: '',
+          });
+          toast.success(response.data.message);
+          this.getData();
         } else {
-          toast.error('Сервер недоступен');
+          this.setState({
+            loading: false,
+            actionModal: null,
+          });
+          toast.error(response.data.message);
         }
-      });
-    } else {
-      this.setState({
-        loading: false,
-      });
-      toast.error('Заполните поле токена');
-    }
+      } else {
+        toast.error('Сервер недоступен');
+      }
+    });
   }
 
   sendData() {
@@ -396,9 +414,9 @@ class TelegramBots extends Component {
               ? getLocales('Отключить бота')
               : getLocales('Включить бота')}
             onClick={() => this.toggleStatus(item.id)}
-            className={`btn btn-table width-100 ${String(item.status) === '0' ? 'btn-danger' : 'btn-primary'}`}
+            className={`btn btn-table width-100 ${item.status === 0 ? 'btn-danger' : 'btn-primary'}`}
           >
-            <FontAwesomeIcon icon={String(item.status) === '0'
+            <FontAwesomeIcon icon={item.status === 0
               ? faUnlink
               : faLink}
             />
@@ -422,7 +440,7 @@ class TelegramBots extends Component {
             </button>
             <button
               type="button"
-              onClick={() => this.toggleConfirm(item.id)}
+              onClick={() => this.openConfirmModal({ id: item.id, action: 'delete' })}
               className="btn btn-danger btn-table"
             >
               <FontAwesomeIcon icon={faBackspace} />
@@ -573,7 +591,7 @@ class TelegramBots extends Component {
                       type="button"
                       onClick={this.state.type === 'token'
                         ? this.sendData
-                        : this.sendDataAuto}
+                        : this.openConfirmAutoBot}
                       disabled={this.state.loading}
                       className="btn btn-primary font-m auth-btn margin-15"
                     >
@@ -620,11 +638,17 @@ class TelegramBots extends Component {
         </div>
 
         <ModalConfirm
-          action={getLocales('Вы действительно хотите удалить данного бота?')}
-          modal={this.state.modalConfirm}
-          toggle={this.toggleConfirm}
+          action={this.state.actionModal === 'delete'
+            ? getLocales('Вы действительно хотите удалить данного бота?')
+            : getLocales('Вы действительно хотите добавить бота?')}
+          consequences={this.state.actionModal === 'sendAuto'
+            && getLocales('Средства спишутся единоразово и не подлежат возврату')}
+          modal={!!this.state.actionModal}
+          toggle={this.closeConfirmModal}
           loading={this.state.loading}
-          sendData={this.delete}
+          sendData={this.state.actionModal === 'delete'
+            ? this.delete
+            : this.sendDataAuto}
         />
 
         <BotModal

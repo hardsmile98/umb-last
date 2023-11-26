@@ -523,7 +523,9 @@
         "Арендовать": "Rent",
         "Выберите дату действия промкода": "Select the promotional code validity date",
         "Не все даные заполнены": "Not all data is filled in",
-        "Нажмите на статус предзаказа, чтобы изменить его": "Click on your pre-order status to change it"
+        "Нажмите на статус предзаказа, чтобы изменить его": "Click on your pre-order status to change it",
+        "Сумма покупок, после которой бонусы будут применяться ко всем последующим покупкам": "The amount of purchases after which bonuses will be applied to all subsequent purchases",
+        "Вы действительно хотите добавить бота?": "Are you sure you want to add a bot?"
     },
     "ES": {
         "Главная": "Inicio",
@@ -1071,6 +1073,8 @@
         "Арендовать": "Alquilar",
         "Выберите дату действия промкода": "Seleccione la fecha de validez del código promocional",
         "Не все даные заполнены": "No se completan todos los datos",
-        "Нажмите на статус предзаказа, чтобы изменить его": "Haga clic en el estado de su pedido anticipado para cambiarlo"
+        "Нажмите на статус предзаказа, чтобы изменить его": "Haga clic en el estado de su pedido anticipado para cambiarlo",
+        "Сумма покупок, после которой бонусы будут применяться ко всем последующим покупкам": "La cantidad de compras después de las cuales se aplicarán las bonificaciones a todas las compras posteriores.",
+        "Вы действительно хотите добавить бота?": "¿Estás seguro de que quieres agregar un bot?"
     }
 }
