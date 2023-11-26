@@ -3,6 +3,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { toast } from 'react-toastify';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { ModalConfirm } from 'components';
 import { request, getLocales } from 'utils';
 
@@ -208,8 +210,13 @@ function ShopSettings() {
                 {Object.keys(data.available || {}).map((keyName) => (
                   <div className="col-lg-6" key={keyName}>
                     <div className="form-group">
-                      <label className="form-control-label font-m">
+                      <label
+                        className="form-control-label font-m"
+                        title={getLocales(data.available[keyName].tip)}
+                      >
                         {getLocales(data.available[keyName].title)}
+                        {' '}
+                        {data.available[keyName].tip && <FontAwesomeIcon icon={faInfoCircle} />}
                       </label>
 
                       {data.available[keyName].type === 'select'
@@ -238,36 +245,27 @@ function ShopSettings() {
                           </>
                         )
                         : (
-                          <>
-                            <div className="input-group">
-                              <input
-                                onChange={onChange}
-                                name={data.available[keyName].name}
-                                className="form-control"
-                                value={data.settings[keyName]}
-                              />
+                          <div className="input-group">
+                            <input
+                              onChange={onChange}
+                              name={data.available[keyName].name}
+                              className="form-control"
+                              value={data.settings[keyName]}
+                            />
 
-                              <div className="input-group-append">
-                                <button
-                                  onClick={() => sendData(keyName)}
-                                  className="input-group-text"
-                                  type="button"
-                                  disabled={!data.settings[keyName]}
-                                >
-                                  {isLoading
-                                    ? getLocales('Загрузка...')
-                                    : getLocales('Сохранить')}
-                                </button>
-                              </div>
+                            <div className="input-group-append">
+                              <button
+                                onClick={() => sendData(keyName)}
+                                className="input-group-text"
+                                type="button"
+                                disabled={!data.settings[keyName]}
+                              >
+                                {isLoading
+                                  ? getLocales('Загрузка...')
+                                  : getLocales('Сохранить')}
+                              </button>
                             </div>
-                            {data.available[keyName].tip && (
-                              <small dangerouslySetInnerHTML={{
-                                __html:
-                                    getLocales(data.available[keyName].tip),
-                              }}
-                              />
-                            )}
-                          </>
+                          </div>
                         )}
                     </div>
                   </div>

@@ -24,11 +24,7 @@ function Chat() {
     messageBlockRef.current.scrollTop = messageBlockRef.current?.scrollHeight;
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [data.messages]);
-
-  const getData = () => {
+  const getData = (callback) => {
     const body = {
       api: 'user',
       body: {
@@ -48,6 +44,7 @@ function Chat() {
         if (response.data.success) {
           setData(response.data.data);
           setDataLoading(false);
+          callback?.();
         } else {
           setDataLoading(false);
           toast.error(response.data.message);
@@ -85,7 +82,7 @@ function Chat() {
         if (response.data.success) {
           setMessageValue('');
           setDataLoading(true);
-          getData();
+          getData(scrollToBottom);
           setSending(false);
         } else {
           setSending(false);
@@ -99,9 +96,10 @@ function Chat() {
 
   useEffect(() => {
     setDataLoading(true);
+    getData(scrollToBottom);
 
     if (!intervalId.current) {
-      intervalId.current = setInterval(getData, 5000);
+      intervalId.current = setInterval(getData, 10000);
     }
 
     return () => {

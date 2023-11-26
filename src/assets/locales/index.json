@@ -522,7 +522,8 @@
         "Вы действительно хотите арендовать данный шаблон?": "Are you sure you want to rent this template?",
         "Арендовать": "Rent",
         "Выберите дату действия промкода": "Select the promotional code validity date",
-        "Не все даные заполнены": "Not all data is filled in"
+        "Не все даные заполнены": "Not all data is filled in",
+        "Нажмите на статус предзаказа, чтобы изменить его": "Click on your pre-order status to change it"
     },
     "ES": {
         "Главная": "Inicio",
@@ -1069,6 +1070,7 @@
         "Вы действительно хотите арендовать данный шаблон?": "¿Estás seguro de que quieres alquilar esta plantilla?",
         "Арендовать": "Alquilar",
         "Выберите дату действия промкода": "Seleccione la fecha de validez del código promocional",
-        "Не все даные заполнены": "No se completan todos los datos"
+        "Не все даные заполнены": "No se completan todos los datos",
+        "Нажмите на статус предзаказа, чтобы изменить его": "Haga clic en el estado de su pedido anticipado para cambiarlo"
     }
 }

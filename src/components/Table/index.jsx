@@ -145,7 +145,7 @@ function Table({
                   ? (
                     <span
                       aria-hidden
-                      className="cursor-pointer sort-table"
+                      className="cursor-pointer table-column"
                       onClick={() => sortColumn(item.dataIndex)}
                     >
                       <FontAwesomeIcon icon={sort[item.dataIndex] === 1

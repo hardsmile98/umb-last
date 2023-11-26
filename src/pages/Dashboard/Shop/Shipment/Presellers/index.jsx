@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackspace } from '@fortawesome/free-solid-svg-icons';
+import { faBackspace, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Table, ModalConfirm } from 'components';
 import { getLocales, request } from 'utils';
 import { useParams } from 'react-router-dom';
@@ -133,6 +133,8 @@ function Presellers() {
       return;
     }
 
+    setLoading(true);
+
     const body = {
       api: 'user',
       body: {
@@ -141,9 +143,9 @@ function Presellers() {
           type: 'shipment',
           subtype: 'presellers',
           category: createPresell.category,
-          subcategory: createPresell.subcategory,
+          subcategory: createPresell.subcategory || '0',
           product: createPresell.product,
-          subproduct: createPresell.subproduct,
+          subproduct: createPresell.subproduct || '0',
           typeofklad: createPresell.typeofklad,
           shop: shopId,
           action: 'create',
@@ -263,7 +265,15 @@ function Presellers() {
       title: getLocales('Тип клада'), dataIndex: 'type', key: 'type', sort: true,
     },
     {
-      title: getLocales('Статус'),
+      title: (
+        <div
+          className="table-column"
+          title={getLocales('Нажмите на статус предзаказа, чтобы изменить его')}
+        >
+          {getLocales('Статус')}
+          {' '}
+          <FontAwesomeIcon icon={faInfoCircle} />
+        </div>),
       dataIndex: '',
       key: 'operations',
       itemClassName: 'text-center',
