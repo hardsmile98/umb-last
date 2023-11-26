@@ -40,7 +40,7 @@ class Bonuses extends Component {
   }
 
   toggle(id) {
-    if (String(id) !== '0') {
+    if (+id !== 0) {
       this.setState({
         id,
         modal: true,
@@ -108,7 +108,7 @@ class Bonuses extends Component {
 
   updateData(id) {
     this.state.data.bonuses.map((item) => {
-      if (String(item.id) === String(id)) {
+      if (+item.id === +id) {
         const data = {
           api: 'user',
           body: {
@@ -271,8 +271,13 @@ class Bonuses extends Component {
                   <div className="row">
                     <div className="col-lg-3">
                       <div className="form-group">
-                        <label className="form-control-label font-m">
+                        <label
+                          className="form-control-label font-m"
+                          title={getLocales('Сумма покупок, после которой бонусы будут применяться ко всем последующим покупкам')}
+                        >
                           {getLocales('Сумма покупок')}
+                          {' '}
+                          <FontAwesomeIcon icon={faInfoCircle} />
                         </label>
                         <div className="input-group">
                           <input
@@ -542,7 +547,9 @@ class Bonuses extends Component {
                                     name="sum"
                                     className="form-control"
                                   />
-                                  <span className="input-group-text">{this.state.data.currency}</span>
+                                  <span className="input-group-text">
+                                    {this.state.data.currency}
+                                  </span>
                                 </div>
                               </div>
                             </div>
