@@ -76,8 +76,12 @@ class Referral extends Component {
 
           <div className="col-lg-4">
             <div className="income font-m animate__animated animate__fadeIn">
-              <h5><span>{getLocales('Продажи')}</span></h5>
-              <h2><span>0</span></h2>
+              <h5>
+                <span>{getLocales('Продажи')}</span>
+              </h5>
+              <h2>
+                <span>0</span>
+              </h2>
             </div>
           </div>
 
@@ -109,7 +113,7 @@ class Referral extends Component {
                       className="form-control"
                       name="partnerUrl"
                       placeholder="p"
-                      value={`https://umb.market/security/registration/${state.data.ref}`}
+                      value={`${window.location.origin}/security/registration/${state.data.ref}`}
                       readOnly=""
                     />
 
@@ -117,7 +121,7 @@ class Referral extends Component {
                       <button
                         type="button"
                         onClick={() => {
-                          navigator.clipboard.writeText(`https://umb.market/security/registration/${state.data.ref}`);
+                          navigator.clipboard.writeText(`${window.location.origin}/security/registration/${state.data.ref}`);
                           toast.success('Скопировано');
                         }}
                         className="btn btn-secondary"

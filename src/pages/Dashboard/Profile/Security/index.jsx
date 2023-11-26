@@ -18,17 +18,6 @@ const tableColumns = [
     title: getLocales('Устройство'), dataIndex: 'device', key: 'device', sort: false,
   },
   {
-    title: getLocales('Адрес'),
-    dataIndex: 'ip',
-    key: 'operations',
-    sort: false,
-    render: (e, item) => (
-      <a href={`https://www.whois.com/whois/${item.ip}`} target="_blank" rel="noreferrer">
-        {item.ip}
-      </a>
-    ),
-  },
-  {
     title: getLocales('Последняя активность'), dataIndex: 'activity', key: 'activity', sort: true,
   },
   {
@@ -185,7 +174,6 @@ class Security extends Component {
     const newItems = state.data.sessions.map((item) => ({
       id: item.id,
       device: item.device,
-      ip: item.ip,
       activity: moment.unix(item.activity / 1000).format('LLL'),
       date: moment.unix(item.date / 1000).format('LLL'),
       status: item.status,

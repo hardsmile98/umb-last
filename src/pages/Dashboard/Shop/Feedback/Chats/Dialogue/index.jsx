@@ -45,7 +45,7 @@ class FeedbackDialogue extends Component {
       chatId: this.props.match.params.chatId,
     }, () => {
       this.getData();
-      interval = setInterval(this.getData, 1000);
+      interval = setInterval(this.getData, 10000);
     });
   }
 

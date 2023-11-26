@@ -68,7 +68,7 @@ class Finance extends Component {
 
   componentDidMount() {
     this.getData();
-    interval = setInterval(this.getData, 1000);
+    interval = setInterval(this.getData, 10000);
   }
 
   componentWillUnmount() {

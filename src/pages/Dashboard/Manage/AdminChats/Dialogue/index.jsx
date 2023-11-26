@@ -60,7 +60,7 @@ class Dialogue extends Component {
     }, () => {
       this.getData();
 
-      interval = setInterval(this.getData, 1000);
+      interval = setInterval(this.getData, 10000);
     });
   }
 
