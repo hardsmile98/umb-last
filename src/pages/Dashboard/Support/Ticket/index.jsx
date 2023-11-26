@@ -51,7 +51,7 @@ class Ticket extends Component {
 
     interval = setInterval(() => {
       this.getData(() => { });
-    }, 1000);
+    }, 5000);
   }
 
   componentWillUnmount() {

@@ -34,7 +34,7 @@ class Chat extends Component {
 
     interval = setInterval(() => {
       this.getData(() => { });
-    }, 1000);
+    }, 5000);
   }
 
   componentWillUnmount() {
@@ -241,7 +241,6 @@ class Chat extends Component {
                     {state.loading
                       ? getLocales('Загрузка...')
                       : getLocales('Отправить сообщение')}
-
                   </button>
                 </div>
               </div>
