@@ -219,7 +219,7 @@ function Btemplates() {
                       aria-hidden
                       onClick={() => setModalOpen(true)}
                     >
-                      Восстановить шаблон
+                      {getLocales('Восстановить шаблон')}
                     </a>
                   </span>
                 )}
