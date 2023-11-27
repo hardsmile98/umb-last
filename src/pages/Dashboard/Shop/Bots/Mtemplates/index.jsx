@@ -328,7 +328,7 @@ class Mtemplates extends Component {
                     <br />
                   </div>
 
-                  <div className="col-lg-10">
+                  <div className="col-lg-8">
                     <div className="avatar-block notice-chat no-margin">
                       <h3 className="font-m">
                         {getLocales('Переменные')}
@@ -338,11 +338,11 @@ class Mtemplates extends Component {
                     </div>
                   </div>
 
-                  <div className="col-lg-2 text-right">
+                  <div className="col-lg-4">
                     <button
                       type="button"
                       disabled={this.state.loading}
-                      className="btn btn-primary list font-m"
+                      className="btn btn-primary w-100 font-m"
                       onClick={this.sendData}
                     >
                       {this.state.loading

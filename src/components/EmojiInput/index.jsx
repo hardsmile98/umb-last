@@ -46,7 +46,7 @@ function EmojiInput({
       )}
 
       <FontAwesomeIcon
-        class={styles.iconButton}
+        className={styles.iconButton}
         onClick={() => setSelectEmoji((prev) => !prev)}
         icon={faSmile}
       />

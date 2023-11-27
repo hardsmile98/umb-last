@@ -311,7 +311,6 @@ class TelegramBots extends Component {
         } else {
           this.setState({
             loading: false,
-            actionModal: null,
           });
           toast.error(response.data.message);
         }
