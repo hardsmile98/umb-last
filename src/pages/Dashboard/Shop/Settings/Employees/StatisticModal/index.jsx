@@ -12,11 +12,13 @@ function StatisticModal({
   data,
 }) {
   const [sellers, setSellers] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState({});
 
   const [filter, setFilter] = useState({
-    dateFrom: moment.unix(Date.now() / 1000).subtract(1, 'days').format('YYYY-MM-DD'),
-    dateTo: moment.unix((+Date.now() + 200000000) / 1000).subtract(1, 'days').format('YYYY-MM-DD'),
+    dateFrom: moment.unix(new Date(Date.now() - 2592000000)
+      .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
+    dateTo: moment.unix(new Date(Date.now() + 86400000)
+      .setHours(0, 0, 0, 0) / 1000).format('YYYY-MM-DD'),
   });
 
   const getSellers = useCallback(() => {
@@ -32,7 +34,7 @@ function StatisticModal({
     const formatted = data.purchases.filter((item) => (+item.closed > +new Date(filter.dateFrom)
       && +item.closed < +new Date(filter.dateTo)));
 
-    formatted.reduce((acc, cur) => ({
+    const newProducts = formatted.reduce((acc, cur) => ({
       ...acc,
       [cur.product]: {
         ...acc[cur.product],
@@ -41,7 +43,7 @@ function StatisticModal({
           ? cur.notfound === 1
             ? acc[cur.product].notfound + 1
             : acc[cur.product].notfound
-          : 1,
+          : cur.notfound === 1 ? 1 : 0,
         subproducts: {
           ...acc[cur.product]?.subproducts,
           [cur.subproduct]: {
@@ -52,13 +54,13 @@ function StatisticModal({
               ? cur.notfound === 1
                 ? acc[cur.product].subproducts[cur.subproduct].notfound + 1
                 : acc[cur.product].subproducts[cur.subproduct].notfound
-              : 1,
+              : cur.notfound === 1 ? 1 : 0,
           },
         },
       },
     }), {});
 
-    setProducts(formatted);
+    setProducts(newProducts);
   }, [data, filter]);
 
   useEffect(() => {
@@ -94,7 +96,12 @@ function StatisticModal({
     }
 
     if (type === 'coeff') {
-      const countNotFounded = formatted.filter((item) => item.notfound === 1).length || 0;
+      const countNotFounded = formatted.filter((item) => item.notfound === 1).length;
+
+      if (countNotFounded === 0 && formatted.length === 0) {
+        return 0;
+      }
+
       return Math.round((countNotFounded / formatted.length) * 100);
     }
 
@@ -282,7 +289,7 @@ function StatisticModal({
                             %
                           </div>
 
-                          {Object.keys(products[key].subproducts).map((key2) => (
+                          {Object.keys(products[key]?.subproducts || {}).map((key2) => (
                             <>
                               <div className="col-lg-4">
                                 {key2}
