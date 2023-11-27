@@ -1259,7 +1259,8 @@ code {
 
 select.lang-pick,
 .ReactFlagsSelect-module_flagsSelect__2pfa2 {
-  width: 10%;
+  width: 100%;
+  max-width: 180px;
   position: absolute !important;
   right: 10px;
   top: 10px;

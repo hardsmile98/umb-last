@@ -1,446 +1,379 @@
-/* eslint-disable default-case */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-param-reassign */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable react/no-deprecated */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/sort-comp */
-import React, { Component } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import moment from 'moment';
 import { getLocales } from 'utils';
 
-class StatisticModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dateFrom: moment.unix(Date.now() / 1000).subtract(1, 'days').format('YYYY-MM-DD'),
-      dateTo: moment.unix((+Date.now() + 200000000) / 1000).subtract(1, 'days').format('YYYY-MM-DD'),
-      products: {},
-      sellers: [],
-    };
-    this.getProd = this.getProd.bind(this);
-    this.getSale = this.getSale.bind(this);
-    this.getProducts = this.getProducts.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.getSellers = this.getSellers.bind(this);
-  }
+function StatisticModal({
+  id,
+  modal,
+  toggle,
+  data,
+}) {
+  const [sellers, setSellers] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  getSellers() {
-    const sellers = [];
+  const [filter, setFilter] = useState({
+    dateFrom: moment.unix(Date.now() / 1000).subtract(1, 'days').format('YYYY-MM-DD'),
+    dateTo: moment.unix((+Date.now() + 200000000) / 1000).subtract(1, 'days').format('YYYY-MM-DD'),
+  });
 
-    this.props.data.purchases.map((item) => {
-      if (String(item.notfound) === '1') {
-        sellers.push(item);
-      }
-    });
+  const getSellers = useCallback(() => {
+    const dataSellers = data.purchases.filter((item) => item.notfound === 1);
+    setSellers(dataSellers);
+  }, [data.purchases]);
 
-    this.setState({
-      sellers: sellers.reverse(),
-    });
-  }
+  useEffect(() => {
+    getSellers();
+  }, [getSellers]);
 
-  componentDidMount() {
-    this.getProducts();
-    this.getSellers();
-  }
+  const getProducts = useCallback(() => {
+    const formatted = data.purchases.filter((item) => (+item.closed > +new Date(filter.dateFrom)
+      && +item.closed < +new Date(filter.dateTo)));
 
-  componentWillReceiveProps() {
-    this.getProducts();
-    this.getSellers();
-  }
-
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-    this.getProducts();
-  }
-
-  getProd(status, sellers) {
-    let num = 0;
-
-    sellers.map((item) => {
-      if (status === 'check') {
-        if (String(item.status) === '2' || String(item.status) === '3') {
-          num += 1;
-        }
-      } else if (String(item.status) === String(status)) {
-        num += 1;
-      }
-    });
-
-    return num;
-  }
-
-  getSale(type, purchases) {
-    let res = [];
-
-    purchases.map((item) => {
-      if (+item.closed > +new Date(this.state.dateFrom)
-       && +item.closed < +new Date(this.state.dateTo)) {
-        res.push(item);
-      }
-    });
-
-    purchases = res;
-
-    res = 0;
-    switch (type) {
-      case 'sales':
-        res = purchases.length;
-        break;
-      case 'notfounded':
-        purchases.map((item) => {
-          if (String(item.notfound) === '1') {
-            res += 1;
-          }
-        });
-        break;
-      case 'coeff':
-        if (purchases.length > 0) {
-          purchases.map((item) => {
-            if (String(item.notfound) === '1') {
-              res += 1;
-            }
-          });
-
-          res = Math.round((res / purchases.length) * 100);
-        }
-        break;
-    }
-    return res;
-  }
-
-  getProducts() {
-    let res = [];
-    let { purchases } = this.props.data;
-
-    purchases.map((item) => {
-      if (+item.closed > +new Date(this.state.dateFrom)
-       && +item.closed < +new Date(this.state.dateTo)) {
-        res.push(item);
-      }
-    });
-
-    purchases = res;
-    res = [];
-
-    purchases.map((item) => {
-      if (res[item.product]) {
-        res[item.product].sales += 1;
-
-        if (+item.notfound === 1) {
-          res[item.product].notfound += 1;
-        }
-        if (res[item.product].subproducts[item.subproduct]) {
-          res[item.product].subproducts[item.subproduct].sales += 1;
-
-          if (+item.notfound === 1) {
-            res[item.product].subproducts[item.subproduct].notfound += 1;
-          }
-        } else {
-          res[item.product].subproducts[item.subproduct] = {
-            sales: 1,
-          };
-          if (+item.notfound === 1) {
-            res[item.product].subproducts[item.subproduct].notfound = 1;
-          } else {
-            res[item.product].subproducts[item.subproduct].notfound = 0;
-          }
-        }
-      } else {
-        res[item.product] = {
-          sales: 1,
-          notfound: +item.notfound === 1 ? 1 : 0,
-          subproducts: {
-            [item.subproduct]: {
-              notfound: +item.notfound === 1 ? 1 : 0,
-              sales: 1,
-            },
+    formatted.reduce((acc, cur) => ({
+      ...acc,
+      [cur.product]: {
+        ...acc[cur.product],
+        sales: acc[cur.product]?.sales ? acc[cur.product].sales + 1 : 1,
+        notfound: acc[cur.product]?.notfound
+          ? cur.notfound === 1
+            ? acc[cur.product].notfound + 1
+            : acc[cur.product].notfound
+          : 1,
+        subproducts: {
+          ...acc[cur.product]?.subproducts,
+          [cur.subproduct]: {
+            sales: acc[cur.product]?.subproducts?.[cur.subproduct]?.sales
+              ? acc[cur.product].subproducts[cur.subproduct].sales + 1
+              : 1,
+            notfound: acc[cur.product]?.subproducts?.[cur.subproduct]?.notfound
+              ? cur.notfound === 1
+                ? acc[cur.product].subproducts[cur.subproduct].notfound + 1
+                : acc[cur.product].subproducts[cur.subproduct].notfound
+              : 1,
           },
-        };
+        },
+      },
+    }), {});
+
+    setProducts(formatted);
+  }, [data, filter]);
+
+  useEffect(() => {
+    getProducts();
+  }, [getProducts]);
+
+  const getProd = (status, addresses = []) => addresses.reduce((acc, cur) => {
+    if (status === 'check') {
+      if (cur.status === 2 || cur.status === 3) {
+        acc += 1;
+        return acc;
       }
-    });
+    }
 
-    this.setState({
-      products: res,
-    });
-  }
+    if (status === cur.status) {
+      acc += 1;
+      return acc;
+    }
 
-  render() {
-    return (
-      <Modal size="lg" isOpen={this.props.modal} toggle={this.props.toggle}>
-        <div className="modal-header text-center">
-          <h4 className="modal-title font-m">
-            {getLocales('Сотрудник')}
-            {' #'}
-            {this.props.id}
-          </h4>
-        </div>
+    return acc;
+  }, 0);
 
-        <ModalBody>
-          <div className="row">
-            <div className="col-lg-4">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('Адресов в продаже')}
+  const getSale = (type, purchases = []) => {
+    const formatted = purchases.filter((item) => (+item.closed > +new Date(filter.dateFrom)
+        && +item.closed < +new Date(filter.dateTo)));
 
-                </label>
-                <input
-                  disabled
-                  value={`${this.getProd(1, this.props.data.sellers)} ${getLocales('шт.')}`}
-                  className="form-control"
-                />
-              </div>
+    if (type === 'sales') {
+      return formatted.length;
+    }
+
+    if (type === 'notfounded') {
+      return formatted.filter((item) => item.notfound === 1).length;
+    }
+
+    if (type === 'coeff') {
+      const countNotFounded = formatted.filter((item) => item.notfound === 1).length || 0;
+      return Math.round((countNotFounded / formatted.length) * 100);
+    }
+
+    return 0;
+  };
+
+  const handleFilterChange = (e) => setFilter((prev) => ({
+    ...prev,
+    [e.target.name]: e.target.value,
+  }));
+
+  return (
+    <Modal size="lg" isOpen={modal} toggle={toggle}>
+      <div className="modal-header text-center">
+        <h4 className="modal-title font-m">
+          {getLocales('Сотрудник')}
+          {' #'}
+          {id}
+        </h4>
+      </div>
+
+      <ModalBody>
+        <div className="row">
+          <div className="col-lg-4">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('Адресов в продаже')}
+
+              </label>
+              <input
+                disabled
+                value={`${getProd(1, data.sellers)} ${getLocales('шт.')}`}
+                className="form-control"
+              />
             </div>
+          </div>
 
-            <div className="col-lg-4">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('Адресов на проверке')}
+          <div className="col-lg-4">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('Адресов на проверке')}
 
-                </label>
-                <input
-                  disabled
-                  value={`${this.getProd('check', this.props.data.sellers)} ${getLocales('шт.')}`}
-                  className="form-control"
-                />
-              </div>
+              </label>
+              <input
+                disabled
+                value={`${getProd('check', data.sellers)} ${getLocales('шт.')}`}
+                className="form-control"
+              />
             </div>
+          </div>
 
-            <div className="col-lg-4">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('Удаленных адресов')}
+          <div className="col-lg-4">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('Удаленных адресов')}
 
-                </label>
-                <input
-                  disabled
-                  value={`${this.getProd(-1, this.props.data.sellers)} ${getLocales('шт.')}`}
-                  className="form-control"
-                />
-              </div>
+              </label>
+              <input
+                disabled
+                value={`${getProd(-1, data.sellers)} ${getLocales('шт.')}`}
+                className="form-control"
+              />
             </div>
+          </div>
 
-            <div className="col-lg-6">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('От')}
-                </label>
-                <input
-                  type="date"
-                  onChange={this.handleChange}
-                  value={this.state.dateFrom}
-                  name="dateFrom"
-                  className="form-control"
-                />
-              </div>
+          <div className="col-lg-6">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('От')}
+              </label>
+              <input
+                type="date"
+                onChange={handleFilterChange}
+                value={filter.dateFrom}
+                name="dateFrom"
+                className="form-control"
+              />
             </div>
+          </div>
 
-            <div className="col-lg-6">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('До')}
-                </label>
-                <input
-                  type="date"
-                  onChange={this.handleChange}
-                  value={this.state.dateTo}
-                  name="dateTo"
-                  className="form-control"
-                />
-              </div>
+          <div className="col-lg-6">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('До')}
+              </label>
+              <input
+                type="date"
+                onChange={handleFilterChange}
+                value={filter.dateTo}
+                name="dateTo"
+                className="form-control"
+              />
             </div>
+          </div>
 
-            <div className="col-lg-4">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('Продано адресов')}
-                </label>
-                <input
-                  disabled
-                  value={`${this.getSale('sales', this.props.data.purchases)} ${getLocales('шт.')}`}
-                  className="form-control"
-                />
-              </div>
+          <div className="col-lg-4">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('Продано адресов')}
+              </label>
+              <input
+                disabled
+                value={`${getSale('sales', data.purchases)} ${getLocales('шт.')}`}
+                className="form-control"
+              />
             </div>
+          </div>
 
-            <div className="col-lg-4">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('Ненаходов')}
-                </label>
-                <input
-                  disabled
-                  value={`${this.getSale('notfounded', this.props.data.purchases)} ${getLocales('шт.')}`}
-                  className="form-control"
-                />
-              </div>
+          <div className="col-lg-4">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('Ненаходов')}
+              </label>
+              <input
+                disabled
+                value={`${getSale('notfounded', data.purchases)} ${getLocales('шт.')}`}
+                className="form-control"
+              />
             </div>
+          </div>
 
-            <div className="col-lg-4">
-              <div className="form-group">
-                <label className="form-control-label font-m">
-                  {getLocales('Процент ненаходов')}
-                </label>
-                <input
-                  disabled
-                  value={`${this.getSale('coeff', this.props.data.purchases)}%`}
-                  className="form-control"
-                />
-              </div>
+          <div className="col-lg-4">
+            <div className="form-group">
+              <label className="form-control-label font-m">
+                {getLocales('Процент ненаходов')}
+              </label>
+              <input
+                disabled
+                value={`${getSale('coeff', data.purchases)}%`}
+                className="form-control"
+              />
             </div>
+          </div>
 
-            <div className="col-lg-12">
-              <div className="avatar-block notice no-margin">
-                <h3 className="font-m">
-                  {getLocales('Статистика по товарам')}
-                </h3>
+          <div className="col-lg-12">
+            <div className="avatar-block notice no-margin">
+              <h3 className="font-m">
+                {getLocales('Статистика по товарам')}
+              </h3>
 
-                {Object.keys(this.state.products).length > 0
-                  ? (
-                    <>
+              {Object.keys(products).length > 0
+                ? (
+                  <>
+                    <div className="avatar-block font-m">
+                      <div className="row">
+                        <div className="col-lg-4">
+                          {getLocales('Товар')}
+                        </div>
+
+                        <div className="col-lg-2">
+                          {getLocales('Продано')}
+                        </div>
+
+                        <div className="col-lg-2">
+                          {getLocales('Ненаходов')}
+                        </div>
+
+                        <div className="col-lg-4 text-center">
+                          {getLocales('Процент')}
+                        </div>
+                      </div>
+                    </div>
+
+                    {Object.keys(products).map((key) => (
                       <div className="avatar-block font-m">
                         <div className="row">
                           <div className="col-lg-4">
-                            {getLocales('Товар')}
+                            <b>{key}</b>
                           </div>
 
-                          <div className="col-lg-2">
-                            {getLocales('Продано')}
+                          <div className="col-lg-2 text-center">
+                            {products[key].sales}
+                            {' '}
+                            {getLocales('шт.')}
                           </div>
 
-                          <div className="col-lg-2">
-                            {getLocales('Ненаходов')}
+                          <div className="col-lg-2 text-center">
+                            {products[key].notfound}
+                            {' '}
+                            {getLocales('шт.')}
                           </div>
 
                           <div className="col-lg-4 text-center">
-                            {getLocales('Процент')}
+                            {Math.round((products[key].notfound / products[key].sales) * 100)}
+                            %
                           </div>
+
+                          {Object.keys(products[key].subproducts).map((key2) => (
+                            <>
+                              <div className="col-lg-4">
+                                {key2}
+                              </div>
+
+                              <div className="col-lg-2 text-center">
+                                {products[key].subproducts[key2].sales}
+                                {' '}
+                                {getLocales('шт.')}
+                              </div>
+
+                              <div className="col-lg-2 text-center">
+                                {products[key].subproducts[key2].notfound}
+                                {' '}
+                                {getLocales('шт.')}
+                              </div>
+
+                              <div className="col-lg-4 text-center">
+                                {Math.round((products[key].subproducts[key2].notfound
+                                    / products[key].subproducts[key2].sales) * 100)}
+                                %
+                              </div>
+                            </>
+                          ))}
                         </div>
                       </div>
+                    ))}
+                  </>
+                )
+                : (
+                  <div className="text-center font-m">
+                    {getLocales('Не найдено')}
+                  </div>
+                )}
+            </div>
 
-                      {Object.keys(this.state.products).map((key) => (
-                        <div className="avatar-block font-m">
-                          <div className="row">
-                            <div className="col-lg-4">
-                              <b>{key}</b>
-                            </div>
+            <div className="avatar-block notice">
+              <h4 className="modal-title font-m">
+                {getLocales('Ненаходы')}
+              </h4>
 
-                            <div className="col-lg-2 text-center">
-                              {this.state.products[key].sales}
-                              {' '}
-                              {getLocales('шт.')}
-                            </div>
+              {sellers.length > 0
+                ? sellers.map((item) => (
+                  <div className="notice avatar-block font-m">
+                    <h4 className="modal-title font-m">
+                      {item.category}
+                      {' '}
+                      {!!item.subcategory && ` / ${item.subcategory}`}
+                      {' / '}
+                      {item.product}
+                      {' '}
+                      {!!item.subproduct && ` / ${item.subproduct}`}
+                    </h4>
 
-                            <div className="col-lg-2 text-center">
-                              {this.state.products[key].notfound}
-                              {' '}
-                              {getLocales('шт.')}
-                            </div>
+                    {item.seller}
 
-                            <div className="col-lg-4 text-center">
-                              {Math.round((
-                                this.state.products[key].notfound
-                                   / this.state.products[key].sales) * 100)}
-                              %
-                            </div>
-
-                            {Object.keys(this.state.products[key].subproducts).map((key2) => (
-                              <>
-                                <div className="col-lg-4">
-                                  {key2}
-                                </div>
-
-                                <div className="col-lg-2 text-center">
-                                  {this.state.products[key].subproducts[key2].sales}
-                                  {' '}
-                                  {getLocales('шт.')}
-                                </div>
-
-                                <div className="col-lg-2 text-center">
-                                  {this.state.products[key].subproducts[key2].notfound}
-                                  {' '}
-                                  {getLocales('шт.')}
-                                </div>
-
-                                <div className="col-lg-4 text-center">
-                                  {Math.round((
-                                    this.state.products[key].subproducts[key2].notfound
-                                        / this.state.products[key].subproducts[key2].sales) * 100)}
-                                  %
-                                </div>
-                              </>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </>
-                  )
-                  : (
-                    <div className="text-center font-m">
-                      {getLocales('Не найдено')}
+                    <div className="text-right">
+                      {moment.unix(item.closed / 1000).format('LLL')}
                     </div>
-                  )}
-              </div>
+                  </div>
+                ))
+                : (
+                  <div className="text-center font-m">
+                    {getLocales('Не найдено')}
+                  </div>
+                )}
+            </div>
+          </div>
+        </div>
+      </ModalBody>
 
-              <div className="avatar-block notice">
-                <h4 className="modal-title font-m">
-                  {getLocales('Ненаходы')}
-                </h4>
-
-                {this.state.sellers.length > 0
-                  ? this.state.sellers.map((item) => (
-                    <div className="notice avatar-block font-m">
-                      <h4 className="modal-title font-m">
-                        {item.category}
-                        {' '}
-                        {item.subcategory === '' ? '' : (` / ${item.subcategory}`)}
-                        {' / '}
-                        {item.product}
-                        {' '}
-                        {item.subproduct === '' ? '' : (` / ${item.subproduct}`)}
-                      </h4>
-
-                      {item.seller}
-
-                      <div className="text-right">
-                        {moment.unix(item.closed / 1000).format('LLL')}
-                      </div>
-                    </div>
-                  ))
-                  : (
-                    <div className="text-center font-m">
-                      {getLocales('Не найдено')}
-                    </div>
-                  )}
+      <ModalFooter>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="mr-auto">
+                <button
+                  type="button"
+                  value="Закрыть"
+                  className="btn btn-secondary font-m auth-btn"
+                  onClick={toggle}
+                >
+                  {getLocales('Закрыть')}
+                </button>
               </div>
             </div>
           </div>
-        </ModalBody>
-
-        <ModalFooter>
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="mr-auto">
-                  <button
-                    type="button"
-                    value="Закрыть"
-                    className="btn btn-secondary font-m auth-btn"
-                    onClick={this.props.toggle}
-                  >
-                    {getLocales('Закрыть')}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ModalFooter>
-      </Modal>
-    );
-  }
+        </div>
+      </ModalFooter>
+    </Modal>
+  );
 }
 
 export default StatisticModal;
