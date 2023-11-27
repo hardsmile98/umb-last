@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-param-reassign */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  Fragment, useCallback, useEffect, useState,
+} from 'react';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import moment from 'moment';
 import { getLocales } from 'utils';
@@ -266,10 +268,12 @@ function StatisticModal({
                     </div>
 
                     {Object.keys(products).map((key) => (
-                      <div className="avatar-block font-m">
+                      <div key={key} className="avatar-block font-m">
                         <div className="row">
                           <div className="col-lg-4">
-                            <b>{key}</b>
+                            <b>
+                              {key}
+                            </b>
                           </div>
 
                           <div className="col-lg-2 text-center">
@@ -290,7 +294,7 @@ function StatisticModal({
                           </div>
 
                           {Object.keys(products[key]?.subproducts || {}).map((key2) => (
-                            <>
+                            <Fragment key={key2}>
                               <div className="col-lg-4">
                                 {key2}
                               </div>
@@ -312,7 +316,7 @@ function StatisticModal({
                                     / products[key].subproducts[key2].sales) * 100)}
                                 %
                               </div>
-                            </>
+                            </Fragment>
                           ))}
                         </div>
                       </div>
