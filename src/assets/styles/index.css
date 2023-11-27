@@ -1463,3 +1463,7 @@ td .btn {
 .table-column svg {
   font-size: 1rem;
 }
+
+.code-css {
+  color: black;
+}

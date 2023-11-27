@@ -2,18 +2,18 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import { request, getLocales } from 'utils';
+import CodeMirror from '@uiw/react-codemirror';
+import { css } from '@codemirror/lang-css';
 
 class Config extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      data: {
-        css: '',
-      },
+      css: '',
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleCssChange = this.handleCssChange.bind(this);
     this.sendData = this.sendData.bind(this);
   }
 
@@ -21,12 +21,9 @@ class Config extends Component {
     this.getData();
   }
 
-  handleChange(e) {
-    const value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value'];
-    const { name } = e.target;
-
+  handleCssChange(value) {
     this.setState({
-      [name]: value,
+      css: value,
     });
   }
 
@@ -56,7 +53,6 @@ class Config extends Component {
       if (response.status === 200) {
         if (response.data.success) {
           this.setState({
-            data: response.data.data,
             loading: false,
             css: response.data.data.css,
           });
@@ -127,14 +123,14 @@ class Config extends Component {
                 <label className="form-control-label font-m">
                   CSS
                 </label>
-                <textarea
+
+                <CodeMirror
                   value={this.state.css}
-                  className="form-control height-auto"
-                  name="css"
-                  onChange={this.handleChange}
-                >
-                  {this.state.data.css}
-                </textarea>
+                  height="240px"
+                  className="code-css"
+                  onChange={this.handleCssChange}
+                  extensions={[css()]}
+                />
               </div>
 
               <div className="mr-auto right">

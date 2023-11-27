@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.32",
+    "@codemirror/lang-css": "^6.2.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@hcaptcha/react-hcaptcha": "^1.4.4",
+    "@uiw/react-codemirror": "^4.21.21",
     "animate.css": "^4.1.1",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.1",
@@ -24,7 +26,6 @@
     "react-render-html": "^0.6.0",
     "react-router-dom": "^5.2.0",
     "react-toastify": "^7.0.4",
-    "react-tooltip": "^5.11.1",
     "reactstrap": "^8.9.0",
     "render-html": "^1.2.1",
     "unique-string": "^3.0.0"
