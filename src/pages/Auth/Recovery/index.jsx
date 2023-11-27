@@ -203,7 +203,7 @@ class Recovery extends Component {
               )
               : ''}
 
-            <div className="row">
+            <div className="row row-gap-2">
               <div className="col-lg-6">
                 <button
                   type="button"

@@ -247,7 +247,7 @@ class Regisration extends Component {
               />
             </div>
 
-            <div className="row">
+            <div className="row row-gap-2">
               <div className="col-lg-6">
                 <button
                   type="button"

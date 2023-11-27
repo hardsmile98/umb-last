@@ -474,7 +474,7 @@ td {
 }
 
 .recovery {
-  margin-top: 5%;
+  margin-top: 20px;
   color: black !important
 }
 
@@ -1274,12 +1274,11 @@ select.lang-pick,
   select.lang-pick,
   .ReactFlagsSelect-module_flagsSelect__2pfa2 {
     width: 100%;
-    position: block !important;
-    top: 10px;
-    text-align: center !important;
-    background-image: none !important;
-    background: none !important;
-    display: contents;
+    max-width: 100%;
+    right: 0;
+    margin-bottom: 10px;
+    position: relative !important;
+    z-index: 100;
   }
 }
 
