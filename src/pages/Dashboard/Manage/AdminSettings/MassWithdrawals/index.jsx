@@ -28,13 +28,17 @@ class MassWithdrawals extends Component {
 
     this.getData = this.getData.bind(this);
     this.sendData = this.sendData.bind(this);
-    this.updateItems = this.updateItems.bind(this);
     this.prepareTableData = this.prepareTableData.bind(this);
     this.setOk = this.setOk.bind(this);
   }
 
   componentDidMount() {
+    this.setState({
+      loading: true,
+    });
+
     this.getData();
+
     interval = setInterval(this.getData, 10000);
   }
 
@@ -43,9 +47,6 @@ class MassWithdrawals extends Component {
   }
 
   getData() {
-    this.setState({
-      loading: true,
-    });
     const data = {
       api: 'user',
       body: {
@@ -85,6 +86,7 @@ class MassWithdrawals extends Component {
     this.setState({
       loading: true,
     });
+
     const data = {
       api: 'user',
       body: {
@@ -121,6 +123,7 @@ class MassWithdrawals extends Component {
     this.setState({
       loading: true,
     });
+
     const data = {
       api: 'user',
       body: {
@@ -150,12 +153,6 @@ class MassWithdrawals extends Component {
       } else {
         toast.error('Сервер недоступен');
       }
-    });
-  }
-
-  updateItems(items) {
-    this.setState({
-      items,
     });
   }
 
@@ -217,7 +214,7 @@ class MassWithdrawals extends Component {
         key: 'operations',
         itemClassName: 'text-center',
         headerClassName: 'text-center',
-        render: (e, item) => (
+        render: (_e, item) => (
           <div className="sparkline8">
             <NavLink to={`/dashboard/manage/datas/users/${item.userId}`}>
               {item.user}
@@ -226,6 +223,7 @@ class MassWithdrawals extends Component {
         ),
       },
     ];
+
     return (
       <>
         <div className={`block animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
@@ -254,11 +252,11 @@ class MassWithdrawals extends Component {
                           ID
                         </div>
 
-                        <div className="col-lg-4">
+                        <div className="col-lg-5">
                           Кошелек
                         </div>
 
-                        <div className="col-lg-1">
+                        <div className="col-lg-2">
                           Сумма
                         </div>
 
@@ -268,6 +266,7 @@ class MassWithdrawals extends Component {
                       </div>
                     </div>
                   </div>
+
                   {this.state.data.withdrawals.map((item) => (
                     <div className="col-lg-12">
                       <div className="avatar-block font-m">
@@ -276,7 +275,7 @@ class MassWithdrawals extends Component {
                             {item.id}
                           </div>
 
-                          <div className="col-lg-3 center">
+                          <div className="col-lg-5 center">
                             {item.wallet}
                             <button
                               type="button"
@@ -290,7 +289,7 @@ class MassWithdrawals extends Component {
                             </button>
                           </div>
 
-                          <div className="col-lg-1 center">
+                          <div className="col-lg-2 center">
                             {item.sum}
                             <button
                               type="button"
@@ -353,7 +352,7 @@ class MassWithdrawals extends Component {
           </div>
         </div>
 
-        <div className="block animate__animated animate__fadeIn ">
+        <div className={`block animate__animated animate__fadeIn ${this.state.loading ? 'blur' : ''}`}>
           <div className="block-body">
             <h3 className="font-m">
               Исполненные выводы
@@ -362,7 +361,6 @@ class MassWithdrawals extends Component {
             <Table
               columns={tableColumns}
               items={this.state.items}
-              updateItems={this.updateItems}
               rowsPerPage="10"
             />
           </div>
