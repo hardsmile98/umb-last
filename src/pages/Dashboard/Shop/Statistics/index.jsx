@@ -43,6 +43,9 @@ function Statistics() {
     products: [],
     sellersSum: 0,
     subproducts: [],
+    categories: [],
+    filterCategories: [],
+    filterProducts: [],
     currency: '',
   });
   const [items, setItems] = useState([]);
@@ -63,14 +66,41 @@ function Statistics() {
     }));
   };
 
+  const prepareData = useCallback((unformattedData) => {
+    const formatted = {
+      ...unformattedData,
+      filterProducts: unformattedData.products,
+      filterCategories: unformattedData.categories,
+      products: filter.product !== 'all'
+        ? unformattedData.products.filter((item) => item.name === filter.product)
+        : unformattedData.products,
+      purchases: filter.product !== 'all' || filter.category !== 'all'
+        ? unformattedData.purchases
+          .filter((item) => {
+            if (filter.category !== 'all' && filter.product === 'all') {
+              return item.category === filter.category;
+            }
+
+            if (filter.product !== 'all' && filter.category === 'all') {
+              return item.product === filter.product;
+            }
+
+            return item.product === filter.product && item.category === filter.category;
+          })
+        : unformattedData.purchases,
+    };
+
+    setData(formatted);
+  }, [filter.category, filter.product]);
+
   const prepareTable = useCallback(() => {
-    const newItems = data.products.map((item) => ({
+    const newItems = data.filterProducts.map((item) => ({
       name: item.name,
       sales: `${item.sales} ${getLocales('шт.')}`,
     }));
 
     setItems(newItems);
-  }, [data.products]);
+  }, [data.filterProducts]);
 
   // График продаж по районам
   const prepareAreas = useCallback(() => {
@@ -366,11 +396,9 @@ function Statistics() {
         data: {
           section: 'shop',
           type: 'statistic',
-          subtype: 'getnew',
+          subtype: 'getv3',
           dateFrom: +new Date(filter.dateFrom),
           dateTo: +new Date(filter.dateTo),
-          product: filter.product !== 'all' ? filter.product : undefined,
-          category: filter.category !== 'all' ? filter.category : undefined,
           shop: shopId,
         },
         action: 'shops',
@@ -394,11 +422,11 @@ function Statistics() {
         return;
       }
 
-      setData(response.data.data);
+      prepareData(response.data.data);
       setLoading(false);
       setSuccess(true);
     });
-  }, [shopId, filter]);
+  }, [shopId, filter, prepareData]);
 
   useEffect(() => {
     am4core.addLicense('ch-custom-attribution');
@@ -476,6 +504,11 @@ function Statistics() {
                       className="form-control"
                     >
                       <option value="all">{getLocales('Все')}</option>
+                      {data.filterCategories.map((category) => (
+                        <option key={category.id} value={category.name}>
+                          {category.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -492,8 +525,8 @@ function Statistics() {
                       className="form-control"
                     >
                       <option value="all">{getLocales('Все')}</option>
-                      {data.products.map((product) => (
-                        <option key={product.id} value={product.id}>
+                      {data.filterProducts.map((product) => (
+                        <option key={product.id} value={product.name}>
                           {product.name}
                         </option>
                       ))}
