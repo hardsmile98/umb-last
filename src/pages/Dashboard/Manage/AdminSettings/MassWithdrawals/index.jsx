@@ -166,7 +166,7 @@ class MassWithdrawals extends Component {
 
     this.state.data.finance.map((item) => {
       this.state.data.users.map((user) => {
-        if (String(user.id) === String(item.user)) {
+        if (+user.id === +item.user) {
           const itemModified = {
             id: item.id,
             wallet: item.wallet,
@@ -306,7 +306,7 @@ class MassWithdrawals extends Component {
 
                           <div className="col-lg-2 center">
                             {this.state.data.users
-                              .map((user) => (String(user.id) === String(item.user)
+                              .map((user) => (+user.id === +item.user
                                 ? (
                                   <NavLink to={`/dashboard/manage/datas/users/${item.user}`}>
                                     {user.login}
@@ -316,14 +316,14 @@ class MassWithdrawals extends Component {
                                     {item.last}
                                     )
                                     {' '}
-                                    {String(item.isPremium) === '1' && <FontAwesomeIcon icon={faStar} />}
+                                    {+item.isPremium === 1 && <FontAwesomeIcon icon={faStar} />}
                                   </NavLink>
                                 )
                                 : ''))}
                           </div>
 
                           <div className="col-lg-2">
-                            {(String(item.isPremium) === '0' && +item.last < 2 && String(item.moder) === '0')
+                            {+item.isPremium === 0 && +item.last < 2 && +item.moder === 0
                               ? (
                                 <button
                                   type="button"
